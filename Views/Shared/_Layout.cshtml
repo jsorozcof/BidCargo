@@ -1,0 +1,1137 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>BidCargo</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:200,300,400,700,900|Display+Playfair:200,300,400,700">
+
+    <link href="~/Content/fonts/icomoon/style.css" rel="stylesheet" />
+    <link rel="stylesheet" href="~/Content/css/magnific-popup.css">
+    <link rel="stylesheet" href="~/Content/css/jquery-ui.css">
+    <link rel="stylesheet" href="~/Content/css/owl.carousel.min.css">
+    <link rel="stylesheet" href="~/Content/css/owl.theme.default.min.css">
+
+    <link href="~/lib/font-awesome/css/all.css" rel="stylesheet" />
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet">
+    @* estilos icono *@
+    @*<link href="/your-path-to-fontawesome/css/fontawesome.css" rel="stylesheet">
+        <link href="/your-path-to-fontawesome/css/brands.css" rel="stylesheet">
+        <link href="/your-path-to-fontawesome/css/solid.css" rel="stylesheet">*@
+    @* fin estilos icono  *@
+    <link rel="stylesheet" href="~/Content/css/bootstrap-datepicker.css">
+
+    <link rel="stylesheet" href="~/Content/fonts/flaticon/font/flaticon.css">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/mediaelement@4.2.7/build/mediaelementplayer.min.css">
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/css/select2.min.css" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet" type="text/css" />
+    <link href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" rel="stylesheet" type="text/css" />
+
+    <link rel="stylesheet" href="~/Content/css/aos.css">
+    <link rel="stylesheet" href="~/Content/css/style.css">
+    <link rel="stylesheet" type="text/css" href=@Url.Content("/Content/css/util.css")>
+    <link rel="stylesheet" type="text/css" href=@Url.Content("/Content/css/main.css")>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="/resources/demos/style.css">
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src="~/Scripts/bootstrap.bundle.min.js"></script>
+    <style type="text/css">
+        .curpointer {
+            cursor: pointer;
+        }
+
+        .curdefault {
+            cursor: default;
+        }
+
+        .wwww li.active a, .wwww li:hover a, .wwww li.active:hover a {
+            border-bottom: solid;
+        }
+    </style>
+    @RenderSection("css", false)
+    @RenderSection("Styles", false)
+</head>
+<body>
+
+    <div class="site-wrap">
+
+        <div class="site-mobile-menu">
+            <div class="site-mobile-menu-header">
+                <div class="site-mobile-menu-close mt-3">
+                    <span class="icon-close2 js-menu-toggle"></span>
+                </div>
+            </div>
+            <div class="site-mobile-menu-body"></div>
+        </div>
+
+        <header class="site-navbar py-1" role="banner">
+
+            <div class="container">
+                <div class="row align-items-center">
+
+                    <div class="col-6 col-xl-2">
+                        <h1 class="mb-0">
+                            @if (Convert.ToInt32(Session["idPerfil"]) == 2) //Rol o perfil de Propietario
+                            {
+                                <a href=@Url.Action("MenuPropietario", "Propietario") class="text-black h2 mb-0">
+                                    <img src="/Content/images/logoLetras.png" alt="Image" class="img-fluid">
+                                </a>
+                            }
+                            else
+                            {
+                                <a href=@Url.Action("Index", "Home") class="text-black h2 mb-0">
+                                    <img src="/Content/images/logoLetras.png" alt="Image" class="img-fluid">
+                                </a>
+                            }
+                        </h1>
+                    </div>
+                    <div class="col-10 col-md-8 d-none d-xl-block">
+                        <nav class="site-navigation position-relative text-right text-lg-center wwww" role="navigation" id="">
+
+                            <ul class="site-menu js-clone-nav mx-auto d-lg-block">
+                                @if (Session["estado"] != null)
+                                {
+                                    <li><a href="@Url.Action("Logout", "Home")"><i class="icon-sign-in"></i>   Cerrar Sesión</a></li>
+                                }
+                                else
+                                {
+                                    if (Convert.ToInt32(Session["idPerfil"]) == 5)
+                                    {
+                                        ViewBag.valos = HttpContext.Current.Request.Url.AbsoluteUri.Split('/')[HttpContext.Current.Request.Url.AbsoluteUri.Split('/').Length - 1];
+                                        ViewBag.cosas = "";
+                                        if (ViewBag.valos == "AdminOffers")
+                                        {
+                                            ViewBag.cosas = "active";
+                                        }
+
+                                        <li class="@ViewBag.cosas"><a href="@Url.Action("AdminOffers", "Home")"> <i class="fab fa-shopware"></i> Ofertas</a></li>
+
+                                        ViewBag.cosas = "";
+                                        if (ViewBag.valos == "Users")
+                                        {
+                                            ViewBag.cosas = "active";
+                                        }
+                                        if (ViewBag.valos == "Add")
+                                        {
+                                            ViewBag.cosas = "active";
+                                        }
+
+
+                                        <li class="@ViewBag.cosas"><a href=@Url.Action("Users", "Home")> <i class="fas fa-building"></i> Empresas</a></li>
+
+                                        <li class="has-children">
+                                            <a href="#"> <i class="fas fa-user-tie"></i> Propietarios </a>
+                                            <ul class="dropdown">
+                                                <li><a href="@Url.Action("TablePjuridicas","Home")"><i class="fas fa-user-alt"></i>  Juridicos</a></li>
+                                                <li><a href="@Url.Action("TablePnaturales","Home")"><i class="fas fa-user-friends"></i>  Natural</a></li>
+                                                <li><a href="@Url.Action("ContraOfertaPropietario","Home")"><i class="fas fa-user-friends"></i>  ContraOferta</a></li>
+                                            </ul>
+                                        </li>
+
+                                        @*<li class="has-children">
+                                            <a href="#"> <i class="fas fa-id-card-alt"></i> Conductores </a>
+                                            <ul class="dropdown">
+                                                <li><a href="@Url.Action("TableConductorjuridicos","Home")"><i class="fas fa-id-card-alt"></i>Conductores  Juridicos</a></li>
+                                                <li><a href="@Url.Action("TableConductorNaturales","Home")"><i class="fas fa-id-card-alt"></i> Conductores  Natural</a></li>
+                                                
+                                            </ul>
+                                        </li>*@
+
+
+
+
+                                        <li class=""><a href=@Url.Action("TableConductor", "Home")> <i class="fas fa-id-card-alt"></i> Conductor</a></li>
+                                        <li class=""><a href=@Url.Action("TableVehiculos", "Home")> <i class="fas fa-truck-moving"></i> Vehiculos</a></li>
+
+                                        <li class="has-children">
+                                            <a href="#"> <i class="icon-user-circle"></i> administrador </a>
+                                            <ul class="dropdown">
+                                                <li><a href="@Url.Action("verPerfil")"><i class="icon-user-plus"></i>  Ver Perfil</a></li>
+                                                <li><a href="@Url.Action("AdminUsers")"><i class="icon-user-cog"></i>  Usuarios</a></li>
+                                                <li><a href="@Url.Action("Logout")"><i class="icon-sign-in"></i>   Cerrar Sesión</a></li>
+                                            </ul>
+                                        </li>
+                                    }
+                                    @*else if (Convert.ToInt32(Session["idPerfil"]) == 4) //Rol o perfil de Conductor
+            {
+                <li class="@ViewBag.cosas"><a href=@Url.Action("TablaOfertas", "Conductor")> <i class="fas fa-building"></i> Consultar ofertas</a></li>
+                <li class="has-children">
+                    <a href="#"> <i class="icon-user-circle"></i> Conductor </a>
+                    <ul class="dropdown">
+                        <li><a href="@Url.Action("VerPerfil", "Conductor")"><i class="icon-user-plus"></i>  Ver Perfil</a></li>
+                        <li><a href="@Url.Action("Logout", "Home")"><i class="icon-sign-in"></i>   Cerrar Sesión</a></li>
+                    </ul>
+                </li>
+            }*@
+                                    else if (Convert.ToInt32(Session["idPerfil"]) == 2) //Rol o perfil de Propietario
+                                    {
+                                        <li class="@ViewBag.cosas"><a href=@Url.Action("TablaOfertas", "Propietario")> <i class="fab fa-shopware"></i> Consultar ofertas</a></li>
+
+                                        <li class="@ViewBag.cosas"><a href=@Url.Action("TablaContraOfertasRealizadas", "Propietario")> <i class="fas fa-people-arrows"></i> Contra ofertas</a></li>
+
+                                        <li class="has-children">
+                                            <a href="#"> <i class="icon-car"></i> Vehículos </a>
+                                            <ul class="dropdown">
+                                                <li><a href="@Url.Action("tablavehiculoPropietario", "Propietario")"><i class="icon-user-plus"></i>  Consultar</a></li>
+                                                <li><a href="@Url.Action("VehivuloRegistro", "Propietario")"><i class="icon-user-cog"></i>  Registrar</a></li>
+                                            </ul>
+                                        </li>
+
+                                        <li class="has-children">
+                                            <a href="#"> <i class="fas fa-id-card"></i> Conductores </a>
+                                            <ul class="dropdown">
+                                                <li><a href="@Url.Action("TablaConductorPropietario", "Propietario")"><i class="icon-user-plus"></i>  Consultar</a></li>
+                                                <li><a href="@Url.Action("PreRegistro", "Conductor")"><i class="icon-user-cog"></i>  Registrar</a></li>
+                                            </ul>
+                                        </li>
+
+                                        <li class="has-children">
+                                            <a href="#"> <i class="icon-user-circle"></i> Propietario </a>
+                                            <ul class="dropdown">
+                                                <li><a href="@Url.Action("PerfilPropietario", "Propietario")"><i class="icon-user-plus"></i>  Ver Perfil</a></li>
+                                                <li><a href="@Url.Action("Logout", "Home")"><i class="icon-sign-in"></i>   Cerrar Sesión</a></li>
+                                            </ul>
+                                        </li>
+                                    }
+                                    else
+                                    {
+                                        if (Convert.ToInt32(Session["idCliente"]) <= 0)
+                                        {
+                                            ViewBag.valos = HttpContext.Current.Request.Url.AbsoluteUri.Split('/')[HttpContext.Current.Request.Url.AbsoluteUri.Split('/').Length - 1];
+                                            ViewBag.cosas = "";
+                                            if (ViewBag.valos == "About")
+                                            {
+                                                ViewBag.cosas = "active";
+                                            }
+                                            <li class="@ViewBag.cosas"><a href=@Url.Action("About", "Home")>Nosotros</a></li>
+                                            ViewBag.cosas = "";
+                                            if (ViewBag.valos == "Contact")
+                                            {
+                                                ViewBag.cosas = "active";
+                                            }
+                                            <li class="@ViewBag.cosas"><a href=@Url.Action("Contact", "Home")>Contáctanos</a></li>
+                                            ViewBag.cosas = "";
+                                            if (ViewBag.valos == "registroInicial")
+                                            {
+                                                ViewBag.cosas = "active";
+                                            }
+                                            <li class="has-children">
+                                                <a> Regístrate </a>
+                                                <ul class="dropdown">
+                                                    <li><a href=@Url.Action("registroInicial", "Home")><i class="fas fa-building"></i> Empresa</a></li>
+                                                    <li><a href="@Url.Action("PreRegistro", "Propietario")"><i class="fas fa-user-tie"></i>  Propietario</a></li>
+                                                </ul>
+                                            </li>
+                                            ViewBag.cosas = "";
+                                            if (ViewBag.valos == "Login")
+                                            {
+                                                ViewBag.cosas = "active";
+                                            }
+                                            <li class="@ViewBag.cosas"><a href=@Url.Action("Login", "Home")> Iniciar Sesión </a></li>
+                                        }
+                                        else
+                                        {
+                                            ViewBag.valos = HttpContext.Current.Request.Url.AbsoluteUri.Split('/')[HttpContext.Current.Request.Url.AbsoluteUri.Split('/').Length - 1];
+                                            ViewBag.cosas = "";
+                                            if (Session["Principal"] != null)
+                                            {
+                                                ViewBag.cosas = "";
+                                                if (ViewBag.valos == "createOffer")
+                                                {
+                                                    ViewBag.cosas = "active";
+                                                }
+                                                <li class="@ViewBag.cosas"><a href=@Url.Action("createOffer", "Home")>Nueva Oferta</a></li>
+                                                @*ViewBag.cosas = "";
+                        if (ViewBag.valos == "offerShow")
+                        {
+                            ViewBag.cosas = "active";
+                        }
+                        <li class="@ViewBag.cosas"><a href=@Url.Action("offerShow", "Home")>Ofertas</a></li>*@
+                                                ViewBag.cosas = "";
+                                                if (ViewBag.valos == "MyOfferShow")
+                                                {
+                                                    ViewBag.cosas = "active";
+                                                }
+                                                <li class="@ViewBag.cosas"><a href=@Url.Action("MyOfferShow", "Home")>Mis Ofertas</a></li>
+                                            }
+                                            if (Session["Oferta"] != null)
+                                            {
+                                                ViewBag.cosas = "";
+                                                if (ViewBag.valos == "offerShow")
+                                                {
+                                                    ViewBag.cosas = "active";
+                                                }
+                                                <li class="@ViewBag.cosas"><a href=@Url.Action("MyOfferShow", "Home")>Mis Solicitudes</a></li>
+                                                <li class="@ViewBag.cosas"><a href=@Url.Action("ContraOfertaPropietarioPempresas", "Home")><i class="fas fa-people-arrows"></i> Contra ofertas</a></li>
+                                                <li class="@ViewBag.cosas"><a href=@Url.Action("createOffer", "Home")>Nuevas Solicitudes</a></li>
+                                                <li class="@ViewBag.cosas"><a href=@Url.Action("offerShow", "Home")>Ofertas</a></li>
+                                            }
+                                            if (Session["factoring"] != null)
+                                            {
+                                                ViewBag.cosas = "";
+                                                if (ViewBag.valos == "factoringShow")
+                                                {
+                                                    ViewBag.cosas = "active";
+                                                }
+                                                <li class="@ViewBag.cosas"><a href=@Url.Action("factoringShow", "Home")>Factoring</a></li>
+                                            }
+                                            ViewBag.cosas = "";
+                                            if (ViewBag.valos == "verPerfil")
+                                            {
+                                                ViewBag.cosas = "active";
+                                            }
+                                            <li class="has-children @ViewBag.cosas">
+                                                <a href="#"> <i class="icon-user-circle"></i></a>
+                                                <ul class="dropdown">
+                                                    <li><a href="@Url.Action("verPerfil")"><i class="icon-user-plus"></i>  Ver Perfil</a></li>
+                                                    @*<li><a href="@Url.Action("AdminUsers")"><i class="icon-user-cog"></i>  Usuarios</a></li>*@
+                                                    <li><a href="@Url.Action("Logout")"><i class="icon-sign-in"></i>   Cerrar Sesión</a></li>
+                                                </ul>
+                                            </li>
+                                        }
+                                    }
+                                }
+                            </ul>
+                        </nav>
+                    </div>
+                    <div class="col-6 col-xl-2 text-right">
+                        @if (Convert.ToInt32(Session["idCliente"]) <= 0)
+                        {
+                            <div class="d-none d-xl-inline-block">
+                                <ul class="site-menu js-clone-nav ml-auto list-unstyled d-flex text-right mb-0 wwww" data-class="social">
+                                    <li>
+                                        <a href="https://www.linkedin.com/company/bidcargo/about/" target="_blank" class="ps-3 pe-3  text-black"><span class="icon-linkedin"></span></a>
+                                    </li>
+                                    <li>
+                                        <a href="https://www.facebook.com/bidcargocolombia/" target="_blank" class="ps-3 pe-3 text-black"><span class="icon-facebook"></span></a>
+                                    </li>
+                                    <li>
+                                        <a href="https://www.instagram.com/bidcargo/?hl=es-la" target="_blank" class="ps-3 pe-3 text-black"><span class="icon-instagram"></span></a>
+                                    </li>
+                                </ul>
+                            </div>
+                        }
+                        <div class="d-flex justify-content-end d-xl-none ml-md-0 mr-auto py-3" style="position: relative; top: 3px;"><a href="#" class="site-menu-toggle js-menu-toggle text-black"><span class="icon-menu h3"></span></a></div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        @RenderBody()
+        <footer class="pb-5 pt-5 site-footer">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-4">
+                        <div class="mb-5">
+                            <h3 class="footer-heading mb-4">Qué es BidCargo</h3>
+                            <p>
+                                Plataforma Tecnológica de Negocio, a través de la cual interactúan y negocian Generadores y Proveedores de Servicio relacionados con el transporte de Carga.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 mb-5 mb-lg-0">
+                        <div class="row mb-5">
+                            <div class="col-md-12">
+                                <h3 class="footer-heading mb-4">Navegación</h3>
+                            </div>
+                            <div class="col-md-6 col-lg-6">
+                                <ul class="list-unstyled">
+                                    @{
+                                        ViewBag.valos = HttpContext.Current.Request.Url.AbsoluteUri.Split('/')[HttpContext.Current.Request.Url.AbsoluteUri.Split('/').Length - 1];
+                                        ViewBag.cosas = "";
+                                        if (ViewBag.valos == "Index")
+                                        {
+                                            ViewBag.cosas = "active";
+                                        }
+                                        <li><a href="@Url.Action("Index", "Home")">Principal</a></li>
+                                        ViewBag.cosas = "";
+                                        if (ViewBag.valos == "registroInicial")
+                                        {
+                                            ViewBag.cosas = "active";
+                                        }
+                                        <li class="@ViewBag.cosas ">
+                                            <div class="dropdown-bidcargo">
+                                                <a class="a-footer">Regístrate</a>
+                                                <ul>
+                                                    <li><a href=@Url.Action("registroInicial", "Home")><i class="fas fa-building"></i> Empresa</a></li>
+                                                    <li><a href="@Url.Action("PreRegistro", "Propietario")"><i class="fas fa-user-tie"></i>  Propietario</a></li>
+                                                </ul>
+                                            </div>
+                                        </li>
+                                        ViewBag.cosas = "";
+                                        if (ViewBag.valos == "About")
+                                        {
+                                            ViewBag.cosas = "active";
+                                        }
+                                        <li class="@ViewBag.cosas"><a href=@Url.Action("About", "Home")>Nosotros</a></li>
+                                        ViewBag.cosas = "";
+                                        if (ViewBag.valos == "Contact")
+                                        {
+                                            ViewBag.cosas = "active";
+                                        }
+                                        <li class="@ViewBag.cosas"><a href=@Url.Action("Contact", "Home")>Contáctanos</a></li>
+                                        ViewBag.cosas = "";
+                                        if (ViewBag.valos == "Login")
+                                        {
+                                            ViewBag.cosas = "active";
+                                        }
+                                        <li class="@ViewBag.cosas"><a href=@Url.Action("Login", "Home")> Iniciar Sesión </a></li>
+                                    }
+                                </ul>
+                            </div>
+                        </div>
+
+
+
+                    </div>
+
+                    <div class="col-lg-4 mb-5 mb-lg-0">
+
+
+                        <div class="mb-5">
+                            <h3 class="footer-heading mb-2">Te contactamos</h3>
+                            <p>¿Eres un posible generador de carga o transportador? Danos tu número telefónico y te contactaremos para contarte un poco más de nuestros servicios</p>
+
+                            <form action="@Url.Action("sendMailPhone")" id="sendnumber" method="post">
+                                <div class="input-group mb-3">
+                                    <input type="text" class="form-control border-secondary text-white bg-transparent" id="phonemailsss" name="phonemailsss" placeholder="Número Celular" aria-label="Enter Email" aria-describedby="button-addon2">
+                                    <div class="input-group-append">
+                                        <button class="btn btn-primary text-white" type="button" id="button-addon2">Enviar</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+
+                    </div>
+
+                </div>
+                <div class="row text-center">
+                    <div class="col-md-12">
+                        <div class="mb-5">
+                            <a href="https://www.facebook.com/bidcargocolombia/" target="_blank" class="ps-0 pe-3"><span class="icon-facebook"></span></a>
+                            <a href="https://www.linkedin.com/in/bid-cargo-40b06018a/" target="_blank" class="ps-3 pe-3"><span class="icon-linkedin"></span></a>
+                            <a href="https://www.instagram.com/bidcargo/?hl=es-la" target="_blank" class="ps-3 pe-3"><span class="icon-instagram"></span></a>
+                        </div>
+
+                        <p>
+                            <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                            Copyright &copy;
+                            <script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="icon-heart-o" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
+                            <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                        </p>
+                    </div>
+
+                </div>
+            </div>
+        </footer>
+    </div>
+    <script src="~/Content/js/jquery-3.3.1.min.js"></script>
+    <script src="~/Content/js/jquery-migrate-3.0.1.min.js"></script>
+    <script src="~/Content/js/jquery-ui.js"></script>
+    <script src="~/Content/js/popper.min.js"></script>
+    <script src="~/Content/js/bootstrap.min.js"></script>
+    <script src="~/Content/js/owl.carousel.min.js"></script>
+    <script src="~/Content/js/jquery.stellar.min.js"></script>
+    <script src="~/Content/js/jquery.countdown.min.js"></script>
+    <script src="~/Content/js/jquery.magnific-popup.min.js"></script>
+    <script src="~/Content/js/bootstrap-datepicker.min.js"></script>
+    <script src="~/Content/js/aos.js"></script>
+    <script src="/Content/js/main.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/js/select2.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+    <script src="https://jqueryvalidation.org/files/dist/jquery.validate.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
+    <script type="text/javascript" src="http://malsup.github.io/jquery.blockUI.js"></script>
+
+    <!--<script src="~/Scripts/jquery-1.10.2.min.js"></script>-->
+    <script>
+        $("#button-addon2").click(function () {
+            $.post($("#sendnumber").attr("action"), $("#sendnumber").serialize(), function (response) {
+                $("#phonemailsss").val("");
+                toastr.success("Mensaje enviado con exito...")
+            });
+        })
+        $('.js-addwish-b2').on('click', function (e) {
+            e.preventDefault();
+        });
+
+        $('.js-addwish-b2').each(function () {
+            var nameProduct = $(this).parent().parent().find('.js-name-b2').html();
+            $(this).on('click', function () {
+                swal(nameProduct, "is added to wishlist !", "success");
+
+                $(this).addClass('js-addedwish-b2');
+                $(this).off('click');
+            });
+        });
+
+        $('.js-addwish-detail').each(function () {
+            var nameProduct = $(this).parent().parent().parent().find('.js-name-detail').html();
+
+            $(this).on('click', function () {
+                swal(nameProduct, "is added to wishlist !", "success");
+
+                $(this).addClass('js-addedwish-detail');
+                $(this).off('click');
+            });
+        });
+
+        /*---------------------------------------------*/
+
+        $('.js-addcart-detail').each(function () {
+            var nameProduct = $(this).parent().parent().parent().parent().find('.js-name-detail').html();
+            $(this).on('click', function () {
+                swal(nameProduct, "Ha sido creada con éxito", "success");
+            });
+        });
+
+        $(document).ready(function () {
+
+            $('.js-addwish-b2').on('click', function (e) {
+                e.preventDefault();
+            });
+
+            $('.js-addwish-b2').each(function () {
+                var nameProduct = $(this).parent().parent().find('.js-name-b2').html();
+                $(this).on('click', function () {
+                    swal(nameProduct, "is added to wishlist !", "success");
+
+                    $(this).addClass('js-addedwish-b2');
+                    $(this).off('click');
+                });
+            });
+
+            $('.js-addwish-detail').each(function () {
+                var nameProduct = $(this).parent().parent().parent().find('.js-name-detail').html();
+
+                $(this).on('click', function () {
+                    swal(nameProduct, "is added to wishlist !", "success");
+
+                    $(this).addClass('js-addedwish-detail');
+                    $(this).off('click');
+                });
+            });
+
+            /*---------------------------------------------*/
+
+            $('.js-addcart-detail').each(function () {
+                var nameProduct = $(this).parent().parent().parent().parent().find('.js-name-detail').html();
+                $(this).on('click', function () {
+                    swal(nameProduct, "Ha sido creada con éxito", "success");
+                });
+            });
+        });
+        $(document).on("click", "#terminos", function () {
+            Swal.fire({
+                title: 'TÉRMINOS Y CONDICIONES DE BIDCARGO',
+                icon: 'warning',
+                html:
+                    '<h3 align="left" style="font-size:10px;"><b>1. Relación Contractual</b></h3>' +
+                    '<p style="text-align: justify; font-size:12px;">Las presentes Condiciones de uso (“Condiciones”) regulan el acceso o uso que usted haga desde Colombia de aplicaciones, portales de contacto, páginas ' +
+                    'web, contenido, productos y servicios (los “Servicios”) puestos a disposición por BIDCARGO TECHNOLOGIES S.A.S., una sociedad constituida  legalmente  en ' +
+                    'Colombia con nit 901324120-5, en adelante “BidCargo”.' +
+                    '</p>' +
+                    '<p style="text-align: justify; font-size:10px;"><b>Importante: LEA ESTAS CONDICIONES DETENIDAMENTE ANTES DE ACCEDER O USAR LOS SERVICIOS.</b>' +
+                    '<br>Mediante su acceso y uso de los Servicios usted acuerda vincularse jurídicamente por estas Condiciones, que establecen una relación contractual entre usted y ' +
+                    'BidCargo. Si usted no acepta estas Condiciones, no podrá acceder o usar los Servicios. Estas Condiciones sustituyen expresamente los acuerdos o compromisos ' +
+                    'previos con usted. BidCargo podrá poner fin de inmediato a estas Condiciones o cualquiera de los Servicios respecto de usted o, en general, dejar de ofrecer o ' +
+                    'denegar el acceso a los Servicios o cualquier parte de ellos, en cualquier momento y por cualquier motivo.' +
+                    'Para efectos de las presentes Condiciones y de los Servicios, tenga en cuenta que “Usuario Generador de Carga” significa la persona que actúa como usuario final ' +
+                    'autorizado por BidCargo para utilizar los Servicios a fin de obtener, de parte del “Usuario Transportador”, la otra parte autorizada por BidCargo para ofrecer ' +
+                    'servicios de Carga, manteniendo  siempre el control operativo del mismo, de conformidad con los términos y condiciones del Contrato de Carga de Mercancías  que suscriban las partes. ' +
+                    'Las referencias a “Usuario” durante la ejecución de estas Condiciones serán entendidas como referencia tanto al “Usuario Generador de Carga” como al ' +
+                    '“Usuario Transportador”,  solo en el caso en que una condición se refiera a uno de ellos, así se mencionará en específico. Adicionalmente, se reitera que para efecto ' +
+                    'de las presentes Condiciones y de los Servicios, “Usuario Generador de Carga” significa la persona que actúa como solcitante y/o contratante de un servicio de ' +
+                    'transporte de carga y “Usuario Transportador” se refiere a la persona que ofrece o contrata sus servicios de transporte de carga estando legalmente habilitado para ' +
+                    'hacerlo. Por su parte y tambien, para efecto de las presentes Condiciones y de los Servicios, “Contrato de Transporte de Carga” significa el documento privado ' +
+                    'suscrito por el “Usuario Generador de Carga”  y “Usuario Transportador”mediante el cual el primero entrega una mercancía al segundo para su transporte  en la ' +
+                    'modalidad que la ley determine, para ser llevada de un  sitio a otro dentro o fuera del país, de acuerdo con las cláusulas descritas en dicho Contrato de Transporte de Carga.' +
+                    'Se podrán aplicar condiciones suplementarias a determinados Servicios, como políticas para un evento, una actividad o una promoción particular, y dichas ' +
+                    'condiciones suplementarias se le comunicarán en relación con los Servicios aplicables. Las condiciones suplementarias se establecen además de las ' +
+                    'Condiciones, y se considerarán una parte de estas, para los fines de los Servicios aplicables. Las condiciones suplementarias prevalecerán sobre las Condiciones ' +
+                    'en el caso de conflicto con respecto a los Servicios aplicables. BidCargo podrá modificar las Condiciones relativas a los Servicios cuando lo ' +
+                    'considere oportuno. Las modificaciones serán efectivas después de la publicación por parte de BidCargo de dichas Condiciones actualizadas en esta ' +
+                    'ubicación o las políticas modificadas o condiciones suplementarias sobre el Servicio aplicable. Su acceso o uso continuado de los Servicios después de dicha ' +
+                    'publicación constituye su consentimiento a vincularse por las Condiciones y sus modificaciones.' +
+                    'La recopilación y el uso que hacemos de la información personal en relación con los Servicios están conformes a cuanto se dispone en las normas de protección de ' +
+                    'datos personales vigentes, integradas en el Aviso de Privacidad de BidCargo, disponible en https://www.bidbargo.com/es/privacy/notice/. BidCargo podrá ' +
+                    'facilitar a un procesador de reclamaciones o a una aseguradora cualquier información necesaria (incluida su información de contacto) si hubiera quejas, ' +
+                    'disputas o conflictos, que pudieran incluir un accidente, implicándole a usted y a un tercero (incluido un Usuario Generador de Carga) y dicha información o ' +
+                    'dichos datos fueran necesarios para resolver la queja, la disputa o el conflicto.' +
+                    '</p>' +
+                    '<h3 align="left" style="font-size:10px;"><b>2. Los Servicios</b></h3>' +
+                    '<p style="text-align: justify; font-size:10px;">Los Servicios constituyen una plataforma de tecnología que permite a los usuarios de aplicaciones desktop o móviles de BidCargo o de páginas web ' +
+                    'proporcionadas como parte de los Servicios (cada una, la “Aplicación”) hacer uso de servicios de interconexión bajo demanda y servicios relacionados para ' +
+                    'efectuar peticiones de Transporte de carga y suscribir Contratos de Transporte de carga acordados con Transportadores  independientes. ' +
+                    '<br>USTED RECONOCE QUE BIDCARGO NO PRESTA SERVICIOS DE TRANSPORTE O FUNCIONA COMO UNA EMPRESA DE TRANSPORTE DE CARGA Y QUE LOS TRANPORTADORES SON TERCEROS INDEPENDIENTES, QUE NO ESTÁN EMPLEADOS POR BIDCARGO NI POR NINGUNA DE SUS EMPRESAS AFILIADAS.' +
+                    '</p>' +
+                    '<h3 align="left" style="font-size:10px;"><b>Licencia.</b></h3>' +
+                    '<p style="text-align: justify; font-size:10px;">Sujeto al cumplimiento de estas Condiciones, BidCargo le otorga una licencia limitada, no exclusiva, no sublicenciable, revocable, no transferible para: (i) el ' +
+                    'acceso y uso de la Aplicación en su dispositivo solo en relación con su uso de los Servicios; y (ii) el acceso y uso de cualquier contenido, información y material ' +
+                    'relacionado que pueda ponerse a disposición a través de los Servicios, en cada caso. BidCargo y sus licenciantes se reservan cualquier derecho que no haya sido expresamente otorgado por el presente.' +
+                    '</p>' +
+                    '<h3 align="left" style="font-size:10px;"><b>Restricciones.</b></h3>' +
+                    '<p style="text-align: justify; font-size:10px;">Usted no podrá: (i) retirar cualquier nota de derechos de autor, marca registrada u otra nota de propiedad de cualquier parte de los Servicios; (ii) reproducir, ' +
+                    'modificar, preparar obras derivadas sobre los Servicios, distribuir, licenciar, arrendar, revender, transferir, exhibir públicamente, presentar públicamente,' +
+                    'transmitir, retransmitir o explotar de otra forma los Servicios, excepto como se permita expresamente por BidCargo; (iii) descompilar, realizar ingeniería inversa o ' +
+                    'desmontar los Servicios, excepto como se permita por la ley aplicable; (iv) enlazar, reflejar o enmarcar cualquier parte de los Servicios; (v) causar o lanzar cualquier ' +
+                    'programa o script con el objeto de extraer, indexar, analizar o de otro modo realizar prospección de datos de cualquier parte de los Servicios o sobrecargar o ' +
+                    'bloquear indebidamente la operación y/o funcionalidad de cualquier aspecto de los Servicios; o (vi) intentar obtener un acceso no autorizado o dañar cualquier aspecto de los Servicios o sus sistemas o redes relacionados.' +
+                    '</p>' +
+                    '<h3 align="left" style="font-size:10px;"><b>Prestación de los Servicios.</b></h3>' +
+                    '<p style="text-align: justify; font-size:10px;">Usted reconoce que partes de los Servicios podrán ponerse a disposición bajo varias marcas u opciones asociadas con el Transporte de Carga  oportunamente ' +
+                    'informadas por BidCargo. Asimismo usted reconoce que los Servicios podrán ponerse a disposición bajo diferentes marcas u opciones de Transporte de Carga.' +
+                    '</p>' +
+                    '<h3 align="left" style="font-size:10px;"><b>Servicios y contenido de Terceros.</b></h3>' +
+                    '<p style="text-align: justify; font-size:10px;">Los Servicios podrán ponerse a disposición o ser accesible en relación con servicios y contenido de terceros (incluida la publicidad) que BidCargo no' +
+                    'controle. Usted reconoce que podrán ser de aplicación diferentes condiciones y políticas de privacidad al uso que haga de dichos servicios y contenido de ' +
+                    'terceros. BidCargo no respalda dichos servicios y contenido de terceros y en ningún caso BidCargo será responsable de cualquier producto o servicio de ' +
+                    'dichos terceros proveedores. Adicionalmente, Apple Inc., Google, Inc., Microsoft Corporation o BlackBerry Limited y/o sus correspondientes subsidiarias o afiliados ' +
+                    'internacionales serán terceros beneficiarios en este contrato si usted accede a los Servicios utilizando Aplicaciones desarrolladas para dispositivos móviles con ' +
+                    'sistema iOS, Android, Microsoft Windows, respectivamente. Estos terceros beneficiarios no son parte de este contrato y no son responsables de la prestación ' +
+                    'o apoyo de los Servicios de ninguna manera. Su acceso a los Servicios utilizando estos dispositivos se sujeta a las condiciones establecidas en las condiciones de servicio de terceros beneficiarios aplicables.' +
+                    '</p>' +
+                    '<h3 align="left" style="font-size:10px;"><b>Titularidad.</b></h3>' +
+                    '<p style="text-align: justify; font-size:10px;">Los Servicios y todos los derechos relativos a estos son y permanecerán de la propiedad de BidCargo o de sus licenciantes. Ninguna de estas Condiciones ni su ' +
+                    'uso de los Servicios le transfieren u otorgan ningún derecho: (i) sobre o en relación con los Servicios, excepto en cuanto a la licencia limitada otorgada ' +
+                    'anteriormente; o bien (ii) a utilizar o mencionar en cualquier modo a los nombres de empresa, logotipos, nombres de producto y servicio, marcas comerciales o marcas de servicio de BidCargo o de sus licenciantes.' +
+                    '</p>' +
+                    '<h3 align="left" style="font-size:10px;"><b>3. Su uso de los Servicios</b></h3>' +
+                    '<h3 align="left" style="font-size:10px;"><b>Cuentas de Usuario</b></h3>' +
+                    '<p style="text-align: justify; font-size:1px;">Con el fin de usar la mayor parte de los aspectos de los Servicios, usted debe registrarse y mantener activa una Cuenta de Servicios (“Cuenta”) como Usuario ' +
+                    '(sea como “Usuario Generador de Carga” o como “Usuario Transportador”). Para obtener una Cuenta como persona natural debe tener como mínimo 18 años, o ' +
+                    'tener la mayoría de edad legal que resulte aplicable conforme a ley; como persona Jurídica debe estar legalmente constituida como tal. El registro de la ' +
+                    'cuenta requiere que usted le comunique a BidCargo determinada información personal e  información institucional de acuerdo a la calidad con que usted ' +
+                    'actúa dentro de la plataforma, los datos personales como como su nombre, dirección, número de teléfono móvil,  los de  registro mercantil, NIT, los ' +
+                    'documentos que acrediten la representación legal y las delegaciones en el caso de  o tener la representación legal de la firma, así como un método de pago ' +
+                    'válido (bien una tarjeta de crédito o bien un socio de pago aceptado o la posibilidad de pago en efectivo). ' +
+                    'Usted se compromete a mantener la información en su Cuenta de forma exacta, completa y actualizada. Si no mantiene la información de Cuenta de forma ' +
+                    'exacta, completa y actualizada, incluso el tener un método de pago inválido o que haya vencido, podrá resultar en su imposibilidad para acceder y utilizar los ' +
+                    'Servicios o en la resolución por parte de BidCargo de este acuerdo celebrado con usted. Usted es responsable de toda la actividad que ocurre en su Cuenta y ' +
+                    'se compromete a mantener en todo momento de forma segura y secreta el nombre de Generador de carga  y la contraseña de su Cuenta. A menos que ' +
+                    'BidCargo permita otra cosa por escrito  en caso de ser una persona jurídica que tiene en su operación varios ordenadores del gasto, agencias o sucursales, con facultad de contratar el transporte, usted solo puede poseer una Cuenta.' +
+                    '</p>' +
+                    '<h3 align="left" style="font-size:10px;"><b>Requisitos y conducta.</b></h3>' +
+                    '<p style="text-align: justify; font-size:120x;">Usted no podrá ceder o transferir de otro modo su Cuenta a cualquier otra persona o entidad. Usted acuerda cumplir con todas las leyes aplicables al utilizar ' +
+                    'los Servicios y solo podrá utilizar los Servicios con fines legítimos. En el uso de los Servicios, no causará estorbos, molestias, incomodidades o daños a la propiedad ' +
+                    'de terceros. En todos los casos, se le requerirá que facilite los documentos necesarios para la celebración del contrato de transporte y su ejecución, para el ' +
+                    'acceso o uso de los Servicios y,  usted acepta que se le podrá denegar el acceso o uso de los Servicios si se niega a facilitar los documentos  que exige la ley para la ejecución del contrato y servicio de transporte de carga.' +
+                    '</p>' +
+                    '<h3 align="left" style="font-size:10px;"><b>Mensajes de texto.</b></h3>' +
+                    '<p style="text-align: justify; font-size:10px;">Al crear una Cuenta, usted acepta que los Servicios le puedan enviar mensajes de texto informativos (SMS) como parte de la actividad comercial normal de su ' +
+                    'uso de los Servicios. Usted podrá solicitar la no recepción de mensajes de texto informativos (SMS) de BidCargo en cualquier momento enviando un correo ' +
+                    'electrónico a support@BidCargo.com indicando que no desea recibir más dichos mensajes, junto con el número de teléfono del dispositivo móvil que recibe los ' +
+                    'mensajes. Usted reconoce que solicitar la no recepción de mensajes de texto informativos (SMS) podrá afectar al uso que usted haga de los Servicios.' +
+                    '</p>' +
+                    '<h3 align="left" style="font-size:10px;"><b>Códigos promocionales.</b></h3>' +
+                    '<p style="text-align: justify; font-size:10px;">BidCargo podrá, a su sola discreción, crear códigos promocionales que podrán ser canjeados por crédito de Cuenta u otros elementos o beneficios relacionados ' +
+                    'con los Servicios, con sujeción a cualquier condición adicional que BidCargo establezca sobre la base de cada código promocional (“Códigos ' +
+                    'promocionales”). Usted acuerda que los Códigos promocionales: (i) deben usarse para la audiencia y el propósito deseado, y de manera lícita; (ii) no podrán ' +
+                    'duplicarse, venderse o transferirse de ninguna manera, o ponerse a disposición del público general (tanto si se publican en un foro público como de otra forma), ' +
+                    'a menos que sea con el permiso de BidCargo; (iii) podrán ser invalidados por BidCargo en cualquier momento por cualquier motivo sin responsabilidad para ' +
+                    'BidCargo; (iv) podrán usarse solo conforme a las condiciones específicas que BidCargo establezca para dicho Código promocional; (v) no son válidos como ' +
+                    'efectivo; y (vi) podrán caducar antes de que usted los utilice. BidCargo se reserva el derecho de retener o deducir el crédito u otros elementos o beneficios ' +
+                    'obtenidos a través de la utilización de los Códigos promocionales por usted o cualquier otro usuario en el caso de que BidCargo determine o crea que el uso o ' +
+                    'el canje de los Códigos promocionales fue de modo erróneo, fraudulento, ilegal o infringiendo las condiciones del Código promocional o las presentes Condiciones.' +
+                    '</p>' +
+                    '<h3 align="left" style="font-size:10px;"><b>Contenido proporcionado por el Usuario.</b></h3>' +
+                    '<p style="text-align: justify; font-size:10px;">BidCargo podrá, a su sola discreción, permitirle cuando considere oportuno, que envíe, cargue, publique o de otro modo ponga a disposición de BidCargo a ' +
+                    'través de los Servicios contenido e información de texto, audio y/o visual, incluidos comentarios y opiniones relativos a los Servicios, iniciación de peticiones de ' +
+                    'apoyo, así como presentación de admisiones para competiciones y promociones (“Contenido de Usuario”). Todo Contenido de usuario facilitado por usted seguirá ' +
+                    'siendo de su propiedad. No obstante, al proporcionar Contenido de Usuario a BidCargo, usted otorga una licencia mundial, perpetua, irrevocable, transferible,' +
+                    'libre de regalías, con derecho a sublicenciar, usar, copiar, modificar, crear obras derivadas, distribuir, exhibir públicamente, presentar públicamente o de otro ' +
+                    'modo explotar de cualquier manera dicho Contenido de Usuario en todos los formatos y canales de distribución, conocidos ahora o ideados en un futuro ' +
+                    '(incluidos en relación con los Servicios y el negocio de BidCargo y en sitios y servicios de terceros), sin más aviso o consentimiento de usted y sin requerirse el pago a usted o a cualquier otra persona o entidad.' +
+                    'Usted declara y garantiza que: (i) es el único y exclusivo propietario de todo el Contenido de Usuario que tiene todos los derechos, licencias, consentimientos y ' +
+                    'permisos necesarios para otorgar a BidCargo la licencia al Contenido de Usuario como establecido anteriormente; y (ii) ni el Contenido de Usuario ni su ' +
+                    'presentación, carga, publicación o puesta a disposición de otro modo de dicho Contenido de Usuario, ni el uso por parte de BidCargo del Contenido de Usuario ' +
+                    'como está aquí permitido, infringirán, malversarán o violarán la propiedad intelectual o los derechos de propiedad de un tercero o los derechos de ' +
+                    'publicidad o privacidad o resultarán en la violación de cualquier ley o reglamento aplicable.' +
+                    'Usted acuerda no proporcionar Contenido de Usuario que sea difamatorio, calumnioso, odioso, violento, obsceno, pornográfico, ilícito o de otro modo ' +
+                    'ofensivo, como determine BidCargo, a su sola discreción, tanto si dicho material pueda estar protegido o no por la ley. BidCargo podrá, a su sola discreción y en ' +
+                    'cualquier momento y por cualquier motivo, sin avisarle previamente, revisar, controlar o eliminar Contenido de Usuario, pero sin estar obligada a ello.' +
+                    '</p>' +
+                    '<h3 align="left" style="font-size:10px;"><b>Acceso a la red y dispositivos.</b></h3>' +
+                    '<p style="text-align: justify; font-size:10px;">Usted es responsable de obtener el acceso a la red de datos necesario para utilizar los Servicios. Podrán aplicarse las tarifas y tasas de datos y mensajes de su ' +
+                    'red móvil si usted accede o utiliza los Servicios desde un dispositivo inalámbrico y usted será responsable de dichas tarifas y tasas. Usted es responsable de adquirir y ' +
+                    'actualizar el hardware compatible o los dispositivos necesarios para acceder y utilizar los Servicios y Aplicaciones y cualquier actualización de estos. BidCargo no ' +
+                    'garantiza que los Servicios, o cualquier parte de estos, funcionen en cualquier hardware o dispositivo particular. Además, los Servicios podrán ser objeto de ' +
+                    'disfunciones o retrasos inherentes al uso de Internet y de las comunicaciones electrónicas.' +
+                    '</p>' +
+                    '<h3 align="left" style="font-size:10px;"><b>Servicios Adicionales</b></h3>' +
+                    '<p style="text-align: justify; font-size:10px;">BidCargo PODRÁ OFRECER SERVICIOS ADICIONALES COMO LA INTERMEDIACIÓN PARA LA  CONTRATACIÓN DE SEGUROS ONLINE CON ASEGURADORAS ' +
+                    'RECONOCIDAS Y LEGALMENTE ESTABLECIDAS EN EL PAÍS O EN LOS PAISES EN DONDE TENGA PRESENCIA, ESTUDIOS  DE IDOENIDAD Y VERIFICACIÓN DE ' +
+                    'CUMPLIMIENTO DE REQUISITOS PARA LA CREACIÓN DE  PROVEEDORES EN EL REGISTRO DE PROVEEDORES, CON CONSULTORAS EXTERNAS ACREDITADAS PARA ' +
+                    'ESTE EFECTO, REALIZAR  NEGOCIOS DE FACTORING CON ESTABLECIMIENTOS BANCARIOS  RECONOCIDOS Y LEGALMENTE ESTBLECIDOS EN COLOMBIA O EN LOS ' +
+                    'PAISES EN DONDE TENGA PRESENCIA, O LOS SERVICIOS DE TERCERO PARAFACILITAR LA PRESTACIÓN DEL TRANSPORTE DEC ARGA DE SUS USUARIOS  A ' +
+                    'TRAVÉS DE “BidCargo En la Vía”. Usted entiende que estos servicios son bajo demanda y tendrán cargos adicionales que serán facturados adiconalmente a ' +
+                    'los cargos básicos o FEE que se esablezca en cada caso.' +
+                    '</p>' +
+                    '<h3 align="left" style="font-size:10px;"><b>4. Pago</b></h3>' +
+                    '<p style="text-align: justify; font-size:10px;">Usted entiende y se compromete a pagar el FEE o Canon que BidCargo facturará, periódicamente, por el acceso a la plataforma y a sus Servicios, así ' +
+                    'como los demás cargos que se hagan por los servicios adicionales que usted demande, de acuerdo con los términos de servicio aquí. Usted entiende que ' +
+                    'BidCargo informará los  valores  establecidos, correspondientes a sus servicios, a través de los Términos de Servicio publicados  on line. Los Cargos incluirán los ' +
+                    'impuestos aplicables cuando se requiera por ley. Los Cargos pagados por usted son definitivos y no reembolsables, a menos que se informe lo contrario. Usted ' +
+                    'conserva el derecho de acordar los términos  para los Contratos de Transporte de Carga. Visite www.bidCargo.com/routes para obtener más información sobre su  ' +
+                    'ubicación en particular.Todos los Cargos son pagaderos inmediatamente y el pago se facilitará por ' +
+                    'BidCargo utilizando al método de pago preferido indicado en su Cuenta, y después de ello BidCargo le enviará un recibo por correo electrónico. Si se ' +
+                    'determina que el método de pago de su Cuenta principal ha caducado, es inválido o de otro modo no sirve para cobrarle, usted acepta que BidCargo, ' +
+                    'utilice un método de pago secundario en su Cuenta, si estuviera disponible.' +
+                    '</p>' +
+                    '<h3 align="left" style="font-size:10px;"><b>5. Renuncias; Limitación de responsabilidad; Indemnidad.</b></h3>' +
+                    '<h3 align="left" style="font-size:10px;"><b>RENUNCIA.</b></h3>' +
+                    '<p style="text-align: justify; font-size:10px;">LOS SERVICIOS SE PROPORCIONAN “TAL CUAL” Y “COMO DISPONIBLES”. BIDCARGO RENUNCIA A TODA DECLARACIÓN Y GARANTÍA, EXPRESA, IMPLÍCITA O ' +
+                    'ESTATUTARIA, NO EXPRESAMENTE ESTABLECIDA EN ESTAS CONDICIONES, INCLUIDAS LAS GARANTÍAS IMPLÍCITAS DE COMERCIABILIDAD, IDONEIDAD PARA UN FIN ' +
+                    'PARTICULAR Y NO VIOLACIÓN. ADEMÁS, BIDCARGO NO HACE DECLARACIÓN NI PRESTA GARANTÍA ALGUNA RELATIVA A LA FIABILIDAD, PUNTUALIDAD, CALIDAD, ' +
+                    'IDONEIDAD O DISPONIBILIDAD DE LOS SERVICIOS DE TRANSPORTE DE CARGA O CUALQUIERA DE LOS SERVICIOS O BIENES SOLICITADOS A TRAVÉS DEL USO DE LOS ' +
+                    'SERVICIOS, O QUE LOS SERVICIOS NO SERÁN INTERRUMPIDOS O ESTARÁN LIBRES DE ERRORES. BIDCARGO NO GARANTIZA LA CALIDAD, IDONEIDAD, SEGURIDAD O ' +
+                    'HABILIDAD DE LOS VEHÍCULOS O LOS TRANSPORTADORES PARTICIPANTES EN LOS CONTRATOS DE TRANSPORTE DE CARGA. EL USUARIO ACUERDA QUE SERÁ ' +
+                    'RESPONSABLE POR EL RIESGO DERIVADO DE SU USO DE LOS SERVICIOS EN LA MÁXIMA MEDIDA PERMITIDA POR LA LEY APLICABLE' +
+                    '</p>' +
+                    '<h3 align="left" style="font-size:10px;"><b>LIMITACIÓN DE RESPONSABILIDAD.</b></h3>' +
+                    '<p style="text-align: justify; font-size:10px;">BIDCARGO NO SERÁ RESPONSABLE DE DAÑOS INDIRECTOS, INCIDENTALES, ESPECIALES, EJEMPLARES, PUNITIVOS O EMERGENTES, INCLUIDOS EL LUCRO ' +
+                    'CESANTE, LA PÉRDIDA DE DATOS, LA LESIÓN PERSONAL O EL DAÑO A LA PROPIEDAD, NI DE PERJUICIOS RELATIVOS, O EN RELACIÓN CON, O DE OTRO ' +
+                    'MODO DERIVADOS DE CUALQUIER USO DE LOS SERVICIOS, INCLUSO AUNQUE BIDCARGO HAYA SIDO ADVERTIDO DE LA POSIBILIDAD DE DICHOS DAÑOS. ' +
+                    'BIDCARGO NO SERÁ RESPONSABLE DE CUALQUIER DAÑO, RESPONSABILIDAD O PÉRDIDA QUE DERIVEN DE: (I) SU USO O DEPENDENCIA DE LOS SERVICIOS O SU  ' +
+                    'INCAPACIDAD PARA ACCEDER O UTILIZAR LOS SERVICIOS; O (ii) CUALQUIER TRANSACCIÓN O RELACIÓN ENTRE USTED Y CUALQUIER OTRO USUARIO, AUNQUE ' +
+                    'BIDCARGO HUBIERA SIDO ADVERTIDO DE LA POSIBILIDAD DE DICHOS DAÑOS. BIDCARGO NO SERÁ RESPONSABLE DEL RETRASO O DE LA FALTA DE EJECUCIÓN DE ' +
+                    'LOS CONTRATOS DE TRANSPORTE DE CARGA. USTED RECONOCE QUE LOS USUARIOS SERÁN RESPONSABLES POR EL CUMPLIMIENTO DE LA LEGISLACIÓN QUE ' +
+                    'LES RESULTE APLICABLE. LA RESPONSABILIDAD TOTAL DE BIDCARGO HACIA USTED EN RELACIÓN CON LOS SERVICIOS POR TODOS LOS DAÑOS, LAS PÉRDIDAS Y LOS ' +
+                    'JUICIOS NO PODRÁ EXCEDER DE QUINIENTOS DÓLARES USA (USD500). USTED PODRÁ UTILIZAR LOS SERVICIOS DE BIDCARGO PARA ACORDAR LA ' +
+                    'EJECUCIÓN DE CONTRATOS DE TRANSPORTE DE CARGA, PERO ACEPTA QUE BIDCARGO NO TIENE RESPONSABILIDAD ALGUNA HACIA USTED EN RELACIÓN CON ' +
+                    'SU EJECUCIÓN O CUALQUIER SERVICIO PRESTADO A UN USUARIO GENERADOR DE CARGA  POR UN USUARIO TRANSPORTADOR QUE NO SEA COMO SE HA ' +
+                    'ESTABLECIDO EXPRESAMENTE EN ESTAS CONDICIONES. LAS LIMITACIONES Y LA RENUNCIA EN ESTE APARTADO 5 NO PRETENDEN LIMITAR LA ' +
+                    'RESPONSABILIDAD O ALTERAR SUS DERECHOS COMO CONSUMIDOR QUE NO PUEDAN EXCLUIRSE SEGÚN LA LEY APLICABLE.' +
+                    '</p>' +
+                    '<h3 align="left" style="font-size:10px;"><b>Indemnidad.</b></h3>' +
+                    '<p style="text-align: justify; font-size:10px;">Usted acuerda mantener indemnes y responder frente a BidCargo y sus consejeros, directores, empleados y agentes por cualquier reclamación,' +
+                    'demanda, pérdida, responsabilidad y gasto (incluidos los honorarios de abogados) que deriven de: (i) su uso de los Servicios o servicios o la ejecución de ' +
+                    'Contratos de Transporte de Carga haciendo uso de los Servicios; (ii) su incumplimiento o violación de cualquiera de estas Condiciones; (iii) el uso por ' +
+                    'parte de BidCargo de su Contenido de Usuario; o (iv) su infracción de los derechos de cualquier tercero, incluidos Usuarios Generadores de Carga.' +
+                    '</p>' +
+                    '<h3 align="left" style="font-size:10px;"><b>6. Legislación aplicable; Arbitraje.</b></h3>' +
+                    '<p style="text-align: justify; font-size:10px;">Salvo que aquí se especifique lo contrario, las presentes Condiciones se regirán e interpretarán exclusivamente en virtud de la legislación de Colombia, con ' +
+                    'exclusión de sus normas sobre conflicto de leyes. Cualquier disputa, conflicto, reclamación o controversia, del tipo que sea, que resulte de las presentes ' +
+                    'Condiciones o que se relacione en gran parte con ellas, incluyendo las relativas a su validez, interpretación y exigibilidad (cualquier “Disputa”), deberán someterse ' +
+                    'forzosamente a procedimientos de mediación en virtud del Reglamento de Mediación de la Cámara de Comercio Internacional (“Reglamento de Mediación ' +
+                    'de la CCI”). Si dicha disputa no fuese solucionada en un plazo de sesenta (60) días desde la fecha en la que se formalice la solicitud de mediación en virtud del ' +
+                    'Reglamento de Mediación de la CCI, se hará referencia a dicha disputa y se solucionará exclusiva y definitivamente mediante arbitraje en virtud del ' +
+                    'Reglamento de Arbitraje de la Cámara de Comercio Internacional (“Reglamento de Arbitraje de la CCI”). Las disposiciones sobre Proceso Expedito y del Árbitro de ' +
+                    'Emergencia del Reglamento de la CCI no se aplicarán. La disputa será resuelta por un (1) árbitro nombrado a tal fin en virtud del Reglamento de la CCI. El lugar ' +
+                    'tanto para la mediación como para el arbitraje será Bogotá D.C., Colombia. El idioma de mediación y/o arbitraje será el Español, a no ser que usted no hable ' +
+                    'Español, en cuyo caso la mediación y/o el arbitraje se llevarán a cabo en Español y en su idioma materno. La existencia y el contenido de los procedimientos de ' +
+                    'mediación y arbitraje, incluidos los documentos e informes presentados por las partes, la correspondencia de la CCI, la correspondencia del mediador y la ' +
+                    'correspondencia, los pedidos y los laudos emitidos por el único árbitro deberán permanecer en estricta confidencialidad y no deberán ser revelados a ningún ' +
+                    'tercero sin el consentimiento expreso por escrito de la otra parte, a menos que: (i) la revelación al tercero sea razonablemente necesaria para llevar a cabo el ' +
+                    'procedimiento de mediación o arbitraje; y (ii) el tercero acepte incondicionalmente por escrito estar sujeto a la obligación de confidencialidad' +
+                    'estipulada en el presente documento.' +
+                    '</p>' +
+                    '<h3 align="left" style="font-size:10px;"><b>7. Otras Disposiciones</b></h3>' +
+                    '<h3 align="left" style="font-size:10px;"><b>Reclamaciones por infracción de derechos de autor.</b></h3>' +
+                    '<p style="text-align: justify; font-size:10px;">Las reclamaciones por infracción de derechos de autor deberán enviarse al agente designado de BidCargo. Visite la página web de BidCargo en ' +
+                    'https://www.BidCargo.com/legal para obtener las direcciones designadas e información adicional.' +
+                    '</p>' +
+                    '<h3 align="left" style="font-size:10px;"><b>Notificaciones.</b></h3>' +
+                    '<p style="text-align: justify; font-size:10px;">BidCargo podrá notificar por medio de una notificación general en los Servicios, mediante un correo electrónico enviado a su dirección electrónica en su Cuenta ' +
+                    'o por comunicación escrita enviada a su dirección, según lo dispuesto en su Cuenta. Usted podrá notificar a BidCargo por comunicación escrita a la dirección ' +
+                    'de BidCargo en Avenida Cra. 15 # 93-75, Oficina 316 Bogotá Colombia.' +
+                    '</p>' +
+                    '<h3 align="left" style="font-size:10px;"><b>Disposiciones Generales.</b></h3>' +
+                    '<p style="text-align: justify; font-size:10px;">No podrá ceder ni transferir estas Condiciones, en todo o en parte, sin el consentimiento previo por escrito de BidCargo. Por cuanto no se derivan ' +
+                    'erogaciones y obligaciones a su cargo, Usted da su aprobación a BidCargo para ceder o transferir estas Condiciones, en todo o en parte, incluido a: (i) una ' +
+                    'subsidiaria o un afiliado; (ii) un adquirente del capital, del negocio o de los activos de BidCargo; o (iii) un sucesor por fusión. No existe entre usted, BidCargo o ' +
+                    'cualquier Tercer proveedor una empresa conjunta o relación de socios, empleo o agencia como resultado del contrato entre usted y BidCargo o del uso de los Servicios.' +
+                    'Si cualquier disposición de estas Condiciones se considerara ilegal, nula o inexigible, ya sea en su totalidad o en parte, de conformidad con cualquier ' +
+                    'legislación, dicha disposición o parte de esta se considerará que no forma parte de estas Condiciones, aunque la legalidad, validez y exigibilidad del resto de las ' +
+                    'disposiciones de estas Condiciones no se verá afectada. En ese caso, las partes deberán reemplazar dicha disposición ilegal, nula o inexigible, en todo o en parte ' +
+                    'por una disposición legal, válida y exigible que tenga, en la medida de lo posible, un efecto similar al que tenía la disposición ilegal, nula o inexigible, dados los ' +
+                    'contenidos y el propósito de estas Condiciones. Estas Condiciones constituyen el contrato íntegro y el entendimiento entre las partes en relación con el objeto y ' +
+                    'sustituye y reemplaza a todos los contratos o acuerdos anteriores o contemporáneos en relación con dicho objeto. En estas Condiciones, las palabras ' +
+                    '“incluido/a/os/as” e “incluye/n” significan “incluido, de forma meramente enunciativa”.' +
+                    '</p>' +
+                    '<br><br>' +
+                    '<h3 align="left" style="font-size:10px;"><b>BIDCARGO TECHNOLOGIES S.A.S</b></h3>',
+                showCancelButton: true,
+                confirmButtonColor: '#2135C2',
+                cancelButtonColor: '#9c9c9c',
+                confirmButtonText: 'Aceptar',
+                cancelButtonText: 'Cancelar',
+                height: 2000,
+                width: 7000
+            }).then((result) => {
+                if (result.value) {
+                    $("#termsand").prop("checked", true);
+                }
+                else {
+                    $("#termsand").prop("checked", false);
+                }
+            })
+        });
+
+        $(document).on("click", "#dPersonales", function () {
+            Swal.fire({
+                title: 'AUTORIZACIÓN PARA EL TRATAMIENTO DE DATOS PERSONALES',
+                icon: 'warning',
+                html:
+                    '<p style="text-align: justify; font-size:12px;">AUTORIZO a <strong> BIDCARGO TECHNOLOGIES S.A.S  </strong> sociedad debidamente constituida e ' +
+                    'identificada con NIT No. 901324120-5,  para que trate mi información personal de acuerdo ' +
+                    'con la <strong> POLITICAS DE TRATAMIENTO DE DATOS PERSONALES </strong>  de <strong>BIDCARGO</strong> ,  que se me dio a' +
+                    'conocer antes de recolectar mis datos personales  y que la suscribo de forma libre y ' +
+                    'voluntaria una vez leída en su totalidad. En tal virtud, <strong> BIDCARGO TECHNOLOGIES S.A.S  </strong>  ' +
+                    'podrá recolectar, almacenar, usar mi información para las siguientes finalidades: a) ' +
+                    'Efectuar las gestiones pertinentes para el desarrollo del objeto social de la compañía en lo ' +
+                    'que tiene que ver  con el cumplimiento del objeto contratado celebrado.b) Brindar ' +
+                    'mejores servicios y funcionalidades c) Mejorar la seguridad de los usuarios y de los servicios d)' +
+                    'Brindar soporte al cliente e) Realizar tareas de investigación y de desarrollo f) Permitir la ' +
+                    'comunicación entre usuarios g) Enviar comunicaciones de marketing y de otro tipo a los ' +
+                    'usuarios h) Abordar temas relacionados con procedimientos legales, lo que implica entre' +
+                    'otros, Realizar invitaciones a eventos y ofrecer nuevos productos y servicios.Gestionar' +
+                    'trámites(solicitudes, quejas, reclamos), efectuar encuestas de satisfacción respecto de los' +
+                    'bienes y servicios ofrecidos por <strong> BIDCARGO TECHNOLOGIES S.A.S.</strong>, como Responsable del ' +
+
+                    'Tratamiento de mis datos, suministrar información de contacto a la fuerza comercial y/o' +
+                    'red de distribución, tele mercadeo, investigación de mercados y cualquier tercero con el' +
+                    'cual <strong> BIDCARGO TECHNOLOGIES S.A.S.</strong> , tenga un vínculo contractual para el desarrollo de ' +
+                    'actividades de ese tipo(investigación de mercados y tele mercadeo, etc.) para la ' +
+                    'ejecución de las mismas.Suministrar la información a terceros con los cuales cual ' +
+                    '<strong> BIDCARGO TECHNOLOGIES S.A.S.</strong>, tenga relación contractual y que sea necesario' +
+                    'entregársela para el cumplimiento del objeto contratado.Contactar al Titular a través de ' +
+                    'medios telefónicos para realizar encuestas, estudios y/o confirmación de datos personales' +
+                    'necesarios para la ejecución de la relación contractual.Contactar al Titular a través de ' +
+                    'medios electrónicos – SMS o chat para el envío de noticias relacionadas con campañas ' +
+                    'de fidelización o mejora de servicio.Contactar al Titular a través de correo electrónico ' +
+                    'para el envío de extractos, estados de cuenta o facturas en relación con las obligaciones ' +
+                    'derivadas del contrato celebrado entre las partes.Para cumplir con las regulaciones anti ' +
+                    'lavado de activos que le aplican.Dar cumplimiento a las obligaciones contraídas por con ' +
+                    'el Titular de la Información, con relación a prestar los servicios ofrecidos por <strong> BIDCARGO </strong> ' +
+                    '<strong> TECHNOLOGIES S.A.S. </strong> y aceptados en los términos y condiciones.',
+
+                showCancelButton: true,
+                confirmButtonColor: '#2135C2',
+                cancelButtonColor: '#9c9c9c',
+                confirmButtonText: 'Aceptar',
+                cancelButtonText: 'Cancelar',
+                height: 2000,
+                width: 7000
+            }).then((result) => {
+                if (result.value) {
+                    $("#termsand").prop("checked", true);
+                }
+                else {
+                    $("#termsand").prop("checked", false);
+                }
+            })
+        });
+
+        $(document).on("click", "#pTratamientoDatos", function () {
+            Swal.fire({
+                title: 'POLITICAS DE TRATAMIENTO DE DATOS PERSONALES',
+                icon: 'warning',
+                html:
+                    '<!DOCTYPE HTML>' +
+                    '<meta charset="utf-8">' +
+                    '<p style="text-align: justify; font-size:12px;"Este documento establece <strong> las políticas de tratamiento de datos personales </strong> de  ' +
+                    'BIDCARGO TECHNOLOGIES S.A.S.  </strong> actuando como PLATAFORMA ' +
+                    'COLABORATIVA de origen privado, quien en adelante se llamara  <strong> BIDCARGO,  </strong> en ' +
+                    'cumplimiento de las disposiciones  de la Ley 1581 del 2012 y el decreto 1377 del' +
+                    '2013, en el que se describen los mecanismos  por medio de los cuales  se ' +
+                    'garantiza un manejo adecuado de los datos personales recogidos en la base de ' +
+                    'datos, con el fin de permitir a los titulares, quien en adelante se llamaran ' +
+                    '<strong> USUARIOS, </strong> el ejercicio de sus derechos, incluidos el de habeas data.' +
+                    '<br>' +
+                    '<strong>RESPONSABLE </strong>' +
+
+                    '<strong> BIDCARGO TECHNOLOGIES S.A.S.,</strong> es una persona jurídica de carácter ' +
+                    'privado, domiciliada en la ciudad de Bogotá, identificada con el Nit 901324120-5 ' +
+                    'Dirección: Carrera 56  número 152-42 Torre 3 apto 302, Barrio Mazuren Bogotá ' +
+                    'Teléfono 305 3469027Correo electrónico: <a href="mailto:contactobidcargo@bidcargo.com.co"> contactobidcargo@bidcargo.com.co </a>' +
+                    '<strong>ENCARGADO </strong>' +
+                    'César Eugenio Alarcón Díaz - Gerente Logístico ' +
+                    '<br>' +
+                    'Carrera 56 # 152-42, Torre 3, Apto.302 ' +
+                    '<br>' +
+                    'Teléfono 322 3649956' +
+                    '<br>' +
+                    '<a href="mailto:protecciondedatos@bidcargo.com.co"> protecciondedatos@bidcargo.com.co </a>' +
+                    '<br>' +
+                    '<strong>DEFINICIONES </strong>' +
+                    'Para el desarrollo de la presente  <strong> POLITICA DE TRATAMIENTO DE DATOS ' +
+                    'PERSONALES </strong> se adoptan las siguientes definiciones contenidas en la Ley 1581 ' +
+                    'del 2012  el  capítulo 25 del decreto 1074 del 2015 y decreto 1377 del 2013. ' +
+                    '<strong>Autorización: </strong> Consentimiento previo, expreso e informado del titular para llevar a ' +
+                    'cabo  el tratamiento de datos personales. ' +
+                    '<br>' +
+                    '<strong> Aviso de privacidad. </strong> Comunicación verbal o escrita generada por el responsable ' +
+                    'dirigida al titular para el tratamiento de sus datos personales, mediante la cual, se ' +
+                    'informa de la existencia de las políticas de tratamiento de datos que se le ' +
+                    'aplicaran, la forma de acceder a las mismas  y las finalidades del tratamiento que ' +
+                    'se pretende dar a sus datos personales ' +
+                    '<br>' +
+                    '<strong>Base de datos: </strong> Conjunto organizado de datos personales que sea objeto de tratamiento. ' +
+                    '<strong>Dato Personal: </strong> Cualquier información vinculada o que pueda asociarse a una o varias personas naturales determinadas o determinables. ' +
+                    '<strong>Dato Publico:</strong> Es el que no es semiprivado, ni privado, ni sensible.Son considerados datos públicos, los relativos al estado civil de las personas, su profesión y oficio, su calidad de comerciante o servidor público y que no están sometidos a reserva.Pueden, por su naturaleza, estar contenidos en registros públicos, documentos públicos  boletines y gacetas oficiales y sentencias judiciales ejecutoriadas y no sujetas a reserva.' +
+                    '<strong>Dato semi-privado: </strong> Son Datos que no tienen una naturaleza íntima, reservada ni pública y cuyo conocimiento y divulgación puede interesar  no solo a su titular, si no a un grupo de personas  o a la sociedad en general.Y para cuya divulgación, se requiere autorización expresa del titular de la información. ' +
+                    '<strong>Dato Sensible: </strong> Información que afecte la intimidad de las personas, que pueda generar  discriminación, como el origen étnico o racial, la orientación política, convicciones religiosas o filosóficas, pertenencia a sindicatos u organizaciones sociales o de derechos humanos, datos de salud, vida sexual y datos biométricos. ' +
+                    '<strong>Encargado: </strong>Persona Natural o Jurídica, pública o privada que por sí misma  o en asocio con otros, realice el tratamiento de datos por cuenta del responsable del tratamiento. ' +
+                    '<strong>Responsable: </strong>Persona Natural o Jurídica, pública o privada, que por sí misma o por otros, decida sobre las bases de datos o el tratamiento de datos. ' +
+                    '<strong>Titular: </strong> Persona Natural y jurídica, cuyos datos sean objeto de tratamiento ' +
+                    '<strong>Tratamiento: </strong> Cualquier operación o conjunto de operaciones realizadas sobre  los datos de los <strong> USUARIOS, </strong> tales como la recolección, almacenamiento, uso, circulación o supresión. ' +
+                    '<strong>Transmisión: </strong>Tratamiento de datos personales que implica la comunicación de los mismos dentro o fuera del territorio de la Republica de Colombia, cuando tenga por objeto de la realización de un tratamiento por el encargado, por cuenta del responsable. ' +
+                    '<strong>Principio de Legalidad: </strong> El tratamiento de datos personales es una actividad regulada que debe sujetarse a lo establecido en la ley y las demás disposiciones que se desarrollen. ' +
+                    '<strong>Principio de finalidad: </strong> El tratamiento de datos debe responder a una finalidad legítima de acuerdo con la constitución la Ley, la cual debe ser informada al titular. ' +
+                    '<strong> Principio de Libertad: </strong>El tratamiento solo puede ejercerse con el consentimiento' +
+                    'previo, expreso e informado del titular.Los datos no podrán ser obtenidos o ' +
+                    'divulgados sin previa autorización, o en ausencia de mandato legal o judicial, que ' +
+                    'releve el consentimiento. ' +
+                    '<br>' +
+                    '<strong>Principio de veracidad o Calidad. </strong> La información sujeta a tratamiento, debe ser ' +
+                    'veraz, completa, exacta, actualizada, comprobable y comprensible; se prohíbe el ' +
+                    'tratamiento de datos parciales, incompletos, fraccionados o que induzcan a error. ' +
+                    '<br>' +
+                    '<strong>Principio de transparencia: </strong>En el tratamiento, debe garantizarse el derecho del ' +
+                    'titular, a obtener del responsable del tratamiento o del encargado del tratamiento, ' +
+                    'en cualquier momento  sin restricciones, información acerca de la existencia de ' +
+                    'datos que le conciernan.' +
+                    '<br>' +
+                    '<strong> Principio de acceso y circulación restringida: </strong> El tratamiento se sujeta a los ' +
+                    'límites que se derivan de la naturaleza de los datos, de las disposiciones de la ley ' +
+                    'y la constitución.En este sentido, el tratamiento solo podrá hacerse, por personas ' +
+                    'autorizadas por el titular, y/ o, las personas previstas en la ley.Los datos ' +
+                    'personales salvo la información pública, no podrán estar disponibles en Internet u ' +
+                    'otros medios de divulgación o comunicación masiva, salvo que el acceso sea ' +
+                    'técnicamente controlable para brindar un conocimiento restringido, solo a los ' +
+                    'titulares o terceros autorizados conforme a la Ley. ' +
+                    '<br>' +
+                    '<strong> Principio de seguridad: </strong> La información sujeta a tratamiento por el responsable ' +
+                    'del tratamiento o encargado, se deberá manejar  con las medidas técnicas ' +
+                    'humanas y administrativas, que sean necesarias para otorgar seguridad a los ' +
+                    'registros, evitando su adulteración, perdida, consulta, uso o acceso no autorizado ' +
+                    'o fraudulento. ' +
+                    '<br>' +
+                    '<strong>Principio de confidencialidad: </strong> Todas las personas que intervengan en el ' +
+                    'tratamiento de datos, que no tengan la naturaleza de públicos, están obligadas a ' +
+                    'garantizar la reserva de la información, inclusive después de finalizada su relación ' +
+                    'con alguna de las labores que comprende el tratamiento, pudiendo solo realizar ' +
+                    'suministro o comunicación de datos personales cuando ello corresponda al ' +
+                    'desarrollo de las actividades autorizadas en la Ley y en los términos de la misma. ' +
+                    '<br>' +
+                    '<strong>ALCANCE </strong> ' +
+                    'Esta política aplica para toda la información personal registrada en la base de datos' +
+                    'de BIDCARGO TECHNOLOGIES S.A.S.,, quien actúa como responsable ' +
+                    'del tratamiento de datos. ' +
+                    '<br>' +
+                    '- Datos de Registro ' +
+                    '<br>' +
+                    'Datos generados cuando los usuarios crean o actualizan sus perfiles en ' +
+                    '<strong>BIDCARGO, </strong> tales como Nombre, fecha de nacimiento, documentos de ' +
+                    'identificación, como números e imágenes, dirección, correo electrónico, número de teléfono, ' +
+                    'un nombre de usuario y contraseña, detalles de pago o bancarios, ' +
+                    'licencias de conducción, firma y foto.También se incluye la información de las ' +
+                    'empresas como su NIT su RUC, su Certificado de Cámara de Comercio, sus ' +
+                    'certificaciones bancarias y de tercera parte, identificación de vehículos, números ' +
+                    'de pólizas de seguros, avales, autorizaciones.Podemos obtener también ' +
+                    'información demográfica, incluso a través de las encuestas destinadas a los ' +
+                    'USUARIOS.La información que los USUARIOS envían cuando se contactan con ' +
+                    'el soporte al cliente, esto puede incluir comentarios, fotografías y grabaciones que ' +
+                    'quedan en la base de datos. ' +
+                    '<br>' +
+                    '- Datos creados por el uso de los servicios.' +
+                    'Los datos de ubicación que son inherentes al servicio que se presta y si no se ' +
+                    'obtienen automáticamente, deberán ser suministrados por cada USUARIO. ' +
+                    'Recogemos datos de las transacciones realizadas con el uso de los servicios, ' +
+                    'como detalles de la carga, información de origen y destino, fecha y hora en que se ' +
+                    'realizó la negociación, tipo de servicio solicitado y prestado, vehículo requerido, ' +
+                    'distancia recorrida, precio y método del pago.También, los datos en que los ' +
+                    'usuarios usan nuestro servicio, fecha y hora, éxito de la transacción, dispositivos ' +
+                    'usados para acceder al servicio, modelos de hardware, dirección IP, sistemas  ' +
+                    'operativos, versiones, software, etc.' +
+                    '<strong> BIDCARGO </strong> puede combinar la información recopilada de estas fuentes entre ellas' +
+                    'y con otros datos que posea.BIDCARGO  no vende ni divulga datos personales ' +
+                    'del usuario a terceros con fines de marketing directo, salvo que los usuarios den ' +
+                    'su consentimiento. ' +
+                    '<br>' +
+                    '<strong> FINALIDAD </strong>' +
+                    '<br>' +
+                    '<p style="text-align: justify; font-size:12px";><strong> BIDCARGO </strong> obtiene y usa información para mejorar la calidad de su servicio, así' +
+                    'como para crear y ofrecer otros productos y servicios.También usamos los datos ' +
+                    'recopilados para realizar lo siguiente: ' +
+                    '<br>' +
+                    '<ul style="text-align: justify; font-size:12px";>' +
+                    '<li> . Brindar mejores servicios y funciones </li>' +
+                    '<li> . Mejorar la seguridad de los usuarios y de los servicios </li>' +
+                    '<li> . Brindar soporte al cliente </li>' +
+                    '<li> . Realizar tareas de investigación y de desarrollo </li>' +
+                    '<li> . Permitir la comunicación entre usuarios </li>' +
+                    '<li> . Enviar comunicaciones de marketing y de otro tipo a los usuarios </li>' +
+                    '<li> . Abordar temas relacionados con procedimientos legales </li>' +
+                    '</ul>' +
+                    '<p style="text-align: justify; font-size:12px";> <strong> BIDCARGO </strong> usa la información obtenida para: </p>' +
+                    '<br>' +
+                    '<p style="text-align: justify; font-size:12px";>1. Usar los datos obtenidos para proporcionar, personalizar, mantener y mejorar nuestros productos y servicios:</p>' +
+                    '<br>' +
+                    '<ul style="text-align: justify; font-size:12px";>' +
+                    '<li> . Crear y actualizar las cuentas de los usuarios. </li>' +
+                    '<li> . Verificar la identidad, antecedentes y cumplimiento de los requisitos de los  usuarios. </li>' +
+                    '<li> . Activar las funciones que permiten a los usuarios compartir información con la plataforma  </li>' +
+                    '<li> . Permitir los servicios de transporte de carga.</li>' +
+                    '<li> . Ofrecer, procesar o facilitar pagos de nuestros servicios. </li>' +
+                    '<li> . Ofrecer, obtener, proporcionar o facilitar soluciones de seguros, empresas de seguridad y vigilancia, empresas de logística, y bancos. </li>' +
+                    '<li> . Hacer un seguimiento del progreso de los viajes. </li>' +
+                    '<li> . Realizar operaciones internas necesarias para brindar nuestros servicios, lo' +
+                    'que incluye solucionar errores de software y problemas operacionales, realizar ' +
+                    'análisis, pruebas e investigación, y hacer un seguimiento y análisis de las' +
+                    'tendencias de uso y actividades. </li> ' +
+                    '</ul>' +
+                    '<br>' +
+                    '<p style="text-align: justify; font-size:12px";> 2. Seguridad. Usamos datos personales para mantener la seguridad y la integridad de nuestros servicios y usuarios. Esto incluye lo siguiente:</p>' +
+                    '<br>' +
+
+                    '<ul style="text-align: justify; font-size:12px";>' +
+                    '<li> . Realizar el proceso de selección de USUARIOS, antes de permitir que usen ' +
+                    'nuestros servicios y en intervalos posteriores, incluso las revisiones de ' +
+                    'verificaciones de antecedentes, cuando lo permita la ley, para evitar que personas ' +
+                    'poco confiables usen nuestros servicios. </li> ' +
+                    '<li> . Usar los datos de los  dispositivo, ubicación, perfil y uso, entre otros, para ' +
+                    'prevenir, detectar y combatir el fraude o las actividades poco seguras. ' +
+                    '</li> ' +
+                    '<li> . Usar las calificaciones y los comentarios de los usuarios para fomentar el ' +
+                    'cumplimiento de la ETICA y como motivo para desactivar  cuentas  de USUARIOS ' +
+                    'con bajas calificaciones o que, de alguna manera, infrinjan LOS TERMINOS Y CONDICIONES.  </li> ' +
+                    '</ul>' +
+                    '<br>' +
+                    '<p style="text-align: justify; font-size:12px";>3. Soporte al cliente. <strong> BIDCARGO </strong> usa los datos que recopilamos(como las' +
+                    'grabaciones de las llamadas de soporte al cliente con aviso al usuario y su ' +
+                    'consentimiento) para brindar asistencia, como se indica a continuación: ' +
+                    '<ul style="text-align: justify; font-size:12px";>' +
+                    '<li> . Dirigir las preguntas a la persona de soporte al cliente que corresponda </li> ' +
+                    '<li> . Investigar y abordar las inquietudes de los usuarios </li> ' +
+                    '<li> . Supervisar y mejorar nuestras respuestas y procesos de soporte al cliente </li> ' +
+                    '</ul>' +
+                    '<br>' +
+                    '<p style="text-align: justify; font-size:12px";>4. Investigación y desarrollo.Podemos usar los datos que recopilamos para ' +
+                    'realizar pruebas, investigaciones, análisis, desarrollo de productos y aprendizaje ' +
+                    'automático con el fin de mejorar la experiencia del usuario.Esto nos ayuda a ' +
+                    'mejorar la seguridad de nuestros servicios, así como la prevención de su uso con ' +
+                    'fines ilegales o indebidos, desarrollar nuevas funciones y productos, y facilitar ' +
+                    'propuestas relativas a nuestros servicios.' +
+                    '<br>' +
+                    '<p style="text-align: justify; font-size:12px";>5. Permitir las comunicaciones entre usuarios: Permitimos que los USUARIOS se ' +
+                    'comuniquen entre sí, lo  que es inherente al tipo de negocio, pues las ' +
+                    'negociaciones las realizan los USUARIOS sin ninguna intermediación, pero los' +
+                    'datos que se recogen pueden ser usados  para mejorar servicios y realizar análisis ' +
+                    '<br>' +
+                    '<p style="text-align: justify; font-size:12px";>6. Marketing.La naturaleza del negocio es la utilización de los datos entre los ' +
+                    'USUARIOS para lograr que se realicen las transacciones, pero además, ' +
+                    '<strong> BIDCARGO </strong> puede usar los datos obtenidos, para comercializar nuestros ' +
+                    'servicios a los usuarios.Esto incluye enviar comunicaciones a los usuarios sobre ' +
+                    'los servicios, funciones, promociones, sorteos, estudios, encuestas, noticias, ' +
+                    'actualizaciones y eventos de <strong> BIDCARGO </strong> .Podemos usar los datos que ' +
+                    'recopilamos para personalizar las comunicaciones de marketing que enviamos ' +
+                    'incluso según la ubicación, y preferencias y configuraciones del usuario. ' +
+                    'Comunicaciones no comerciales. <strong> BIDCARGO </strong> puede usar los datos que ' +
+                    'almacenados a fin de generar recibos para los usuarios y proporcionárselos, ' +
+                    'informarles sobre cambios en nuestros términos, servicios o políticas, o enviar ' +
+                    'otras comunicaciones que no tienen el propósito de comercializar los servicios o ' +
+                    'los productos de <strong> BIDCARGO. </strong> ' +
+                    '<br>  ' +
+                    '<p style="text-align: justify; font-size:12px";>7. Temas legales.También usamos datos personales para tomar decisiones ' +
+                    'legales en relación con el uso de nuestros servicios, tales como Desactivación de ' +
+                    'las cuentas de aquellos usuarios involucrados en casos de fraude o en actividades ' +
+                    'que, de alguna manera, podrían dañar a <strong> BIDCARGO. </strong>, a cada uno de sus ' +
+                    'USUARIOS  y a terceros.Por ejemplo, en algunos casos, se puede desactivar ' +
+                    'a un usuario si se determina que está incumpliendo la Ley o actuando en contra de ' +
+                    'los intereses de las empresas registradas en <strong> BIDCARGO. </strong>. ' +
+                    '<br>' +
+                    '<p style="text-align: justify; font-size:12px";>8. Uso de los datos para Decisiones automáticas del sistema: Cuando se vencen ' +
+                    'plazos, o se  pierden vigencia documentos, o en caso de verificación aleatoria de ' +
+                    'antecedentes, el sistema tomara decisiones automáticas como por ejemplo, ' +
+                    'inhabilitar un usuario por vencimiento de un documento legal.' +
+                    '<br>' +
+                    ' <strong> OBLIGACIONES DE BIDCARGO  </strong>' +
+                    '<br>' +
+                    ' <strong>BIDCARGO  </strong>  estará obligado a: ' +
+                    '<br>' +
+                    'Garantizar al titular, en todo tiempo, el pleno y efectivo ejercicio, del derecho de habeas data.' +
+                    '<br>' +
+                    'Solicitar y conservar en las condiciones previstas en la ley, copia de la respectiva ' +
+                    'autorización otorgada por el titular. ' +
+                    '<br>' +
+                    'Informar debidamente al titular sobre la finalidad de la recolección y los derechos ' +
+                    'que le asisten por virtud de la autorización otorgada.' +
+                    '<br>' +
+                    'Conservar la información bajo las condiciones de seguridad necesarias, para impedir su adulteración, perdida, consulta, uso o acceso no autorizado o  fraudulento. ' +
+                    '<br>' +
+                    'Garantizar que la información que se suministre, al encargado sea veraz, completa, exacta, actualizada, comprobable y comprensible.' +
+                    '<br>' +
+                    'Actualizar la información, comunicando de forma oportuna al encargado del tratamiento, ' +
+                    'todas las novedades respecto de los datos, que previamente le haya suministrado y adoptar las demás medidas necesarias ' +
+                    'para que la información suministrada a este, se mantenga actualizada. ' +
+                    '<br>' +
+                    'Rectificar la información cuando sea incorrecta y comunicar lo pertinente al encargado. ' +
+                    '<br>' +
+                    'Suministrar al encargado según el caso, únicamente datos cuyo tratamiento este previamente autorizado de conformidad con lo previsto en la presente ley. ' +
+                    '<br>' +
+                    'Exigir al encargado en todo momento el respeto a las condiciones de seguridad y privacidad de la información del titular.' +
+                    'Tramitar las consultas y reclamos formulados en los términos señalados en la ley.' +
+                    'Informar al encargado cuando determinada información se encuentra en discusión por parte del titular una vez se haya presentado la reclamación y no haya finalizado el tramite respectivo. Informar a solicitud del titular, sobre el uso dado a sus datos. ' +
+                    'Informar a la autoridad de protección de datos cuando se presente violaciones a los códigos de seguridad y existan riesgos en la administración de la información de los titulares. ' +
+                    'Cumplir las instrucciones y requerimientos que imparta la superintendencia de industria y comercio. ' +
+                    '<br>' +
+                    '<strong>  DERECHOS DE LOS TITULARES </strong> ' +
+                    '<br>' +
+                    'El titular de datos personales  tiene derecho  a:' +
+                    'Acceder de forma gratuita a los datos proporcionados que hayan sido objeto de tratamiento' +
+                    'Conocer, actualizar y rectificar su información frente a datos parciales inexactos, incompletos, fraccionados, que induzcan a error, o aquellos cuyo tratamiento, este prohibido o no haya sido autorizado. ' +
+                    'Solicitar prueba de la autorización otorgada. ' +
+                    'Presentar ante la superintendencia de industria y comercio quejas por infracciones a lo dispuesto en la normatividad vigente. ' +
+                    'Revocarla autorización y/ o solicitar la supresión del dato, siempre que no exista un deber legal o contractual que impida eliminarlos ' +
+                    'Abstenerse de responder las preguntas  sobre datos sensibles.Tendrán carácter facultativo las respuestas que versen sobre datos sensibles o las que versen sobre niñas o niños o adolescentes. ' +
+                    '<br>' +
+                    '<strong> PROCEDIMIENTOS DE PRESENTACION Y RESPUESTAS DE CONSULTAS, QUEJAS </strong>' +
+                    '<br>' +
+                    'Los titulares de datos personales que consten en las bases de datos de ' +
+                    '<strong> BIDCARGO </strong> o sus causahabientes, podrán consultar los datos que hayan suministrado en los términos  de ley.Toda solicitud de consulta, corrección, actualización o supresión, deberá presentarse por escrito o por correo electrónico de acuerdo con la información contenida en este documento. ' +
+                    'Las consultas serán atendidas en un término de 10 diez días hábiles contados a partir de la fecha de recibo de la solicitud.Cuando no fuera posible atender la consulta dentro de dicho termino, se informara al interesado, expresando los motivos de la demora y señalando la fecha en que se atenderá su consulta la cual en ningún caso podrá superar los cinco días hábiles al vencimiento del primer término. ' +
+                    '<br>' +
+                    ' PROCEDIMIENTO PARA EL EJERCICIO DEL DERECHO DE HABEAS DATA </strong>' +
+                    '<br>' +
+                    'En cumplimiento de las normas sobre protección de datos personales para la radicación de la atención y radicación de su solicitud, le solicitamos suministrar la siguiente información:' +
+                    'Nombre completo y apellidos, datos de contacto(dirección física y/ o electrónica, números de teléfonos de contacto), medios para recibir respuesta a su solicitud, motivo(s), hecho(s) que dan lugar a la reclamación, con una breve descripción del derecho que desea ejercer(conocer, actualizar, rectificar, solicitar prueba de la autorización otorgada, revocarla, suprimir, acceder a la información), firma(si aplica) y número de identificación. ' +
+                    'El término máximo previsto por la ley para resolver su reclamación es de 15 días hábiles, contado a partir del día siguiente de la fecha de su recibo. Cuando no fuera posible atender el reclamo dentro de dicho termino, BIDCARGO informara al interesado los motivos de la demora y la fecha en la que se tendera su reclamo la cual en ningún caso podrá superar los ocho días siguientes al vencimiento del primer término. ' +
+                    '<br>' +
+                    '<strong> SEGURIDAD DE LA INFORMACION Y MEDIDAS DE SEGURIDAD </strong>' +
+                    '<br>' +
+                    'En desarrollo del principio de seguridad establecido en la normatividad vigente, <strong>  BIDCARGO  </strong> adoptara las medidas técnicas, humanas y administrativas para otorgar seguridad a los registros evitando su adulteración, pérdida, consulta, uso o acceso no autorizado o fraudulento. ' +
+                    '<br>' +
+                    '<strong> ENTRADA EN VIGENCIA DE LA POLITICA DE TRATAMIENTO DE DATOS PERSONALES </strong>' +
+                    '<br>' +
+                    'La presente política para el tratamiento de datos rige a partir del 4 de Febrero del 2020' +
+                    '<br>' +
+                    'Las bases de datos en donde se registraran los datos personales tendrán una vigencia igual  al tiempo en que se mantenga y utilice la información para las finalidades descritas en esta política. Una vez se cumplan esas finalidades y siempre que no exista un deber legal o contractual de conservar su información, sus datos serán eliminados de nuestras bases de datos.',
+
+                showCancelButton: true,
+                confirmButtonColor: '#2135C2',
+                cancelButtonColor: '#9c9c9c',
+                confirmButtonText: 'Aceptar',
+                cancelButtonText: 'Cancelar',
+                height: 2000,
+                width: 7000
+            }).then((result) => {
+                if (result.value) {
+                    $("#termsand").prop("checked", true);
+                }
+                else {
+                    $("#termsand").prop("checked", false);
+                }
+            })
+        });
+    </script>
+    @RenderSection("scripts", false)
+</body>
+</html>

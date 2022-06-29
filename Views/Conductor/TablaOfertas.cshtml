@@ -1,0 +1,107 @@
+﻿@{
+    Session["urlHttp"] = HttpContext.Current.Request.Url.AbsoluteUri.Split('/')[0] + "//" + HttpContext.Current.Request.Url.AbsoluteUri.Split('/')[2];
+    ViewBag.Title = "DashBoard";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="site-blocks-vs inner-page-cover" style="background-image: url(/Content/images/hero_bg_3.jpg)" data-aos="fade" data-stellar-background-ratio="0.5">
+    <div class="container">
+        <div class="row align-items-center justify-content-center text-center">
+            <div class="col-sm-8" data-aos="fade-up" data-aos-delay="400">
+                <br /><br />
+                <h1 class="text-white font-weigh text-uppercase">Propietarios juridicos</h1>
+                <br /><br />
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    #btnExport {
+        padding-bottom: 40px;
+        margin-left: 15%;
+    }
+
+        #btnExport button {
+            background-color: red;
+            box-shadow: 0 5px 0 darkred;
+            color: white;
+            padding: 1em 1.5em;
+            position: relative;
+            text-decoration: none;
+            text-transform: uppercase;
+        }
+
+            #btnExport button:hover {
+                background-color: #ce0606;
+                cursor: pointer;
+            }
+
+            #btnExport button:active {
+                box-shadow: none;
+                top: 5px;
+            }
+</style>
+
+<div class="container">
+
+    <div class="card shadow-lg mb-5 mt-5 bg-white rounded p-3 ">
+        <div class="card-title row mt-3 text-center">
+            <h1>Ofertas </h1>
+
+        </div>
+
+        <div class="card-body bg-ligth-bidcargo">
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-12 table-responsive">
+                        <table class="table table-hover tablesi text-center">
+                            <thead>
+
+                                <tr>
+                                    <th>Codigo Oferta</th>
+                                    <th>Tipo De Mercancias</th>
+                                    <th>Fecha de Cargue</th>
+                                    <th>Fecha de Entrega</th>
+                                    <th>Valor De Oferta</th>
+                                    <th>Estado</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (ViewBag.rows.Count > 0)
+                                {
+                                    foreach (var row in ViewBag.rows)
+                                    {
+
+                                        <tr>
+                                            <td>@row["codeOffer"]</td>
+                                            <td>@row["typeMerchandise"]</td>
+                                            <td>@row["dateTraveler"] </td>
+                                            <td>@row["dateTraveler2"]</td>
+                                            <td>@row["valorOferta"]</td>
+                                            <td>Abierta</td>
+
+
+                                            <td>
+
+                                                <a href="@Url.Action("ConductorShowOffer", new { @id=row["codeOffer"]})" title="Ver Perfil"
+                                                   class="btn btn-secondary btn-sm text-white rounded">
+                                                    <i class="icon-search"></i>
+                                                </a>
+
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+
+
+</div>

@@ -1,0 +1,779 @@
+﻿@{
+    Session["urlHttp"] = HttpContext.Current.Request.Url.AbsoluteUri.Split('/')[0] + "//" + HttpContext.Current.Request.Url.AbsoluteUri.Split('/')[2];
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="site-blocks-vs inner-page-cover" style="background-image: url(/Content/images/hero_bg_3.jpg)" data-aos="fade" data-stellar-background-ratio="0.5">
+    <div class="container">
+        <div class="row align-items-center justify-content-center text-center">
+            <div class="col-sm-8" data-aos="fade-up" data-aos-delay="400">
+                <br /><br />
+                <h1 class="text-white font-weigh text-uppercase">Resúmen de la Oferta</h1>
+                <br /><br />
+            </div>
+        </div>
+    </div>
+</div>
+<div class="site-section pt-5 pb-5" id="listimages">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="row border-bottom  mb-2 pb-2 pt-2">
+                    <div class="col-sm-3 mt-1 mb-1">
+                        <h5 class="">
+                            <strong>Código de Oferta:</strong> @ViewBag.models[0]["codeOffer"]
+                        </h5>
+                    </div>
+                    @if (Convert.ToInt32(Session["idTypeCompany"]) != 1)
+                    {
+                        <div class="col-sm-6 text-center mt-1 mb-1">
+                            <h5 class="">
+                                <strong>Empresa:</strong> @ViewBag.data["usuarioFaceBook"]
+                            </h5>
+                        </div>
+                        <div class="col-sm-6 text-center mt-1 mb-1">
+                            <h5 class="">
+                                <strong>Contacto:</strong> @ViewBag.data["nombre"] @ViewBag.data["apellidoPaterno"]
+                            </h5>
+                        </div>
+                        <div class="col-sm-6 text-center mt-1 mb-1">
+                            <h5 class="">
+                                <strong>Telefono:</strong> @ViewBag.data["numeroCelular"] - @ViewBag.data["Edificio"]
+                            </h5>
+                        </div>
+                    }
+                </div>
+                <!--<h5 class="text-uppercase"><strong>Cliente:</strong> @ViewBag.data["apellidoPaterno"]</h5>-->
+
+                <div class="row">
+                    @foreach (var modelo in ViewBag.models)
+                    {
+                        <hr />
+                        <div class="border-bottom col-sm-12 mb-2 pb-2 pt-2">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <h6><strong>Trayecto Solicitado:</strong></h6>
+                                    <label>@modelo["fromCity"] - @modelo["fromDepartament"] <strong>hacia</strong> @modelo["toCity"] - @modelo["toDepartament"]</label>
+                                </div>
+                                <div class="col-sm-6">
+                                    <h6><strong>Dirección Remitente:</strong> </h6><label>@modelo["directionFrom"]</label>
+                                </div>
+                                <div class="col-sm-6">
+                                    <h6><strong>Dirección Destinatario:</strong> </h6><label>@modelo["directionTo"]</label>
+
+                                </div>
+                                <div class="col-sm-4">
+                                    <h6><strong>Transportar:</strong></h6> <label>@modelo["typeContainer"], @modelo["typeMerchandise"] en @modelo["typeCargoString"]</label>
+                                </div>
+                                @if (Convert.ToInt32(modelo["typeCargo"]) == 4 || Convert.ToInt32(modelo["typeCargo"]) == 1 || Convert.ToInt32(modelo["typeCargo"]) == 2 || Convert.ToInt32(modelo["typeCargo"]) == 5)
+                                {
+                                    <div class="col-sm-4">
+                                        <h6><strong>Peso:</strong></h6> <label>@modelo["weightContainer"] <strong>@modelo["typeMeasuredString"]</strong></label>
+                                    </div>
+                                }
+
+                                @if (Convert.ToInt32(modelo["typeCargo"]) == 3 || Convert.ToInt32(modelo["typeCargo"]) == 6 || Convert.ToInt32(modelo["typeCargo"]) == 7)
+                                {
+                                    <div class="col-sm-4">
+                                        <h6><strong>Peso:</strong></h6> <label>@modelo["numberUnitsTons"] &nbsp; Toneladas</label>
+                                    </div>
+                                }
+
+                                @if (Convert.ToInt32(modelo["typeCargo"]) == 2 || Convert.ToInt32(modelo["typeCargo"]) == 4)
+                                {
+
+                                    <div class="col-sm-4">
+                                        <h6><strong>Medidas:</strong></h6><strong> <strong>Largo: </strong>@modelo["longTied"], <strong>Ancho: </strong>@modelo["widthPlates"], <strong>Alto: </strong>@modelo["highLoose"] en <strong>@modelo["typeDimensionString"]</strong></strong>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <h6><strong>Número Unidades:</strong></h6><label> @modelo["numberUnitsTons"]</label>
+                                    </div>
+                                }
+
+                                @*@if (Convert.ToInt32(modelo["typeCargo"]) >= 3)
+                                {
+                                    <div class="col-sm-4">
+                                        <h6><strong>Presentación:</strong> </h6><strong><strong>Atado: </strong>@modelo["longTied"], <strong>Planchas: </strong>@modelo["widthPlates"], <strong>Suelta: </strong>@modelo["highLoose"] en <strong>@modelo["typeDimensionString"]</strong></strong>
+                                    </div>
+                                }*@
+                                <div class="col-sm-4">
+                                    <h6><strong>Valor Declarado Mercancía:</strong></h6><label> @String.Format("{0:C0}", Convert.ToInt32(modelo["valueMerchandise"]))</label>
+                                </div>
+                                <!--Agregados nuevos faber orozco-->
+                                <div class="col-sm-4">
+                                    <h6><strong>Tipo Moneda:</strong></h6><label> @modelo["CoinTypeText"]</label>
+                                </div>
+
+                                @if (modelo["valorOferta"] != null)
+                                {
+                                    <div class="col-sm-4">
+                                        <h6><strong>Valor Oferta:</strong></h6><label> @String.Format("{0:C0}", modelo["valorOferta"])</label>
+                                    </div>
+                                }
+                                <div class="col-sm-4">
+                                    <h6><strong>Fecha de Viaje:</strong></h6><label> @modelo["departure"]  - <strong> @modelo["DateOfServiceIText"] </strong></label>
+                                </div>
+                                <div class="col-sm-4">
+                                    <h6><strong>Fecha estimada de arribo:</strong></h6><label> @modelo["arrival"]</label>
+                                </div>
+
+
+
+                                <div class="col-sm-4">
+                                    <h6><strong>Empresa Cliente:</strong></h6><label> @modelo["companyClient"]</label>
+                                </div>
+                                <div class="col-sm-4">
+                                    <h6><strong>Factoring:</strong></h6><label> @modelo["FactoringString"]</label>
+                                </div>
+                                <div class="col-sm-4">
+                                    <h6><strong>Días de Pago:</strong></h6><label> @modelo["payDays"]</label>
+                                </div>
+                                <div class="col-sm-4">
+                                    <h6><strong>Estado:</strong></h6><label> @modelo["statusString"]</label>
+                                </div>
+
+                                <div class="col-sm-8">
+                                    <h6><strong>Observación:</strong></h6><label> @modelo["observation"]</label>
+                                </div>
+
+                                <div class="col-sm-4">
+                                    <h6><strong>Documentos asociados</strong></h6>
+                                    @if (ViewBag.myDocumentsOfferServiceCarga != null)
+                                    {
+
+                                        foreach (var rows in ViewBag.myDocumentsOfferServiceCarga)
+                                        {
+                                            String nameFile = @rows["srcFile"];
+                                            string correctString  = nameFile.Replace("/Content/uploads/", " ");
+                                             <a href="@rows["srcFile"]" class="btn btn-block btn-outline-dark" target="_blank"><i class="icon-download"></i>@correctString</a>
+                                        }
+                                    }
+                                </div>
+
+                            </div>
+                        </div>
+                    }
+                </div>
+                <br />
+
+                @if (Convert.ToInt32(Session["idTypeCompany"]) != 1)
+                {
+                    if (ViewBag.dt == null)
+                    {
+                        using (Html.BeginForm("storeContraOffers", "Home", FormMethod.Post, new { @id = "formushowsibmit", enctype = "multipart/form-data" }))
+                        {
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="row">
+                                        <div class="col-sm-6 form-group">
+                                            <input type="hidden" name="idClient" value="@ViewBag.idClient" />
+                                            <input type="hidden" name="codeOffer" value="@ViewBag.models[0]["codeOffer"]" />
+                                            <input type="hidden" name="idTypeCompany" value="@ViewBag.idTypeCompany" />
+                                            <label class="text-black">Tu Oferta</label>
+                                            <input type="hidden" name="show" value="1" />
+                                            <input type="text" name="contraOffer" id="contrasoff" placeholder="" class="areamask form-control form-control-sm" required />
+                                            <br>
+                                            <textarea class="form-control form-control-sm" name="descripcion" placeholder="Descripción">@ViewBag.descripcion</textarea>
+                                        </div>
+                                        <div class="col-sm-6 form-group">
+                                            <label class="d-block">&nbsp;</label>
+                                            <input type="submit" id="btn-submit" value="Aceptar" name="enviar" data-text="De crear esta oferta" class="btn btn-secondary text-uppercase returnls btn-sm actiusers" />
+                                        </div>
+                                        <div class="row text-center">
+                                            <div class="row form-group" id="containerfile">
+                                                <div class="col-md-12 align-self-center">
+                                                    <div class="wow fadeIn">
+                                                        <label id="addimagebutton" class="curpointer"><strong><i class="icon-plus"></i> Cargar documento de condiciones de contratación</strong></label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <table class="table table-hover tablesi text-center">
+                                    <thead>
+                                        <tr>
+                                            <th>Valor Oferta</th>
+                                            <th>Descripción</th>
+                                            <th>Doc. Condiciones de contratación</th>
+                                            <th style="width:20%"></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @if (ViewBag.dt.Count > 0)
+                                        {
+                                            foreach (var row in ViewBag.dt)
+                                            {
+                                                <tr>
+                                                    <td>@String.Format("{0:C0}", @row["ContraOffer"])</td>
+                                                    <td>@row["descripcion"]</td>
+                                                    <td style=" width:30%; text-align: center;">
+                                                        @if (ViewBag.myDocumentsContraOffer.Count > 0)
+                                                        {
+                                                        foreach (var rows in ViewBag.myDocumentsContraOffer)
+                                                        {
+                                                            if (Convert.ToInt32(rows["idDocuments"]) == Convert.ToInt32(rows["idDocuments"]))
+                                                            {
+                                                                <a href="@rows["srcFile"]" class="btn btn-block btn-outline-dark" title="Documento de Condiciones de Contratación" target="_blank"><i class="icon-download"></i>@rows["nameFile"] </a>
+                                                                @*<div class="col-md-4" id="">
+                                                                    <div class="wow fadeIn">
+                                                                        <label>Archivo subido @rows["nameFile"]</label>
+
+                                                                    </div>
+                                                                </div>*@
+                                                                    
+                                                            }
+                                                        }
+                                                        }
+                                                    </td>
+                                                    <td>
+
+                                                        @if (Convert.ToInt32(Session["idCliente"]) == @row["idClient"])
+                                                        {
+                                                            <a href="javascript:void(0);" class="anchorDetail" data-id="@row["idContraOffers"]">Ver detalle</a>
+                                                        }
+
+                                                    </td>
+                                                </tr>
+                                            }
+                                        }
+
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <a href=@Url.Action("offerShow") class="btn btn-secondary text-uppercase">Aceptar</a> ||
+                            <a href="@Url.Action("offerShow")" class="btn btn-secondary text-uppercase"><i class="icon icon-backward"></i> Volver</a>
+                        </div>
+
+                    }
+                }
+                else
+                {
+                    if (ViewBag.gogo != null)
+                    {
+                        <h4 class="text-center"><a href=@Url.Action("myofferShow") class="btn btn-secondary text-uppercase">Aceptar</a></h4>
+                    }
+                    else
+                    {
+                        <div class="row">
+                            <form actions="@Url.Action("ShowOffer")" method="post" style="width:100%">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>Compañia</th>
+                                            <th>Tipo Empresa</th>
+                                            <th>Código Oferta</th>
+                                            <th>Contra Oferta</th>
+                                            <th>Descripción</th>
+                                            <th>Doc. Condiciones de contratación</th>
+                                            <th>Estado</th>
+                                            <th style="width:15%"></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @if (ViewBag.dt.Count > 0)
+                                        {
+                                            foreach (var row in ViewBag.dt)
+                                            {
+                                                <tr>
+                                                    <td>@row["Cliente"]</td>
+                                                    <td>@row["Company"]</td>
+                                                    <td>@row["codeOffer"]</td>
+                                                    <td>@String.Format("{0:C0}", row["ContraOffer"])</td>
+                                                    <td>@row["descripcion"]</td>
+                                                    <td style=" width:20%; text-align: center;">
+                                                    @if (!string.IsNullOrEmpty(Convert.ToString(@row["srcFile"])))
+                                                    {
+                                                        <a href="@row["srcFile"]" class="btn btn-block btn-outline-dark" title="Documento de Condiciones de Contratación" target="_blank"><i class="icon-download"></i> @row["nameFile"]</a>
+                                                    }
+
+
+                                            <td>@row["selectedString"]</td>
+
+                                            <td>
+                                                @if (Convert.ToInt32(row["selected"]) == 0)
+                                                {
+                                                    <a class="btn btn-success btn-sm text-white rounded mt-1 mb-1 aaa"
+                                                       data-text="De Aceptar la contra oferta seleccionada"
+                                                       data-selected="0"
+                                                       data-idcontra="@row["idContraOffers"]">
+                                                        <i class="icon icon-thumbs-o-up"></i>
+                                                    </a>
+                                                    <a class="btn btn-warning btn-sm text-white rounded mt-1 mb-1 aaa"
+                                                       data-text="De Rechazar la contra oferta seleccionada"
+                                                       data-selected="1"
+                                                       data-idcontra="@row["idContraOffers"]">
+                                                        <i class="icon icon-thumbs-o-down"></i>
+                                                    </a>
+                                                }
+                                                @if (Convert.ToInt32(row["hasQualification"]) == 0)
+                                                {
+                                                    <a class="btn btn-info btn-sm text-white rounded mt-1 mb-1 calification"
+                                                       data-selected="1"
+                                                       data-idcontra="@row["idContraOffers"]">
+                                                        <i class="icon icon-star"></i>
+                                                    </a>
+                                                }
+                                                <a class="btn btn-primary btn-sm text-white rounded mt-1 mb-1 showCali"
+                                                   data-selected="1"
+                                                   data-idcontra="@row["idContraOffers"]">
+                                                    <i class="icon icon-comment-o"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                            }
+                                        }
+                                    </tbody>
+                                </table>
+                            </form>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6 text-center">
+                                <a class="btn btn-sm btn-secondary rounded" href="@Url.Action("myofferShow")"><i class="icon icon-backward"></i> Atras</a>
+                            </div>
+                            @if (ViewBag.models[0]["status"] == 1)
+                            {
+                                <div class="col-sm-6 text-center">
+                                    <a class="btn btn-sm btn-secondary rounded bbbb text-white" data-text="De Cerrar esta Oferta" data-href="@Url.Action("CloseOffer", new {@id =ViewBag.models[0]["codeOffer"]})">
+                                        <i class="icon icon-lock_open"></i> Cerrar Oferta
+                                    </a>
+                                </div>
+                            }
+                        </div>
+                    }
+                }
+
+
+                <!-- Modal -->
+                <div id='myModal' class='modal'>
+                    <div class="modal-dialog">
+                        <form actions="@Url.Action("UpdateContracOffers")" method="post" style="width:100%">
+
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="lblTitulo"></h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div id='myModalContent'></div>
+                                <div class="modal-body">
+                                    <div class="form-group">
+                                        <label>Id Oferta</label>
+                                        <input type="text" id="txtidContraOffers" readonly value="0"
+                                               class="form-control enviar" name="txtidContraOffers" />
+                                    </div>
+                                    <div class="form-group" id="divPersona">
+                                        <label>Valor Oferta</label>
+                                        <div class="input-group mb-3">
+                                            <input type="text" id="txtvalorOferta" class="form-control form-control-sm" pattern="^\$\d{1,3}(,\d{3})*(\.\d+)?$" name="ivalorOferta" />
+                                        </div>
+                                    </div>
+                                    <div class="form-group" id="divPersona">
+                                        <label>Descripción</label>
+                                        <div class="input-group mb-3">
+                                            <textarea type="text" class="form-control form-control-sm" id="txtDescripcion" name="iDescripcion"> </textarea>
+                                        </div>
+                                    </div>
+
+
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-primary text-uppercase updateOffer" onclick="Guardar()">Guardar</button>
+                                    @*<input type="submit" id="guardar" value="Guardar" class="btn btn-primary calification12">*@
+                                    @*<a class="btn btn-info btn-sm text-white rounded mt-1 mb-1 updateOffer"
+                               data-selected="1">
+                                <i class="icon icon-star"></i>
+                            </a>*@
+                                    <button type="button" class="btn btn-danger text-uppercase" data-dismiss="modal" id="btnCerrar">Cancelar </button>
+                                </div>
+                                <div id="divError">
+
+                                </div>
+                            </div>
+
+                        </form>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div style="text-align: center; margin-top: 10px">
+                @* <input type="button" value="button" class="btn btn-primary"> *@
+                    <div class="col-sm-4">
+                        <a href=@Url.Action("createOffer", "Home") class="btn btn-secondary text-uppercase returnls btn-sm"><i class="fas fa-backward"></i> Volver</a>
+                        @* <input type="button" value="Volver" class="btn btn-secondary text-uppercase returnls btn-sm" /> *@
+                    </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fadeIn" id="recordlikes">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Calificaciones</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="table-responsive">
+                    <table id="tableresult" class="table" style="width:100%">
+                        <thead>
+                            <tr>
+                                <th>Puntaje</th>
+                                <th>Comentario</th>
+                                <th>Fecha</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tableresultbody"></tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section  scripts{
+    @if (Session["message"] != null)
+    {
+        if (Session["message"].ToString() != "")
+        {
+            <script type="text/javascript">
+                Swal.fire({
+                    type: 'success',
+                    title: '@Session["message"].ToString()',
+                    showConfirmButton: true,
+                });
+            </script>
+        }
+        Session.Remove("message");
+    }
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        $('#addimagebutton').click(function () {
+            var ranos = "nada" + Math.floor(Math.random() * 1000)
+            var htmls = "<div class=\"col-md-8\" id=\"" + ranos + "\">";
+            htmls += "<div class=\"wow fadeIn\">";
+            htmls += "<label><strong>Archivo</strong>&nbsp;&nbsp;&nbsp;<i class=\" icon-minus-circle menusbut curpointer\"></i></label>";
+            htmls += "<input type=\"file\" name=\"fileClient[]\" class=\"form-control\"> "
+            htmls += "</div>";
+            htmls += "</div>";
+            $("#containerfile").append(htmls);
+        });
+
+        $('#btn-submit').on('click', function (e) {
+            e.preventDefault();
+            var form = $(this).parents('form');
+            var texss = $(this).data("text");
+            $("#contrasoff").attr("required", true);
+            Swal.fire({
+                title: "¿Esta Seguro?",
+                html: texss,
+                type: 'question',
+                showCancelButton: true,
+            }).then((result) => {
+                if (result.value) {
+                    form.submit();
+                }
+            });
+        });
+
+
+
+            $('.areamask').mask('#', { reverse: true });
+            $.extend(jQuery.validator.messages, {
+                required: "Este campo es obligatorio.",
+                remote: "Por favor, rellena este campo.",
+                email: "Por favor, escribe una dirección de correo válida",
+                url: "Por favor, escribe una URL válida.",
+                date: "Por favor, escribe una fecha válida.",
+                dateISO: "Por favor, escribe una fecha (ISO) válida.",
+                number: "Por favor, escribe un número entero válido.",
+                digits: "Por favor, escribe sólo dígitos.",
+                creditcard: "Por favor, escribe un número de tarjeta válido.",
+                equalTo: "Por favor, escribe el mismo valor de nuevo.",
+                accept: "Por favor, escribe un valor con una extensión aceptada.",
+                maxlength: jQuery.validator.format("Por favor, no escribas más de {0} caracteres."),
+                minlength: jQuery.validator.format("Por favor, no escribas menos de {0} caracteres."),
+                rangelength: jQuery.validator.format("Por favor, escribe un valor entre {0} y {1} caracteres."),
+                range: jQuery.validator.format("Por favor, escribe un valor entre {0} y {1}."),
+                max: jQuery.validator.format("Por favor, escribe un valor menor o igual a {0}."),
+                min: jQuery.validator.format("Por favor, escribe un valor mayor o igual a {0}.")
+            });
+            $(".showCali").click(function () {
+                var datacontr = $(this).data("idcontra")
+                $.ajax({
+                    type: 'get',
+                    url: "@Url.Action("getQualification")/" + datacontr,
+                    timeout: 0,
+                    success: function (response) {
+                        $("#tableresultbody").html("");
+                        response = $.parseJSON(response)
+                        $.each(response, function (index, row) {
+                            var html = "";
+                            html += "<tr>";
+                                html += "<td>";
+                                    html += '<div class="d-flex align-items-center">' +
+                                                '<div class="mr-3">' +
+                                                    '<a href="#">' +
+                                                        //'<img src="' + row.imagen + '" class="rounded-circle" width="32" height="32" alt="">' +
+                                                    '</a>' +
+                                                '</div>' +
+                                                '<div>' +
+                                                    '<a class="text-default font-weight-semibold text-uppercase">';
+                                                        for (var i = 0; i < row.pointsQualification; i++) {
+                                                            html += '<label><i class="icon icon-star"></i></label>';
+                                                        }
+                                            html += '</a>' +
+                                                    //'<div class="text-muted font-size-sm"><span class="badge badge-mark border-danger mr-1"></span>'+1+'</div>'+
+                                                '</div>' +
+                                            '</div>';
+                                html += "</td>";
+                                html += "<td>";
+                                    html += '<label>'+row.commentsQualification+'</label>';
+                                html += "</td>";
+                                html += "<td>";
+                                    html += '<label>'+row.dateQualification+'</label>';
+                                html += "</td>";
+                            html += "</tr>";
+                            $("#tableresultbody").append(html)
+                        });
+                        $("#recordlikes").modal("show");
+                    }
+                });
+            });
+            $("#formushowsibmit").validate({
+                rules: {
+                    contraOffer: {
+                        required: true
+                    }
+                }
+            });
+            $(".calification").click(function () {
+                var datacontr = $(this).data("idcontra")
+                var qual = 0;
+                var comment = "";
+                Swal.fire({
+                    title: "¿Esta Seguro?",
+                    html: "De calificar al prestador de servicios",
+                    type: 'question',
+                    showCancelButton: true,
+                }).then((result) => {
+                    if (result.value) {
+                        Swal.fire({
+                            title: '¿Que calificacion le darias?',
+                            text: 'Califica del 0 al 5',
+                            icon: 'question',
+                            input: 'range',
+                            confirmButtonText: 'Siguiente &rarr;',
+                            showCancelButton: true,
+                            inputAttributes: {
+                                min: 0,
+                                max: 5,
+                                step: 1
+                            },
+                            inputValue: 0
+                        }).then((result) => {
+                            if (result.value) {
+                                qual = result.value
+                                Swal.fire({
+                                    title: '¿Algún Comentario que destacar?',
+                                    icon: 'question',
+                                    input: 'text',
+                                    confirmButtonText: 'Enviar',
+                                    showCancelButton: true,
+                                }).then((result) => {
+                                    if (result.value) {
+                                        comment = result.value
+                                        $.ajax({
+                                            type: 'get',
+                                            url: "@Url.Action("SaveQualification")/" + datacontr,
+                                            data: { qual: qual,comments:comment  },
+                                            dataType:"json",
+                                            timeout: 0,
+                                            success: function (response) {
+                                                if (response.status == 1) {
+                                                    Swal.fire({
+                                                        type: 'success',
+                                                        title: 'Calificacion guardada con exito',
+                                                        showCancelButton: false,
+                                                        backdrop: false,
+                                                    }).then((result) => {
+                                                        if (result.value) {
+                                                            location.reload()
+                                                        }
+                                                    })
+                                                }
+                                                else {
+                                                    Swal.fire({
+                                                        type: 'error',
+                                                        title: 'Error',
+                                                        text:"Hubo un problema guardando la calificacion, intentelo nuevamente",
+                                                        showCancelButton: false
+                                                    })
+                                                }
+                                            }
+                                        });
+                                    }
+                                })
+                            }
+                        })
+                    }
+                });
+            })
+        });
+        $(".bbbb").click(function () {
+            var koa = $(this).data("href");
+            var text = $(this).data("text");
+            Swal.fire({
+                title: "¿Esta Seguro?",
+                html: text,
+                type: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                backdrop: false,
+            }).then((result) => {
+                if (result.value) {
+                    location.replace(koa)
+                }
+            });
+        });
+
+        $(".aaa").click(function () {
+            var koa = $(this).data("idcontra");
+            var text = $(this).data("text");
+            var slees = $(this).data("selected");
+            Swal.fire({
+                title: "¿Esta Seguro?",
+                html: text,
+                type: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                backdrop: false,
+            }).then((result) => {
+                if (result.value) {
+                    $.get("@Url.Action("acceptContraOffer")/"+koa+"-"+slees, { id: koa }, function (data) {
+                        Swal.fire({
+                            type: 'success',
+                            title: 'Contra oferta seleccionada con Exito!',
+                            showConfirmButton: true
+                        });
+                        //paraa recargar la pagina por si sola
+                        location.reload()
+                    });
+                }
+            });
+        });
+
+
+    var TeamDetailPostBackURL = '/Home/getContraOfferEdit';
+    $(function () {
+        $(".anchorDetail").click(function () {
+
+            var $buttonClicked = $(this);
+            var id = $buttonClicked.attr('data-id');
+            var options = { "backdrop": "static", keyboard: true };
+            $.ajax({
+                type: "GET",
+                url: TeamDetailPostBackURL,
+                data: { "Id": id },
+                datatype: "json",
+                success: function (data) {
+                    data = $.parseJSON(data)
+                    document.getElementById("txtidContraOffers").value = data[0].idContraOffers;
+                    document.getElementById("txtvalorOferta").value =  currencyFormat(data[0].ContraOffer);
+                    document.getElementById("txtDescripcion").value = data[0].descripcion;
+
+                    $('#myModal').modal(options);
+                    $('#myModal').modal('show');
+
+
+
+                },
+                error: function () {
+                    alert("Dynamic content load failed.");
+                }
+            });
+        });
+
+        $("#closbtn").click(function () {
+            $('#myModal').modal('hide');
+        });
+
+
+    });
+
+
+
+
+    $(".updateOffer").click(function () {
+        var idcontraOffers = document.getElementById("txtidContraOffers").value;
+        var ContraOffer = document.getElementById("txtvalorOferta").value;
+        var descripcion = document.getElementById("txtDescripcion").value;
+        Swal.fire({
+            title: "¿Esta Seguro?",
+            html: "De crear esta oferta",
+            type: 'question',
+            showCancelButton: true,
+        }).then((result) => {
+            if (result.value) {
+                comment = result.value
+                $.ajax({
+                    type: 'get',
+                    url: "@Url.Action("UpdateContracOffers")",
+                    data: { id: idcontraOffers, ContraOffer: parseInt(ContraOffer), descripcion: descripcion },
+                    dataType:"json",
+                    timeout: 0,
+                    success: function (response) {
+                        if (response.status == 1) {
+                            Swal.fire({
+                                type: 'success',
+                                title: 'Oferta guardada con exito',
+                                showCancelButton: false,
+                                backdrop: false,
+                            }).then((result) => {
+                                if (result.value) {
+                                    location.reload()
+                                }
+                            })
+                        }
+                        else {
+                            Swal.fire({
+                                type: 'error',
+                                title: 'Error',
+                                text:"Hubo un problema guardando la oferta, intentelo nuevamente",
+                                showCancelButton: false
+                            })
+                        }
+                    }
+                });
+            }
+    });
+})
+
+
+    function currencyFormat(num) {
+        return  num.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
+    }
+
+</script>
+}

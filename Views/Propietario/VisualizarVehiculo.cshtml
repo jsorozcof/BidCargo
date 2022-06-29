@@ -1,0 +1,290 @@
+﻿@model BidCargo_.Models.VehiculoViewModels
+
+<div class="site-blocks-vs inner-page-cover" style="background-image: url(/Content/images/hero_bg_3.jpg)" data-aos="fade" data-stellar-background-ratio="0.5">
+    <div class="container">
+        <div class="row align-items-center justify-content-center text-center">
+            <div class="col-sm-8" data-aos="fade-up" data-aos-delay="400">
+                <br /><br />
+                <h1 class="text-white font-weigh text-uppercase">Informacion De Mis Vehiculos</h1>
+                <br /><br />
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="card shadow-lg mb-5 mt-5 bg-white rounded p-3">
+        <div class="card-title row mt-3 text-center bg-white">
+            <div class="row">
+                <div class="col-sm">
+                    <h5><strong>Propietrario:</strong> @ViewBag.rows[0]["nombreUsuario"]</h5>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="card-body">
+            @using (Html.BeginForm("ActualizarVehiculo", "Propietario", FormMethod.Post, new { enctype = "multipart/form-data" }))
+            {
+                @Html.AntiForgeryToken();
+                <div class="row">
+                    <div class="col-sm">
+                        <div class="form-floating mb-3">
+                            @Html.TextBoxFor(models => models.Placa, "", new { Value = @ViewBag.rows[0]["Placa"].ToString(), @required = "", @class = "form-control", id = "floatingInput", placeholder = "Placa" })
+                            @Html.LabelFor(models => models.Placa)
+                        </div>
+                    </div>
+
+
+                    <div class="col-sm">
+                        <div class="form-floating mb-3">
+
+                            @Html.TextBoxFor(models => models.PlacaRemolque, "", new { Value = @ViewBag.rows[0]["PlacaRemolque"].ToString(), @class = "form-control", @id = "placaremolque", placeholder = "PlacaRemolque" })
+                            <label for="placaremolque">Placa del Remolque</label>
+                            <h6> coloque las placas por punto y coma </h6>
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="row">
+
+                    <div class="col-sm">
+                        <div class="form-floating mb-3">
+
+                            @Html.TextBoxFor(models => models.Marca, "", new { Value = @ViewBag.rows[0]["Marca"].ToString(), @required = "", @class = "form-control", id = "floatingInput", placeholder = "Marca" })
+                            @Html.LabelFor(models => models.Marca)
+                        </div>
+                    </div>
+                    <div class="col-sm">
+                        <div class="form-floating mb-3">
+
+                            @Html.TextBoxFor(models => models.Linea, "", new { Value = @ViewBag.rows[0]["Año"].ToString(), @required = "", @class = "form-control", id = "floatingInput", placeholder = "Modelo" })
+                            @Html.LabelFor(models => models.Linea)
+
+
+                        </div>
+                    </div>
+                    <div class="col-sm">
+                        <div class="form-floating mb-3">
+                            @Html.TextBoxFor(models => models.Modelo, "", new { Value = @ViewBag.rows[0]["Modelo"].ToString(), @required = "", @class = "form-control", id = "floatingInput", placeholder = "Linea" })
+                            @Html.LabelFor(models => models.Modelo)
+                        </div>
+                    </div>
+                </div>
+
+
+
+                <div class="card-body   bg-ligth-bidcargo ">
+                    <h2 class="text-black text-center">Datos Traking</h2>
+                    <br />
+                    <div class="row">
+                        <div class="col-sm">
+                            <div class="form-floating mb-3">
+
+                                @Html.TextBoxFor(models => models.Operador, "", new { Value = @ViewBag.rows[0]["Operador"].ToString(), @required = "", @class = "form-control", id = "floatingInput", placeholder = "operador" })
+                                @Html.LabelFor(models => models.Operador)
+                            </div>
+                        </div>
+                        <div class="col-sm">
+                            <div class="form-floating mb-3">
+
+                                @Html.TextBoxFor(models => models.Usuario, "", new { Value = @ViewBag.rows[0]["Usuario"].ToString(), @required = "", @class = "form-control", id = "floatingInput", placeholder = "Usuario" })
+                                @Html.LabelFor(models => models.Usuario)
+                            </div>
+                        </div>
+                        <div class="col-sm">
+                            <div class="form-floating mb-3">
+
+                                @Html.TextBoxFor(models => models.Contraseña, "", new { Value = @ViewBag.rows[0]["Contraseña"].ToString(), @required = "", @class = "form-control", id = "floatingInput", placeholder = "Contaseña" })
+                                @Html.LabelFor(models => models.Contraseña)
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-sm">
+                            <b> Tarjeta Propiedad:</b>
+                            <a data-href="@Url.Action("DescargarArchivos", new { @ruta = ViewBag.rows[0]["SoportePropiedad"]} )"
+                               data-text="Desea Descargar este Documento" class="btn btn-success btn-sm text-white rounded actiusers">
+                                <i class="fas fa-download"></i>
+                            </a>
+                            @Html.TextBoxFor(model => model.SpPropiedad, new { @required = "", @class = "form-control", type = "file", id = "formFileCC", accept = ".pdf" })
+                            @Html.ValidationMessageFor(models => models.SpPropiedad, "", new { @class = "text-danger" })
+                        </div>
+
+                        <div class="col-sm">
+                            <b>Soat:</b>
+                            <a data-href="@Url.Action("DescargarArchivos", new { @ruta = ViewBag.rows[0]["SoporteSoat"]} )"
+                               data-text="Desea Descargar este Documento" class="btn btn-success btn-sm text-white rounded actiusers">
+                                <i class="fas fa-download"></i>
+                            </a>
+                            @Html.TextBoxFor(models => models.SpSoat, new { @required = "", @class = "form-control", type = "file", id = "formFile", accept = ".pdf" })
+                            @Html.ValidationMessageFor(models => models.SpSoat, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <br />
+                    <div class="row">
+                        <div class="col-sm">
+                            <b>Tecno Mecanica:</b>
+                            <a data-href="@Url.Action("DescargarArchivos", new { @ruta = ViewBag.rows[0]["SoporteMecanica"]} )"
+                               data-text="Desea Descargar este Documento" class="btn btn-success btn-sm text-white rounded actiusers">
+                                <i class="fas fa-download"></i>
+                            </a>
+                            @Html.TextBoxFor(models => models.SpMecanica, new { @required = "", @class = "form-control", type = "file", id = "formFile", accept = ".pdf" })
+                            @Html.ValidationMessageFor(models => models.SpMecanica, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="col-sm">
+                            <b>Todo Riesgo:</b>
+                            <a data-href="@Url.Action("DescargarArchivos", new { @ruta = ViewBag.rows[0]["SoporteTodoRiezdo"]} )"
+                               data-text="Desea Descargar este Documento" class="btn btn-success btn-sm text-white rounded actiusers">
+                                <i class="fas fa-download"></i>
+                            </a>
+                            @Html.TextBoxFor(models => models.SpTodoResgo, new { @required = "", @class = "form-control", type = "file", id = "formFile", accept = ".pdf" })
+                            @Html.ValidationMessageFor(models => models.SpTodoResgo, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+
+                <div class="container text-center">
+                    <button type="submit" class="btn btn-primary">Actualizar</button>
+
+                </div>
+
+
+
+
+            }
+
+        </div>
+
+
+
+
+        
+
+    </div>
+
+  
+
+
+</div>
+
+
+
+
+@section  scripts{
+    @if (Session["message"] != null)
+    {
+        if (Session["message"].ToString() != "")
+        {
+            <script type="text/javascript">
+                Swal.fire({
+                    type: 'success',
+                    title: "Mensaje",
+                    html: '@Session["message"].ToString()',
+                    showConfirmButton: true,
+                });
+            </script>
+        }
+
+        Session.Remove("message");
+    }
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $(".actiusers").click(function () {
+                var texss = $(this).data("text")
+                var href = $(this).data("href")
+                Swal.fire({
+                    title: "¿Esta Seguro?",
+                    html: texss,
+                    type: 'question',
+                    showCancelButton: true,
+                }).then((result) => {
+                    if (result.value) {
+                        location.replace(href)
+                    }
+                });
+            });
+
+            $(".tablesi").DataTable({
+                "ordering": false,
+                language: {
+                    "sProcessing": "Procesando...",
+                    "sLengthMenu": "Mostrar _MENU_ registros",
+                    "sZeroRecords": "No se encontraron resultados",
+                    "sEmptyTable": "No hay Actualmente una oferta disponible",
+                    "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                    "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+                    "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+                    "sInfoPostFix": "",
+                    "sSearch": "Buscar:",
+                    "sUrl": "",
+                    "sInfoThousands": ",",
+                    "sLoadingRecords": "Cargando...",
+                    "oPaginate": {
+                        "sFirst": "Primero",
+                        "sLast": "Último",
+                        "sNext": "Siguiente",
+                        "sPrevious": "Anterior"
+                    },
+                    "oAria": {
+                        "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+                        "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+                    },
+                    "buttons": {
+                        "copy": "Copiar",
+                        "colvis": "Visibilidad"
+                    },
+                }
+            });
+
+            $("#btnExcelView").click(function () {
+                $.blockUI({ message: '<h3>Por favor, espere un momento...</h3>' });
+                var typeId = $('#typeId').val();
+                $.ajax({
+                    type: "GET",
+                    url: '@Url.Action("ExportExelVehiculo", "Home")',
+                    contentType: "application/json; charset=utf-8",
+                    data: { id: typeId},
+                    dataType: "json",
+                }).done(function (data) {
+                    console.log(data.result);
+                    $.unblockUI();
+
+                    if (data.fileName != "") {
+                        window.location.href = "@Url.RouteUrl(new
+                        { Controller = "Home", Action = "Download" })/?file=" + data.fileName;
+                    }
+                });
+                $.unblockUI();
+            });
+        })
+
+
+    function DownloadExcel() {
+        $.blockUI({ message: '<h3>Por favor, espere un momento...</h3>' });
+        var typeId = $('#typeId').val();
+        $.ajax({
+            type: "POST",
+            url: "/Home/ExportExelVehiculo",
+            data: { id: typeId },
+            cache: false,
+            success: function (data) {
+                window.location = '/Home/Download';
+            },
+            error: function (data) {
+                Materialize.toast("Something went wrong. ", 3000, 'rounded');
+            }
+        });
+    }
+    </script>
+}
+

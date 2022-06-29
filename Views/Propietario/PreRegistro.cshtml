@@ -1,0 +1,271 @@
+﻿@model BidCargo_.Models.PropietarioInputModel
+
+@{
+    Session["urlHttp"] = HttpContext.Current.Request.Url.AbsoluteUri.Split('/')[0] + "//" + HttpContext.Current.Request.Url.AbsoluteUri.Split('/')[2];
+}
+<div class="container">
+    <div class="card m-5 shadow-lg rouded">
+        <div class="container">
+            <div class="card-title container mt-3">
+                <h1>Propietario</h1>
+            </div>
+            <div class="card-body w-100 h-100">
+                @using (Html.BeginForm("SavePropietario", "Propietario", FormMethod.Post))
+                {
+                    <div class="row">
+                        @* firt row *@
+                        <div class="col-md-12">
+                            <div class="form-floating mb-3">
+                                @Html.DropDownListFor(model => model.tipoPersona, ViewBag.ListPropietario as SelectList, new { @id = "listadeTipoPersona", @class = "form-control form-control-sm form-select", @required = "" })
+                                <label for="floatingInput">Departamento:</label>
+                            </div>
+                        </div>
+
+                        @* Porpietario juridico *@
+                        <div id="seccionJuridico" class="col-md-6">
+                            <div class="form-floating mb-3">
+                                @Html.TextBoxFor(model => model.nombreContacto, new { @Class = "form-control form-control-sm", @required = "required" })
+                                <label for="floatingInput">Nombres Contacto:</label>
+                            </div>
+                        </div>
+                        <div id="seccionJuridico" class="col-md-6">
+                            <div class="form-floating mb-3">
+                                @Html.TextBoxFor(model => model.apellidoContacto, new { @Class = "form-control form-control-sm", @required = "required" })
+                                <label for="floatingInput">Apellidos Contacto:</label>
+                            </div>
+                        </div>
+                        <div id="seccionJuridico" class="col-md-6">
+                            <div class="form-floating mb-3">
+                                @Html.TextBoxFor(model => model.razonSolical, new { @Class = "form-control form-control-sm", @required = "required" })
+                                <label for="floatingInput">Razón Social:</label>
+                            </div>
+                        </div>
+                        <div id="seccionJuridico" class="col-md-6">
+                            <div class="form-floating mb-3">
+                                @Html.TextBoxFor(model => model.nit, new { @Class = "form-control form-control-sm", @required = "required" })
+                                <label for="floatingInput">Nit:</label>
+                            </div>
+                        </div>
+
+                        @* Fin Porpietario juridico *@
+
+                        @* Porpietario Natural *@
+                        <div id="seccionNatural" class="col-md-6">
+                            <div class="form-floating mb-3">
+                                @Html.DropDownListFor(model => model.tipoDocumento_id, ViewBag.ListTipoDocumento as SelectList, "", new { @class = "form-control form-control-sm form-select", @required = "" })
+                                <label for="floatingInput">Tipo Documento:</label>
+                            </div>
+                        </div>
+                        <div id="seccionNatural" class="col-md-6">
+                            <div class="form-floating mb-3">
+                                @Html.TextBoxFor(model => model.numeroDocumento, new { @Class = "form-control form-control-sm", @required = "required" })
+                                <label for="floatingInput">Numero Documento:</label>
+                            </div>
+                        </div>
+                        <div id="seccionNatural" class="col-md-6">
+                            <div class="form-floating mb-3">
+                                @Html.TextBoxFor(model => model.nombre, new { @Class = "form-control form-control-sm", @required = "required" })
+                                <label for="floatingInput">Nombres:</label>
+                            </div>
+                        </div>
+                        <div id="seccionNatural" class="col-md-6">
+                            <div class="form-floating mb-3">
+                                @Html.TextBoxFor(model => model.apellido, new { @Class = "form-control form-control-sm", @required = "required" })
+                                <label for="floatingInput">Apellidos:</label>
+                            </div>
+                        </div>
+                        @* Fin Porpietario Natural *@
+
+
+
+                        <div class="col-md-6">
+                            <div class="form-floating mb-3">
+                                @Html.TextBoxFor(model => model.direccion, new { @Class = "form-control form-control-sm", @required = "required" })
+                                <label for="floatingInput">Direccion:</label>
+                            </div>
+                        </div>
+
+                        @* secong row *@
+                        <div class="col-md-6">
+                            <div class="form-floating mb-3">
+                                @Html.TextBoxFor(model => model.telefonoFijo, new { @Class = "form-control form-control-sm" })
+                                <label for="floatingInput">Telefono Fijo:</label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-floating mb-3">
+                                @Html.TextBoxFor(model => model.telefonoCelular, new { @Class = "form-control form-control-sm", @required = "required" })
+                                <label for="floatingInput">Telefono Celular:</label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-floating mb-3">
+                                @Html.TextBoxFor(model => model.correoElectronico, new { @Class = "form-control form-control-sm", @required = "required" })
+                                <label for="floatingInput">Correo Electronico:</label>
+                            </div>
+                        </div>
+                        @* third row *@
+
+                        <div class="col-md-6">
+                            <div class="form-floating mb-3">
+                                @Html.DropDownListFor(model => model.idDepartamento, ViewBag.ListaDepartamento as SelectList, "", new { @id = "listadepartamentos", @class = "dropDepartamento form-control form-control-sm form-select", @required = "" })
+                                <label for="floatingInput">Departamento:</label>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6 form-group">
+                            <div class="form-floating mb-3">
+                                @Html.DropDownListFor(model => model.ciudad_id, new SelectList(string.Empty, "idCiudad", "ciudad"), new { @required = "", @class = "form-select", @id = "listaCiudades" })
+                                <label for="floatingInput">Ciudad:</label>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12 text-center">
+                            <br />
+                            <h6 for="termsand">@Html.CheckBoxFor(model => model.terminosYCondiciones, new { @Class = "", @Id = "termsand", @required = "required", @value = "Create Table", @text = "Create Table" })&nbsp;&nbsp;&nbsp;&nbsp;Acepto <a id="terminos" style="cursor: pointer"><font color="#2135C2"><b><u> Términos y Condiciones de BidCargo, </u></b></font></a>.</h6>
+                        </div>
+                        <div class="col-md-12 text-center">
+                            <br />
+                            <h6 for="termsand">@Html.CheckBoxFor(model => model.autorizacionDatosPersonales, new { @Class = "", @Id = "termsand", @required = "required", @value = "Create Table", @text = "Create Table" })&nbsp;&nbsp;&nbsp;&nbsp;He leído <a id="pTratamientoDatos" style="cursor: pointer"><font color="#2135C2"><b><u>Política de Tratamiento de Datos Personales</u></b></font></a>.</h6>
+                        </div>
+                        <div class="col-md-12 text-center">
+                            <br />
+                            <h6 for="termsand">@Html.CheckBoxFor(model => model.politicaTratamientoDatos, new { @Class = "", @Id = "termsand", @required = "required", @value = "Create Table", @text = "Create Table" })&nbsp;&nbsp;&nbsp;&nbsp;Autorizo <a id="dPersonales" style="cursor: pointer"><font color="#2135C2"><b><u>Bidcargo a utilizar mis datos personales</u></b></font></a>.</h6>
+                        </div>
+                    </div>
+
+                    <div class="row form-group mt-3 mb-t">
+                        <div class="col-md-12" style="text-align: center;">
+                            <input type="submit" id="guardar" value="Registrarme" class="btn btn-primary color-boton-bidcargo py-2 px-4 text-white js-addcart-detail js-show-modal1">
+                        </div>
+                    </div>}
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+
+@if (Session["mensaje"] != null)
+    {
+        if (Session["error"] != null)
+        {
+            if (Session["mensaje"].ToString() != "")
+            {
+                <script type="text/javascript">
+                    Swal.fire({
+                            title: "Error!",
+                            html: "@Session["mensaje"].ToString()",
+                            type: 'error'
+                    })
+                </script>
+            }
+        }
+        else
+        {
+            if (Session["mensaje"].ToString() != "")
+            {
+                <script type="text/javascript">
+                Swal.fire({
+                    title: "@Session["mensaje"].ToString()",
+                    html: 'Este Mensaje se cerrar en <strong></strong> segundos.',
+                    type: 'success',
+                    showConfirmButton: false,
+                    width: 700,
+                    padding: '3em',
+                    timer: 5000,
+                    onBeforeOpen: () => {
+                        Swal.showLoading()
+                        timerInterval = setInterval(() => {
+                            Swal.getContent().querySelector('strong')
+                                .textContent = Swal.getTimerLeft()
+                        }, 100)
+                    },
+                    backdrop: false,
+                    onClose: () => {
+                        location.replace('@Url.Action("Login", "Home")');
+                    }
+                });
+                </script>
+            }
+        }
+        Session.Remove("mensaje");
+        Session.Remove("error");
+    }
+<script>
+        var listadepartamentos = document.getElementById("listadepartamentos");
+        listadepartamentos.addEventListener("change", Refresh);
+        Refresh()
+
+        function Refresh() {
+            console.log(listadepartamentos.value)
+            fetch("@Url.Content("~/Propietario/ciudades")" + "?idDepartamento=" + listadepartamentos.value)
+                .then(function (result) {
+                    if (result.ok) {
+                        console.log(result.json);
+                        return result.json();
+                    }
+                })
+                .then(function (data) {
+                    console.log(data);
+                    cbo = document.getElementById("listaCiudades");
+                    cbo.innerHTML = "";
+                    JSON.parse(data).forEach(element => {
+                        let opt = document.createElement("option");
+                        opt.appendChild(document.createTextNode(element.ciudad));
+                        opt.value = element.idCiudad;
+                        cbo.appendChild(opt);
+                    })
+                })
+        }
+        var listadeTipoPersona = document.getElementById("listadeTipoPersona");
+        listadeTipoPersona.addEventListener("change", RefreshTipoPersona);
+        RefreshTipoPersona()
+        //listadeTipoPersona
+        function RefreshTipoPersona()
+        {
+            console.log(listadeTipoPersona.value)
+            if (listadeTipoPersona.value) {
+                if (listadeTipoPersona.value == 1) {
+                    enableSeccionJuridico()
+                    disableseccionNatural();
+                } else if (listadeTipoPersona.value == 2) {
+                    enableseccionNatural()
+                    disableSeccionJuridico();
+                }
+            } else {
+                disableSeccionJuridico();
+                disableseccionNatural();
+            }
+        }
+        function enableSeccionJuridico() {
+            document.querySelectorAll("#seccionJuridico").forEach(Element => {
+                const div = Element.lastElementChild;
+                div.firstElementChild.required = true;
+                Element.style.display = "block";
+            })
+            //document.getElementById("seccionJuridico").style.display = "block"
+        }
+        function disableSeccionJuridico() {
+            document.querySelectorAll("#seccionJuridico").forEach(Element => {
+                const div = Element.lastElementChild;
+                div.firstElementChild.required = false;
+                Element.style.display = "none"
+            })
+        }
+        function enableseccionNatural() {
+            document.querySelectorAll("#seccionNatural").forEach(Element => {
+                const div = Element.lastElementChild;
+                div.firstElementChild.required = true;
+                Element.style.display = "block";
+            })
+        }
+        function disableseccionNatural() {
+            document.querySelectorAll("#seccionNatural").forEach(Element => {
+                const div = Element.lastElementChild;
+                div.firstElementChild.required = false;
+                Element.style.display = "none"
+            })
+        }
+</script>
+}

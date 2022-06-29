@@ -1,0 +1,354 @@
+﻿@{
+
+    Session["urlHttp"] = HttpContext.Current.Request.Url.AbsoluteUri.Split('/')[0] + "//" +
+            HttpContext.Current.Request.Url.AbsoluteUri.Split('/')[2];
+
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="site-blocks-vs inner-page-cover" style="background-image: url(/Content/images/hero_bg_3.jpg)"
+    data-aos="fade" data-stellar-background-ratio="0.5">
+    <div class="container">
+        <div class="row align-items-center justify-content-center text-center">
+            <div class="col-md-8" data-aos="fade-up" data-aos-delay="400">
+                <br /><br />
+                <h1 class="text-white font-weight-light">Con estos datos te contactamos</h1>
+                <br /><br />
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="card shadow-lg mb-5 mt-5 bg-white rounded p-3 ">
+
+
+        <div class="card-body bg-ligth-bidcargo">
+
+            @foreach (var modelo in ViewBag.models)
+            {
+
+                <div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <h6><strong>Trayecto Solicitado:</strong></h6>
+                            <label>@modelo["fromCity"] - @modelo["fromDepartament"] <strong>hacia</strong> @modelo["toCity"] - @modelo["toDepartament"]</label>
+                        </div>
+                        <div class="col-sm-6">
+                            <h6><strong>Dirección Remitente:</strong> </h6><label>@modelo["directionFrom"]</label>
+                        </div>
+                        <div class="col-sm-6">
+                            <h6><strong>Dirección Destinatario:</strong> </h6><label>@modelo["directionTo"]</label>
+                        </div>
+                        <div class="col-sm-4">
+                            <h6><strong>Transportar:</strong></h6> <label>@modelo["typeContainer"], @modelo["typeMerchandise"] en @modelo["typeCargoString"]</label>
+                        </div>
+
+                        @if (Convert.ToInt32(modelo["typeCargo"]) == 4 || Convert.ToInt32(modelo["typeCargo"]) == 1 || Convert.ToInt32(modelo["typeCargo"]) == 2 || Convert.ToInt32(modelo["typeCargo"]) == 5)
+                        {
+                            <div class="col-sm-4">
+                                <h6><strong>Peso:</strong></h6> <label>@modelo["weightContainer"] <strong>@modelo["typeMeasuredString"]</strong></label>
+                            </div>
+                        }
+
+                        @if (Convert.ToInt32(modelo["typeCargo"]) == 3 || Convert.ToInt32(modelo["typeCargo"]) == 6 || Convert.ToInt32(modelo["typeCargo"]) == 7)
+                        {
+                            <div class="col-sm-4">
+                                <h6><strong>Peso:</strong></h6> <label>@modelo["numberUnitsTons"] &nbsp; Toneladas</label>
+                            </div>
+                        }
+
+
+                        @if (Convert.ToInt32(modelo["typeCargo"]) == 2 || Convert.ToInt32(modelo["typeCargo"]) == 4)
+                        {
+
+                            <div class="col-sm-4">
+                                <h6><strong>Medidas:</strong></h6><strong> <strong>Largo: </strong>@modelo["longTied"], <strong>Ancho: </strong>@modelo["widthPlates"], <strong>Alto: </strong>@modelo["highLoose"] en <strong>@modelo["typeDimensionString"]</strong></strong>
+                            </div>
+                            <div class="col-sm-4">
+                                <h6><strong>Número Unidades:</strong></h6><label> @modelo["numberUnitsTons"]</label>
+                            </div>
+                        }
+
+                        @*@if (Convert.ToInt32(modelo["typeCargo"]) >= 3)
+                        {
+                            <div class="col-sm-4">
+                                <h6><strong>Presentación:</strong> </h6><strong><strong>Atado: </strong>@modelo["longTied"], <strong>Planchas: </strong>@modelo["widthPlates"], <strong>Suelta: </strong>@modelo["highLoose"] en <strong>@modelo["typeDimensionString"]</strong></strong>
+                            </div>
+                        }*@
+                        @*<div class="col-sm-4">
+                            <h6><strong>Valor Declarado Mercancía:</strong></h6><label> @String.Format("{0:C0}", Convert.ToInt32(modelo["valueMerchandise"]))</label>
+                        </div>*@
+                        <div class="col-sm-4">
+                            <h6><strong>Tipo Moneda:</strong></h6><label> @modelo["CoinTypeText"]</label>
+                        </div>
+                        @*@if (modelo["valorOferta"] != null)
+                        {
+                            <div class="col-sm-4">
+                                <h6><strong>Valor Oferta:</strong></h6><label> @String.Format("{0:C0}", modelo["valorOferta"])</label>
+                            </div>
+                        }*@
+                        <div class="col-sm-4">
+                            <h6><strong>Fecha de Viaje:</strong></h6><label> @modelo["departure"]  - <strong> @modelo["DateOfServiceIText"] </strong></label>
+                        </div>
+                        <div class="col-sm-4">
+                            <h6><strong>Fecha estimada de arribo:</strong></h6><label> @modelo["arrival"]</label>
+                        </div>
+                        @*<div class="col-sm-4">
+                            <h6><strong>Empresa Cliente:</strong></h6><label> @modelo["companyClient"]</label>
+                        </div>*@
+                        <div class="col-sm-4">
+                            <h6><strong>Factoring:</strong></h6><label> @modelo["FactoringString"]</label>
+                        </div>
+                        <div class="col-sm-4">
+                            <h6><strong>Días de Pago:</strong></h6><label> @modelo["payDays"]</label>
+                        </div>
+                        <div class="col-sm-4">
+                            <h6><strong>Estado:</strong></h6><label> @modelo["statusString"]</label>
+                        </div>
+
+                        <div class="col-sm-4">
+                            <h6><strong>Observación:</strong></h6><label> @modelo["observation"]</label>
+                        </div>
+                        <div class="col-sm-4">
+                            <h6><strong>Documento cargado:</strong></h6>
+                            @if (ViewBag.myDocumentsOfferServiceCarga != null)
+                            {
+
+                                foreach (var rows in ViewBag.myDocumentsOfferServiceCarga)
+                                {
+                                    String nameFile = @rows["srcFile"];
+                                    string correctString = nameFile.Replace("/Content/uploads/", " ");
+
+                                    <a href="@rows["srcFile"]" class="btn btn-block btn-outline-dark" target="_blank"><i class="icon-download"></i>@correctString</a>
+
+                                }
+                            }
+                            @*@if (ViewBag.myDocuments.Count > 0)
+                            {
+                                foreach (var rows in ViewBag.myDocuments)
+                                {
+                                    if (Convert.ToInt32(rows["idDocuments"]) == Convert.ToInt32(rows["idDocuments"]))
+                                    {
+                                        <a href="@rows["srcFile"]" class="btn btn-block btn-outline-dark" title="@rows["nameFile"]" target="_blank"><i class="icon-download"></i> @rows["nameFile"]</a>
+                                    }
+                                }
+                            }*@
+                        </div>
+                    </div>
+                </div>
+
+
+
+
+
+
+
+
+
+
+            }
+        </div>
+
+
+
+
+        <div class="row">
+            <div class="col-md w-100 h-100">
+                <div class="card-title row mt-3 text-center">
+                    <h1>Información Contra-Oferta Propietario</h1>
+                </div>
+                <hr />
+                <div class="card-body bg-ligth-bidcargo">
+                    <h3>Codigo de oferta: @ViewBag.OfferPropietario["codeOffer"]</h3>
+                    <hr />
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h3 class="text-center mb-2">Oferta</h3>
+                            <div class="mt-2 mb-5 ml-5">
+                                <h5 class="mb-4">
+                                    <b> Fecha y Hora de realización: </b> <small>
+                                        @ViewBag.OfferPropietario["FechaHora"]
+                                    </small>
+                                </h5>
+                                <h5 class="mb-4">
+                                    <b> Costo de oferta: </b> <small>
+                                        @String.Format("{0:C2}",
+       @ViewBag.OfferPropietario["Costo"])
+                                </small>
+                            </h5>
+                            <h5 class="mb-4">
+                            </h5>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <h3 class="text-center mb-2">Vehiculo</h3>
+                        <div class="mt-2 ">
+                            <div class="mt-2 ml-5">
+                                <h5 class="mb-4">
+                                    <b> Ubicación del Vehiculo: </b> <small>
+                                        @ViewBag.OfferPropietario["UbicacionVehiculo"]
+                                    </small>
+                                </h5>
+                                <h5 class="mb-4">
+                                    <b> Marca del Vehiculo: </b> <small> @ViewBag.OfferPropietario["Marca"] </small>
+                                </h5>
+                                <h5 class="mb-4">
+                                    <b> Modelo del Vehiculo: </b> <small>
+                                        @ViewBag.OfferPropietario["Modelo"]
+                                    </small>
+                                </h5>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <hr />
+                <div class="row">
+                    <div class="col-md-6">
+                        <h3 class="text-center mb-2 ml-3">Conductor</h3>
+                        <div class="mt-2 mb-5">
+                            <div class="mt-2 ml-5">
+                                <h5 class="mb-4">
+                                    <b> Nombre: </b> <small> @ViewBag.OfferPropietario["nombre"] </small>
+                                </h5>
+                                <h5 class="mb-4">
+                                    <b> Apellido: </b> <small> @ViewBag.OfferPropietario["apellido"] </small>
+                                </h5>
+                                <h5 class="mb-4">
+                                    <b> Tipo de propietario: </b> <small>
+                                        @ViewBag.tipoUsuario["tipoUsuario"]
+                                    </small>
+                                </h5>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <h3 class="text-center mb-2">Documentos</h3>
+                        <div class="mt-2 mb-5">
+                            <b>Descargar:</b>
+                            <a data-href="@Url.Action("DescargarArchivos", new { @ruta = @ViewBag.OfferPropietario["PathDocumento"] } )"
+                               data-text="De Activar este usuario"
+                               class="btn btn-success btn-sm text-white rounded actiusers">
+                                <i class="fas fa-download"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div style="text-align: center;">
+                    <a href=@Url.Action("ContraOfertaPropietarioPempresas", "Home") class="btn btn-secondary text-uppercase returnls btn-sm"><i class="fas fa-backward"></i> Volver</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+</div>
+
+@section scripts{
+@if (Session["message"] != null)
+{
+if (Session["message"].ToString() != "")
+{
+<script type="text/javascript">
+    Swal.fire({
+        type: 'success',
+        title: "Mensaje",
+        html: '@Session["message"].ToString()',
+        showConfirmButton: true,
+    });
+</script>}
+
+Session.Remove("message");
+}
+<script type="text/javascript">
+    $(document).ready(function () {
+        $(".actiusers").click(function () {
+            var texss = $(this).data("text")
+            var href = $(this).data("href")
+            Swal.fire({
+                title: "¿Esta Seguro?",
+                html: texss,
+                type: 'question',
+                showCancelButton: true,
+            }).then((result) => {
+                if (result.value) {
+                    location.replace(href)
+                }
+            });
+        });
+
+        $(".tablesi").DataTable({
+            "ordering": false,
+            language: {
+                "sProcessing": "Procesando...",
+                "sLengthMenu": "Mostrar MENU registros",
+                "sZeroRecords": "No se encontraron resultados",
+                "sEmptyTable": "No hay Actualmente una oferta disponible",
+                "sInfo": "Mostrando registros del START al END de un total de TOTAL registros",
+                "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+                "sInfoFiltered": "(filtrado de un total de MAX registros)",
+                "sInfoPostFix": "",
+                "sSearch": "Buscar:",
+                "sUrl": "",
+                "sInfoThousands": ",",
+                "sLoadingRecords": "Cargando...",
+                "oPaginate": {
+                    "sFirst": "Primero",
+                    "sLast": "Último",
+                    "sNext": "Siguiente",
+                    "sPrevious": "Anterior"
+                },
+                "oAria": {
+                    "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+                    "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+                },
+                "buttons": {
+                    "copy": "Copiar",
+                    "colvis": "Visibilidad"
+                },
+            }
+        });
+
+        $("#btnExcelView").click(function () {
+            $.blockUI({ message: '<h3>Por favor, espere un momento...</h3>' });
+            var typeId = $('#typeId').val();
+            $.ajax({
+                type: "GET",
+                url: '@Url.Action("ExportExelVehiculo", "Home")',
+                contentType: "application/json; charset=utf-8",
+                data: { id: typeId },
+                dataType: "json",
+            }).done(function (data) {
+                console.log(data.result);
+                $.unblockUI();
+
+                if (data.fileName != "") {
+                    window.location.href = "@Url.RouteUrl(new
+                    { Controller = "Home", Action = "Download" })/?file=" + data.fileName;
+                }
+            });
+            $.unblockUI();
+        });
+    })
+
+
+    function DownloadExcel() {
+        $.blockUI({ message: '<h3>Por favor, espere un momento...</h3>' });
+        var typeId = $('#typeId').val();
+        $.ajax({
+            type: "POST",
+            url: "/Home/ExportExelVehiculo",
+            data: { id: typeId },
+            cache: false,
+            success: function (data) {
+                window.location = '/Home/Download';
+            },
+            error: function (data) {
+                Materialize.toast("Something went wrong. ", 3000, 'rounded');
+            }
+        });
+    }
+
+    
+</script>
+}

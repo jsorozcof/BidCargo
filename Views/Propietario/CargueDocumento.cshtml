@@ -1,0 +1,189 @@
+﻿@model BidCargo_.Models.PropietarioFileInptModel
+@{
+    Session["urlHttp"] = HttpContext.Current.Request.Url.AbsoluteUri.Split('/')[0] + "//" + HttpContext.Current.Request.Url.AbsoluteUri.Split('/')[2];
+}
+
+
+
+<div class="site-blocks-vs inner-page-cover" style="background-image: url(/Content/images/hero_bg_3.jpg)" data-aos="fade" data-stellar-background-ratio="0.5">
+    <div class="container">
+        <div class="row align-items-center justify-content-center text-center">
+            <div class="col-md-8" data-aos="fade-up" data-aos-delay="400">
+                <br /><br />
+                <h1 class="text-white font-weight-light">Cargue Documentos Propietarios</h1>
+                <br /><br />
+            </div>
+        </div>
+    </div>
+</div>
+
+@using (Html.BeginForm("SaveFiles", "Propietario", FormMethod.Post,
+    new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken();
+    <div class="container">
+        <div class="card shadow-lg mb-5 mt-5 bg-white rounded p-3 ">
+            <div class="row">
+                <div class="col-md w-100 h-100">
+                    <div class="card-title row mt-3 text-center">
+                        <h1>Informacion Propietario</h1>
+                    </div>
+                    <hr />
+                    <div class="card-body bg-ligth-bidcargo">
+                        <div class="text-center mt-5 mb-5">
+                            <h5 class="mb-4">
+                                <b> Tipo: </b> <small> @ViewBag.propietarioView.nombreTipo </small>
+                            </h5>
+                            <h5 class="mb-4">
+                                <b>Nombres:</b> <small> @ViewBag.propietarioView.nombres </small>
+                            </h5>
+                            <h5 class="mb-4">
+                                <b>Apellidos:</b> <small> @ViewBag.propietarioView.apellidos </small>
+                            </h5>
+                            <h5 class="mb-4">
+                                <b>Teléfono:</b> <small> @ViewBag.propietarioView.telefono </small>
+                            </h5>
+                            <h5 class="mb-4">
+                                <b>Nro identificación:</b> <small> @ViewBag.propietarioView.cedula </small>
+                            </h5>
+                            <h5 class="mb-4">
+                                <b>Correo electrónico:</b> <small> @ViewBag.propietarioView.correo </small>
+                            </h5>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md w-100 h-100">
+                    <div class="card-title mt-3 text-center">
+                        <h1>Soportes</h1>
+                    </div>
+                    <hr />
+                    <div class="card-body">
+                        <div class="mb-4">
+                            @* propietario natural *@
+                            <div id="seccionNatural" class="form-group">
+                                <label class="form-label">RUT</label>
+                                @Html.TextBoxFor(d => d.RUTNatural, new { @class = "form-control", type = "file", accept = ".pdf" })
+                            </div>
+
+                            <div id="seccionNatural" class="form-group">
+                                <label class="form-label">CC</label>
+                                @Html.TextBoxFor(d => d.CCNatural, new { @class = "form-control", type = "file", accept = ".pdf" })
+                            </div>
+
+                            <div id="seccionNatural" class="form-group">
+                                <label class="form-label">Certificación Bancaria</label>
+                                @Html.TextBoxFor(d => d.CBNatural, new { @class = "form-control", type = "file", accept = ".pdf" })
+                            </div>
+                            @* Fin propietario natural *@
+
+                            @* Propietario Juridico *@
+
+                            <div id="seccionJuridico" class="form-group">
+                                <label class="form-label">RUT</label>
+                                @Html.TextBoxFor(d => d.RUTJuridica, new { @class = "form-control", type = "file", accept = ".pdf" })
+                            </div>
+
+                            <div id="seccionJuridico" class="form-group">
+                                <label class="form-label">CC Representante</label>
+                                @Html.TextBoxFor(d => d.CCJuridica, new { @class = "form-control", type = "file", accept = ".pdf" })
+                            </div>
+
+                            <div id="seccionJuridico" class="form-group">
+                                <label class="form-label">Camara de comercio</label>
+                                @Html.TextBoxFor(d => d.CamaraComercio, new { @class = "form-control", type = "file", accept = ".pdf" })
+                            </div>
+
+                            <div id="seccionJuridico" class="form-group">
+                                <label class="form-label">NIT</label>
+                                @Html.TextBoxFor(d => d.NIT, new { @class = "form-control", type = "file", accept = ".pdf" })
+                            </div>
+
+                            <div id="seccionJuridico" class="form-group">
+                                <label class="form-label">Certificación Bancaria</label>
+                                @Html.TextBoxFor(d => d.CBJuridica, new { @class = "form-control", type = "file", accept = ".pdf" })
+                            </div>
+
+                            @* Fin Propietario Juridico *@
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row form-group mt-4 me-2 mb-3">
+                <div class="col-md-12 d-flex justify-content-end">
+                    <input type="submit" id="guardar" value="Enviar" class="btn btn-primary py-2 px-4 text-white js-addcart-detail js-show-modal1">
+                </div>
+            </div>
+        </div>
+    </div>
+
+}
+@section scripts{
+    @if (Session["message"] != null)
+    {
+        if (Session["message"].ToString() != "")
+        {
+            <script type="text/javascript">
+                Swal.fire({
+                    title: "Mensaje",
+                    html: "@Session["message"].ToString()",
+                    type : '@Session["type"].ToString()',
+                    showConfirmButton: true,
+
+                });
+            </script>
+        }
+        Session.Remove("message");
+        Session.Remove("type");
+    }
+<script>
+
+        function SoporteTipoUsuario()
+        {
+            const tipoUsuario = @ViewBag.propietarioView.tipoUsuario;
+            console.log(tipoUsuario)
+
+            if (tipoUsuario == 1) //propietario natural
+            {
+                enableseccionNatural();
+                disableSeccionJuridico();
+            }
+            else if (tipoUsuario == 2) //propietario juridico
+            {
+                enableSeccionJuridico();
+                disableseccionNatural();
+            }
+        }
+
+        SoporteTipoUsuario();
+
+        function enableSeccionJuridico() {
+            document.querySelectorAll("#seccionJuridico").forEach(Element => {
+                //const div = Element.lastElementChild;
+                //div.firstElementChild.required = true;
+                Element.style.display = "block";
+            })
+            //document.getElementById("seccionJuridico").style.display = "block"
+        }
+        function disableSeccionJuridico() {
+            document.querySelectorAll("#seccionJuridico").forEach(Element => {
+                //const div = Element.lastElementChild;
+                //div.firstElementChild.required = false;
+                Element.style.display = "none"
+            })
+        }
+        function enableseccionNatural() {
+            document.querySelectorAll("#seccionNatural").forEach(Element => {
+                //const div = Element.lastElementChild;
+                //div.firstElementChild.required = true;
+                Element.style.display = "block";
+            })
+        }
+        function disableseccionNatural() {
+            document.querySelectorAll("#seccionNatural").forEach(Element => {
+                //const div = Element.lastElementChild;
+                //div.firstElementChild.required = false;
+                Element.style.display = "none"
+            })
+        }
+</script>
+}

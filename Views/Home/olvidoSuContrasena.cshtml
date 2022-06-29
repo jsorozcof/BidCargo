@@ -1,0 +1,76 @@
+﻿@model BidCargo_.Models.olvidoSuContrasena
+@{
+    Session["urlHttp"] = HttpContext.Current.Request.Url.AbsoluteUri.Split('/')[0] + "//" + HttpContext.Current.Request.Url.AbsoluteUri.Split('/')[2];
+    ViewBag.Title = "olvidoSuContrasena";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using (Html.BeginForm("recuperarContrasena", "Home", FormMethod.Post))
+{
+
+
+    <div class="sufee-login d-flex align-content-center flex-wrap" style="background-image: url(/Content/images/hero_bg_1.jpg);">
+        <div class="container">
+            <br />
+            <div class="row">
+                <div class="col-md-4 col-lg-4 mb-4 mb-lg-0">
+                </div>
+                <div class="col-md-4 col-lg-4 mb-4 mb-lg-0" style="background-color:white; width:90%; margin:auto;">
+                    <div class="login-content" style="background-color:white; margin:auto; text-align:center">
+                        <div class="login-logo">
+                            <a href="#">
+                                <br>
+                                <img class="align-content" src="../Content/images/LogoBidCargo.png" alt="" />
+                            </a>
+                            <br>
+                            <br>
+                        </div>
+                        <label>Usuario/Email</label>
+                        @Html.TextBoxFor(model => model.email, new { @class = "form-control", @placeholder = "Email", @required = "email", @Style = "width:80%; margin:auto" })
+                        <br />
+                        <button class="btn btn-secondary btn-lg btn-block" style="width:70%; margin:auto;">RECUPERAR</button>
+                        <br /><br /><br />
+                    </div>
+                </div>
+                <div class="col-md-4 col-lg-4 mb-4 mb-lg-0">
+                </div>
+
+            </div>
+            <br />
+        </div>
+    </div>
+}
+
+
+@section  scripts{
+    @if (Session["message"] != null)
+    {
+        if (Session["message"].ToString() != "")
+        {
+            <script type="text/javascript">
+                Swal.fire({
+                    title: "@Session["message"].ToString()",
+                    html: 'Este Mensaje se cerrar en <strong></strong> segundos.',
+                    type: 'success',
+                    showConfirmButton: true,
+                    width: 700,
+                    padding: '3em',
+                    timer: 6000,
+                    /*onBeforeOpen: () => {
+                        Swal.showLoading()
+                        timerInterval = setInterval(() => {
+                            Swal.getContent().querySelector('strong')
+                                .textContent = Swal.getTimerLeft()
+                        }, 100)
+                    },
+                    backdrop: false,
+                    onClose: () => {
+                    }*/
+                });
+            </script>
+            Session.Remove("message");
+        }
+
+    }
+}
+

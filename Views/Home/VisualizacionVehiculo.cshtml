@@ -1,0 +1,72 @@
+﻿@{
+    Session["urlHttp"] = HttpContext.Current.Request.Url.AbsoluteUri.Split('/')[0] + "//" + HttpContext.Current.Request.Url.AbsoluteUri.Split('/')[2];
+    ViewBag.Title = "DashBoard";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+    @Html.AntiForgeryToken();
+<div class="container">
+    <div class="card shadow-lg mb-5 mt-5 bg-white rounded p-3 ">
+        <div class="row">
+            <div class="col-md w-100 h-100">
+                <div class="card-title row mt-3 text-center">
+                    <h1>Vehiculo</h1>
+                </div>
+                <hr />
+                <div class="card-body bg-ligth-bidcargo">
+                    <div class="text-center mt-5 mb-5">
+                        <h5 class="mb-4">
+                            <b> Placa: </b> <small> @ViewBag.rows["Placa"] </small>
+                        </h5>
+                        <h5 class="mb-4">
+                            <b>Tipo:</b> <small> @ViewBag.rows["TipoDeVehiculo"]</small>
+                        </h5>
+                        <h5 class="mb-4">
+                            <b>Marca:</b> <small> @ViewBag.rows["Marca"] </small>
+                        </h5>
+                        <h5 class="mb-4">
+                            <b>Operador:</b> <small> @ViewBag.rows["Operador"]</small>
+                        </h5>
+                        <h5 class="mb-4">
+                            <b>Usuario:</b> <small> @ViewBag.rows["Usuario"]</small>
+                        </h5>
+                        <h5 class="mb-4">
+                            <b>Contraseña:</b> <small> @ViewBag.rows["Contraseña"]</small>
+                        </h5>
+                        <h5 class="mb-4">
+                            <b>Linea:</b> <small> @ViewBag.rows["Año"]</small>
+                        </h5>
+                       
+                    </div>
+                </div>
+            </div>
+            <div class="col-md w-100 h-100">
+                <div class="card-title mt-3 text-center">
+                    <h1>Soportes</h1>
+                </div>
+                <hr />
+                <div class="card-body">
+                    <div class="mb-4">
+
+                        <div id="seccionnatural" class="form-group">
+                            <label class="form-label">TAERJETA DE PROPIEDAD</label>
+
+                        </div>
+
+                        <div id="seccionnatural" class="form-group">
+                            <label class="form-label">SOAT </label>
+                        </div>
+
+                        <div id="seccionnatural" class="form-group">
+                            <label class="form-label">TECNO MECANICA</label>
+                        </div>
+                        <div id="seccionnatural" class="form-group">
+                            <label class="form-label">TECNO MECANICA</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

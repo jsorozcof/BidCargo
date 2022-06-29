@@ -1,0 +1,383 @@
+﻿@model BidCargo_.Models.ContraOfertaPropietario
+
+<div class="site-blocks-vs inner-page-cover" style="background-image: url(/Content/images/hero_bg_3.jpg)" data-aos="fade" data-stellar-background-ratio="0.5">
+    <div class="container">
+        <div class="row align-items-center justify-content-center text-center">
+            <div class="col-md-8" data-aos="fade-up" data-aos-delay="400">
+                <br /><br />
+                <h1 class="text-white font-weight-light">Realiza una contra oferta</h1>
+                <br /><br />
+            </div>
+        </div>
+    </div>
+</div>
+
+@using (Html.BeginForm("GuardarContraOferta", "Propietario", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+
+    <div class="container">
+        <div class="card shadow-lg mb-5 mt-5 bg-white rounded p-3">
+            <div class="card-title row mt-3 mb-3">
+                <div class="">
+                    <div class="col-sm d-flex justify-content-start">
+                        @*<h1 class="ms-3">Contra oferta</h1>
+                        <br />*@
+                        <h5 class="ms-3">Oferta: @ViewBag.codigo </h5>
+                    </div>
+                    <div class="col-sm d-flex justify-content-end">
+                        <a href="" class="disabled-cursor"><img src="/Content/images/logoLetras.png" alt="Alternate Text" class="img-fluid" style="height: 50px" /></a>
+                    </div>
+
+
+
+
+                    <div class="card-body bg-ligth-bidcargo">
+
+                        @foreach (var modelo in ViewBag.models)
+                        {
+
+                            <div>
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <h6><strong>Trayecto Solicitado:</strong></h6>
+                                        <label>@modelo["fromCity"] - @modelo["fromDepartament"] <strong>hacia</strong> @modelo["toCity"] - @modelo["toDepartament"]</label>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <h6><strong>Dirección Remitente:</strong> </h6><label>@modelo["directionFrom"]</label>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <h6><strong>Dirección Destinatario:</strong> </h6><label>@modelo["directionTo"]</label>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <h6><strong>Transportar:</strong></h6> <label>@modelo["typeContainer"], @modelo["typeMerchandise"] en @modelo["typeCargoString"]</label>
+                                    </div>
+
+                                    @if (Convert.ToInt32(modelo["typeCargo"]) == 4 || Convert.ToInt32(modelo["typeCargo"]) == 1 || Convert.ToInt32(modelo["typeCargo"]) == 2 || Convert.ToInt32(modelo["typeCargo"]) == 5)
+                                    {
+                                        <div class="col-sm-4">
+                                            <h6><strong>Peso:</strong></h6> <label>@modelo["weightContainer"] <strong>@modelo["typeMeasuredString"]</strong></label>
+                                        </div>
+                                    }
+
+                                    @if (Convert.ToInt32(modelo["typeCargo"]) == 3 || Convert.ToInt32(modelo["typeCargo"]) == 6 || Convert.ToInt32(modelo["typeCargo"]) == 7)
+                                    {
+                                        <div class="col-sm-4">
+                                            <h6><strong>Peso:</strong></h6> <label>@modelo["numberUnitsTons"] &nbsp; Toneladas</label>
+                                        </div>
+                                    }
+
+
+                                    @if (Convert.ToInt32(modelo["typeCargo"]) == 2 || Convert.ToInt32(modelo["typeCargo"]) == 4)
+                                    {
+
+                                        <div class="col-sm-4">
+                                            <h6><strong>Medidas:</strong></h6><strong> <strong>Largo: </strong>@modelo["longTied"], <strong>Ancho: </strong>@modelo["widthPlates"], <strong>Alto: </strong>@modelo["highLoose"] en <strong>@modelo["typeDimensionString"]</strong></strong>
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <h6><strong>Número Unidades:</strong></h6><label> @modelo["numberUnitsTons"]</label>
+                                        </div>
+                                    }
+
+                                    @*@if (Convert.ToInt32(modelo["typeCargo"]) >= 3)
+                        {
+                            <div class="col-sm-4">
+                                <h6><strong>Presentación:</strong> </h6><strong><strong>Atado: </strong>@modelo["longTied"], <strong>Planchas: </strong>@modelo["widthPlates"], <strong>Suelta: </strong>@modelo["highLoose"] en <strong>@modelo["typeDimensionString"]</strong></strong>
+                            </div>
+                        }*@
+                                    @*<div class="col-sm-4">
+                            <h6><strong>Valor Declarado Mercancía:</strong></h6><label> @String.Format("{0:C0}", Convert.ToInt32(modelo["valueMerchandise"]))</label>
+                        </div>*@
+                                    <div class="col-sm-4">
+                                        <h6><strong>Tipo Moneda:</strong></h6><label> @modelo["CoinTypeText"]</label>
+                                    </div>
+                                    @*@if (modelo["valorOferta"] != null)
+                        {
+                            <div class="col-sm-4">
+                                <h6><strong>Valor Oferta:</strong></h6><label> @String.Format("{0:C0}", modelo["valorOferta"])</label>
+                            </div>
+                        }*@
+                                    <div class="col-sm-4">
+                                        <h6><strong>Fecha de Viaje:</strong></h6><label> @modelo["departure"]  - <strong> @modelo["DateOfServiceIText"] </strong></label>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <h6><strong>Fecha estimada de arribo:</strong></h6><label> @modelo["arrival"]</label>
+                                    </div>
+                                    @*<div class="col-sm-4">
+                            <h6><strong>Empresa Cliente:</strong></h6><label> @modelo["companyClient"]</label>
+                        </div>*@
+                                    <div class="col-sm-4">
+                                        <h6><strong>Factoring:</strong></h6><label> @modelo["FactoringString"]</label>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <h6><strong>Días de Pago:</strong></h6><label> @modelo["payDays"]</label>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <h6><strong>Estado:</strong></h6><label> @modelo["statusString"]</label>
+                                    </div>
+
+                                    <div class="col-sm-4">
+                                        <h6><strong>Observación:</strong></h6><label> @modelo["observation"]</label>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <h6><strong>Documento cargado:</strong></h6>
+                                        @if (ViewBag.myDocumentsOfferServiceCarga != null)
+                                        {
+
+                                            foreach (var rows in ViewBag.myDocumentsOfferServiceCarga)
+                                            {
+                                                String nameFile = @rows["srcFile"];
+                                                string correctString = nameFile.Replace("/Content/uploads/", " ");
+
+                                                <a href="@rows["srcFile"]" class="btn btn-block btn-outline-dark" target="_blank"><i class="icon-download"></i>@correctString</a>
+
+                                            }
+                                        }
+                                        @*@if (ViewBag.myDocuments.Count > 0)
+                            {
+                                foreach (var rows in ViewBag.myDocuments)
+                                {
+                                    if (Convert.ToInt32(rows["idDocuments"]) == Convert.ToInt32(rows["idDocuments"]))
+                                    {
+                                        <a href="@rows["srcFile"]" class="btn btn-block btn-outline-dark" title="@rows["nameFile"]" target="_blank"><i class="icon-download"></i> @rows["nameFile"]</a>
+                                    }
+                                }
+                            }*@
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+
+
+
+
+
+
+
+                        }
+                    </div>
+
+
+
+
+
+
+                </div>
+              
+            </div>
+            <div class="card-body w-100 h-100">
+                <form class="form-floating">
+
+                    <div class="row bg-ligth-bidcargo mx-1">
+                        <div class="col-sm mt-4">
+                            <div class="form-floating mb-3">
+                                <h5 class="mb-4">
+                                    <b>Nombre: </b><small>@ViewBag.propietarioView.nombres</small>
+                                </h5>
+                            </div>
+                        </div>
+                        <div class="col-sm mt-4">
+                            <div class="form-floating mb-3">
+                                <h5 class="mb-4">
+                                    <b>Teléfono: </b><small>@ViewBag.propietarioView.telefono</small>
+                                </h5>
+                            </div>
+                        </div>
+                        <div class="col-sm mt-4">
+                            <div class="form-floating mb-3">
+                                <h5 class="mb-4">
+                                    <b>Correo: </b><small>@ViewBag.propietarioView.correo</small>
+                                </h5>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row mt-5">
+                        <div class="col-sm">
+                            <div class="form-floating mb-3">
+                                @Html.DropDownListFor(model => model.IdVehiculo, ViewBag.ListaVehiculos as SelectList, "Seleccione", new { @required = "", @class = "form-select", @id = "idVehiculo" })
+                                <label for="idVehiculo">Vehículo</label>
+                            </div>
+                        </div>
+                        <div class="col-sm">
+                            <div class="form-floating mb-3">
+                                @Html.TextBoxFor(model => model.UbicacionVehiculo, new { @Class = "form-control", @id = "floatingUbVehiInput", @required = "required" })
+                                <label for="floatingUbVehiInput">Ubicación del vehículo</label>
+                            </div>
+                        </div>
+                        <div class="col-sm">
+                            <div class="form-floating mb-3">
+                                @Html.TextBoxFor(model => model.FechaHora, new { @Class = "form-control", @id = "floatingdatepickerInput", @required = "required", @autocomplete = "off" })
+                                <label for="floatingdatepickerInput">Fecha de disponibilidad</label>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="row bg-ligth-bidcargo mt-4 mx-1">
+                        <div class="col-sm mt-4">
+                            <div class="form-floating mb-3">
+                                <h5 class="mb-4">
+                                    <b>Tipo de Vehículo: </b><small id="lblTipoVehi"></small>
+                                </h5>
+                            </div>
+                        </div>
+                        <div class="col-sm mt-4">
+                            <div class="form-floating mb-3">
+                                <h5 class="mb-4">
+                                    <b>Marca: </b><small id="lblMarca"></small>
+                                </h5>
+                            </div>
+                        </div>
+                        <div class="col-sm mt-4">
+                            <div class="form-floating mb-3">
+                                <h5 class="mb-4">
+                                    <b>Modelo: </b><small id="lblModelo"></small>
+                                </h5>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-floating my-5">
+                        @Html.DropDownListFor(model => model.IdConductor, ViewBag.ListaConductores as SelectList, "Seleccione", new { @required = "", @class = "form-select", @id = "idConductor" })
+                        <label for="idConductor">Conductor</label>
+                    </div>
+
+                    <div class="row bg-ligth-bidcargo mx-1">
+                        <div class="col-sm mt-4">
+                            <div class="form-floating mb-3">
+                                <h5 class="mb-4">
+                                    <b>Ciudad: </b><small id="lblCiudad"></small>
+                                </h5>
+                            </div>
+                        </div>
+                        <div class="col-sm mt-4">
+                            <div class="form-floating mb-3">
+                                <h5 class="mb-4">
+                                    <b>Teléfono: </b><small id="lblCelular"></small>
+                                </h5>
+                            </div>
+                        </div>
+                        <div class="col-sm mt-4">
+                            <div class="form-floating mb-3">
+                                <h5 class="mb-4">
+                                    <b>Correo: </b><small id="lblCorreo"></small>
+                                </h5>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row mt-5">
+                        <div class="col-sm">
+                            <div class="form-floating mb-3">
+                                @Html.TextAreaFor(model => model.Observacion, new { @Class = "form-control", @id = "floatingObservacionesInput", @required = "required" })
+                                <label for="floatingObservacionesInput">Observaciones</label>
+                            </div>
+                        </div>
+                        <div class="col-sm">
+                            <div class="form-floating mb-3">
+                                @Html.TextBoxFor(model => model.Costo, new { @Class = "form-control", @id = "floatingPrecioInput", @required = "required" })
+                                <label for="floatingPrecioInput">Precio contra oferta</label>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="row mb-3 mt-5">
+                        <div class="col-sm">
+                            <label for="idEmpresa">Empresas de transporte</label>
+                            @Html.DropDownListFor(model => model.Empresas, ViewBag.ListaEmpresas as SelectList, "", new { @required = "", @class = "form-select form-select-lg chosen-company", @id = "idEmpresa", multiple = "multiple", data_placeholder="Seleccione algunas empresas" })
+
+                        </div>
+                        <div class="col-sm">
+                            <label for="formFile" class="form-label">Documentos</label>
+                            @Html.TextBoxFor(model => model.FileDocumento, new { @class = "form-control form-control-lg", type = "file", @id = "formFile", accept = ".pdf" })
+                        </div>
+                    </div>
+
+                    <div class="row form-group mt-5">
+                        <div class="col-md-12 d-flex justify-content-center">
+                            <input type="submit" id="guardar" value="Registrar" class="btn btn-primary py-2 px-4 text-white js-addcart-detail js-show-modal1">
+                        </div>
+                    </div>
+
+                    @*<div class="d-flex justify-content-center mt-5">
+                            <button type="button" class="btn btn-primary text-white ">
+                                Enviar
+                            </button>
+                        </div>*@
+
+                    @*<a href=@Url.Action("RegistroConductor", "Conductor")>Vista Registro</a>*@
+
+                </form>
+            </div>
+        </div>
+    </div>
+
+}
+
+@section Styles{
+    @Styles.Render("~/Content/chosen");
+
+}
+
+@section Scripts{
+
+    @Scripts.Render("~/bundles/chosen");
+}
+
+<script>
+    $(function () {
+        $("#floatingdatepickerInput").datepicker({
+            autoclose: true
+        });
+    });
+
+    var cboVehiculo = document.getElementById("idVehiculo");
+    cboVehiculo.addEventListener("change", Refresh);
+    Refresh();
+
+    function Refresh() {
+        fetch("@Url.Content("~/Propietario/ConsultarInfoVehiculo")" + "?idVehiculo=" + idVehiculo.value)
+            .then(function (result) {
+                if (result.ok) {
+                    return result.json();
+                }
+            }).then(function (data) {
+                JSON.parse(data).forEach(function (element) {
+                    document.getElementById("lblTipoVehi").innerHTML = element.tipoVehiculo;
+                    document.getElementById("lblMarca").innerHTML = element.marca;
+                    document.getElementById("lblModelo").innerHTML = element.modelo;
+                })
+            })
+    }
+
+    var cboConductor = document.getElementById("idConductor");
+    cboConductor.addEventListener("change", RefreshConductor);
+    RefreshConductor();
+
+    function RefreshConductor() {
+        fetch("@Url.Content("~/Propietario/ConsultarConductor")" + "?idConductor=" + idConductor.value)
+            .then(function (result) {
+                if (result.ok) {
+                    return result.json();
+                }
+            }).then(function (data) {
+                JSON.parse(data).forEach(function (element) {
+                    document.getElementById("lblCiudad").innerHTML = element.ciudad;
+                    document.getElementById("lblCelular").innerHTML = element.celular;
+                    document.getElementById("lblCorreo").innerHTML = element.correo;
+
+                })
+            })
+    }
+
+    $(document).ready(function () {
+
+        $(".chosen-company").chosen({ width: "100%" });
+
+    });
+
+
+</script>

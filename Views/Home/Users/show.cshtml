@@ -1,0 +1,175 @@
+﻿
+@{
+    ViewBag.Title = "Perfil";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="site-blocks-vs inner-page-cover" style="background-image: url(/Content/images/hero_bg_3.jpg)" data-aos="fade" data-stellar-background-ratio="0.5">
+    <div class="container">
+        <div class="row align-items-center justify-content-center text-center">
+            <div class="col-md-8" data-aos="fade-up" data-aos-delay="400">
+                <br /><br />
+                @*<h1 class="text-white font-weight-light">@ViewBag.data["nombre"] @ViewBag.data["apellidoPaterno"]</h1>*@
+                <h1 class="text-white font-weight-light">Información Basica </h1>
+                <br /><br />
+            </div>
+        </div>
+    </div>
+</div>
+<form action="Completar" method="post" enctype="multipart/form-data">
+    <div class="site-section bg-light p-5">
+        <div class="container">
+            <div class="pt-5 pl-5 pr-5 bg-white">
+                <div class="row">
+                    <div class="col-md-12 mb-5">
+                        <div class="row form-group">
+                            <div class="col-md-4 form-group">
+                                <label class="text-black" for="fname">Razón Social</label>
+                                <input type="text" readonly value="@ViewBag.row["usuarioFacebook"]" class="form-control form-control-sm" />
+                            </div>
+                            <div class="col-md-4 form-group">
+                                <label class="text-black" for="lname">Nit</label>
+                                <input type="text" readonly value="@ViewBag.row["cedula"]" class="form-control form-control-sm" />
+                            </div>
+                            <div class="col-md-4 form-group">
+                                <label class="text-black" for="fname">Teléfono fijo</label>
+                                <input type="text" readonly value="@ViewBag.row["Edificio"]" class="form-control form-control-sm" />
+                            </div>
+                            <div class="col-md-4 form-group">
+                                <label class="text-black" for="lname">Dirección</label>
+                                <input type="text" readonly value="@ViewBag.row["direccion"]" class="form-control form-control-sm" />
+                            </div>
+                            <div class="col-md-4 form-group">
+                                <label class="text-black" for="email">Nombre contacto</label>
+                                <input type="text" readonly value="@ViewBag.row["nombre"]" class="form-control form-control-sm" />
+                            </div>
+                            <div class="col-md-4 form-group">
+                                <label class="text-black" for="email">Apellido contacto</label>
+                                <input type="text" readonly value="@ViewBag.row["apellidoPaterno"]" class="form-control form-control-sm" />
+                            </div>
+                            <div class="col-md-4 form-group">
+                                <label class="text-black" for="message">Correo contacto</label>
+                                <input type="text" readonly value="@ViewBag.row["email"]" class="form-control form-control-sm" />
+                            </div>
+                            <div class="col-md-4 form-group">
+                                <label class="text-black" for="message">Numero Contacto</label>
+                                <input type="text" readonly value="@ViewBag.row["numeroCelular"]" class="form-control form-control-sm" />
+                            </div>
+                            <div class="col-md-4 form-group">
+                                <label class="text-black" for="message">Departamento</label>@{ ViewBag.jss = "No Asignado"; if (ViewBag.dataProfile != null) { ViewBag.jss = ViewBag.dataProfile["nameDepartament"]; } }
+                                <input type="text" readonly value="@ViewBag.jss" class="form-control form-control-sm" />
+                            </div>
+                            <div class="col-md-4 form-group">
+                                <label class="text-black" for="message">Ciudad</label>
+                                <input type="text" readonly value="@ViewBag.row["nameCiudad"]" class="form-control form-control-sm" />
+                            </div>
+
+                            <div class="col-md-4 form-group">
+                                <label class="text-black" for="message">Tipo de Empresa</label>@{ ViewBag.companys = ""; }
+                                @foreach (var row in ViewBag.profileTypeCompany)
+                                {
+                                    ViewBag.companys += row["Company"];
+                                }
+                                <textarea class="form-control form-control-sm" readonly>@ViewBag.companys</textarea>
+                            </div>
+                            <div class="col-sm-12 border-bottom mb-3 pb-2">
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <h4>Usuario BidCargo</h4>
+                                    </div>
+                                    <div class="col-sm-6 text-center">
+                                        <a class="btn btn-sm btn-outline-secondary" id="showusuario">Mostrar</a>
+                                    </div>
+                                    <div class="col-sm-6 showaa d-none">
+                                        <label class="text-black" for="message">Usuario</label>
+                                        <input type="text" readonly value="@ViewBag.row["usuario"]" class="form-control form-control-sm" />
+                                    </div>
+                                    <div class="col-sm-6 showaa d-none">
+                                        <label class="text-black" for="message">Password</label>
+                                        <input type="text" readonly value="@ViewBag.passwordread" class="form-control form-control-sm" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-12 text-center">
+                                <h4>Documentos solicitados</h4>
+                            </div>
+                            <div class="col-sm-12">
+                                <table class="table w-100">
+                                    <thead>
+                                        <tr>
+                                            <th><input type="hidden" name="postrar" /> <span class="text-danger">Los documentos obligatorios estan marcados con *</span></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @if (ViewBag.documents != null)
+                                        {
+                                            foreach (var row in ViewBag.documents)
+                                            {
+                                                <tr>
+                                                    <th>
+                                                        <div class="row" id="">
+                                                            <div class="col-sm-2 align-self-center border-right">
+                                                                <div class="wow fadeIn">
+                                                                    <small id="voss_@row["idDocuments"]" class=" ">
+                                                                        <span>
+                                                                            <i class="icon-plus"></i> @row["name"]
+                                                                        </span>
+                                                                    </small>
+                                                                    @if (Convert.ToInt32(row["required"]) == 1)
+                                                                    {
+                                                                        <span class="text-danger">*</span>
+                                                                    }
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-sm-10">
+                                                                <div class="row containerfile" id="vass_@row["idDocuments"]">
+                                                                    @if (ViewBag.myDocuments.Count > 0)
+                                                                    {
+                                                                        foreach (var rows in ViewBag.myDocuments)
+                                                                        {
+                                                                            if (Convert.ToInt32(row["idDocuments"]) == Convert.ToInt32(rows["idDocuments"]))
+                                                                            {
+                                                                                <div class="col-md-4" id="">
+                                                                                    <div class="wow fadeIn">
+                                                                                        <label>Archivo subido @rows["nameFile"]</label>
+                                                                                        <a href="@rows["srcFile"]" class="btn btn-block btn-outline-dark" target="_blank"><i class="icon-download"></i> </a>
+                                                                                    </div>
+                                                                                </div>
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </th>
+                                                </tr>
+                                            }
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="col-sm-12">
+                                <div class="col-md-12 text-center">
+                                    <a href="@Url.Action("Users")" class="btn btn-secondary btn-sm"><i class="icon icon-backward"></i> Volver</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+@section  scripts{
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#showusuario").click(function () {
+                $(".showaa").toggleClass("d-none");
+                if ($(this).html() == "Mostrar")
+                    $(this).html("Ocultar")
+                else
+                    $(this).html("Mostrar")
+            })
+        })
+    </script>
+}

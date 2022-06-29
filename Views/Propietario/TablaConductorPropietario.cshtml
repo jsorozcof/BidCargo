@@ -1,0 +1,248 @@
+﻿@{
+    Session["urlHttp"] = HttpContext.Current.Request.Url.AbsoluteUri.Split('/')[0] + "//" + HttpContext.Current.Request.Url.AbsoluteUri.Split('/')[2];
+    ViewBag.Title = "DashBoard";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="site-blocks-vs inner-page-cover" style="background-image: url(/Content/images/hero_bg_3.jpg)" data-aos="fade" data-stellar-background-ratio="0.5">
+    <div class="container">
+        <div class="row align-items-center justify-content-center text-center">
+            <div class="col-sm-8" data-aos="fade-up" data-aos-delay="400">
+                <br /><br />
+                <h1 class="text-white font-weigh text-uppercase">Conductor</h1>
+                <br /><br />
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    #btnExport {
+        padding-bottom: 40px;
+        margin-left: 15%;
+    }
+
+        #btnExport button {
+            background-color: red;
+            box-shadow: 0 5px 0 darkred;
+            color: white;
+            padding: 1em 1.5em;
+            position: relative;
+            text-decoration: none;
+            text-transform: uppercase;
+        }
+
+            #btnExport button:hover {
+                background-color: #ce0606;
+                cursor: pointer;
+            }
+
+            #btnExport button:active {
+                box-shadow: none;
+                top: 5px;
+            }
+</style>
+
+<div class="container">
+
+    <div class="card shadow-lg mb-5 bg-white rounded mt-5 text-center">
+        <div class="card-header bg-primary text-white">
+            <h1>Conductor</h1>
+
+        </div>
+
+        <div class="card-body">
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-12">
+
+                        <table class="table table-hover tablesi text-center">
+                            <thead>
+
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Nombre</th>
+                                    <th>Apellido</th>
+                                    <th>Numero licencia</th>
+                                    <th>Telefono </th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (ViewBag.rows.Count > 0)
+                                {
+                                    foreach (var row in ViewBag.rows)
+                                    {
+
+                                        <tr>
+                                            <td>@row["sk_conductor"]</td>
+                                            <td>@row["nombre"] </td>
+                                            <td>@row["apellido"]</td>
+                                            <td>@row["nrolicencia"]</td>
+                                            <td>@row["telefonofijo"]</td>
+                                            <td>
+                                                @if (Convert.ToInt32(row["idEstadoCliente"]) == -2)
+                                                {
+                                                    <span class="text-warning">DESACTIVADO </span>
+                                                }
+                                                @if (Convert.ToInt32(row["idEstadoCliente"]) == 2)
+                                                {
+                                                    <span class="text-danger">APROBADO</span>
+                                                }
+                                                @if (Convert.ToInt32(row["idEstadoCliente"]) == -1)
+                                                {
+                                                    <span class="text-warning">PERFIL NO APROBADO</span>
+                                                }
+                                                @if (Convert.ToInt32(row["idEstadoCliente"]) == 1)
+                                                {
+                                                    <span class="text-info">EN REVISION</span>
+                                                }
+                                            </td>
+                                            <td>
+                                                <a href="@Url.Action("ConsultarInformacionConducor2", new { @id = row["sk_conductor"] , @tipo = 1 })" title="Ver Perfil"
+                                                   class="btn btn-secondary btn-sm text-white rounded">
+                                                    <i class="icon icon-address-book"></i>
+                                                </a>
+                                               
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+
+
+
+
+            <div class="site-section pt-5 pb-5 small" id="listimages">
+                <input id="typeId" name="typeId" type="hidden" value="1">
+                <div class="row">
+                    <div class="col-sm d-flex justify-content-end ms-5">
+                        <div id="btnExport">
+                            <button type="button" onclick="DownloadExcel()" id="btnExcelView">Exportar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+        </div>
+    </div>
+
+
+</div>
+
+
+
+@section  scripts{
+    @if (Session["message"] != null)
+    {
+        if (Session["message"].ToString() != "")
+        {
+            <script type="text/javascript">
+                Swal.fire({
+                    type: 'success',
+                    title: "Mensaje",
+                    html: '@Session["message"].ToString()',
+                    showConfirmButton: true,
+                });
+            </script>
+        }
+
+        Session.Remove("message");
+    }
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $(".actiusers").click(function () {
+                var texss = $(this).data("text")
+                var href = $(this).data("href")
+                Swal.fire({
+                    title: "¿Esta Seguro?",
+                    html: texss,
+                    type: 'question',
+                    showCancelButton: true,
+                }).then((result) => {
+                    if (result.value) {
+                        location.replace(href)
+                    }
+                });
+            });
+
+            $(".tablesi").DataTable({
+                "ordering": false,
+                language: {
+                    "sProcessing": "Procesando...",
+                    "sLengthMenu": "Mostrar _MENU_ registros",
+                    "sZeroRecords": "No se encontraron resultados",
+                    "sEmptyTable": "No hay Actualmente una oferta disponible",
+                    "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                    "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+                    "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+                    "sInfoPostFix": "",
+                    "sSearch": "Buscar:",
+                    "sUrl": "",
+                    "sInfoThousands": ",",
+                    "sLoadingRecords": "Cargando...",
+                    "oPaginate": {
+                        "sFirst": "Primero",
+                        "sLast": "Último",
+                        "sNext": "Siguiente",
+                        "sPrevious": "Anterior"
+                    },
+                    "oAria": {
+                        "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+                        "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+                    },
+                    "buttons": {
+                        "copy": "Copiar",
+                        "colvis": "Visibilidad"
+                    },
+                }
+            });
+
+            $("#btnExcelView").click(function () {
+                $.blockUI({ message: '<h3>Por favor, espere un momento...</h3>' });
+                var typeId = $('#typeId').val();
+                $.ajax({
+                    type: "GET",
+                    url: '@Url.Action("ExportexelConductor", "Home")',
+                    contentType: "application/json; charset=utf-8",
+                    data: { id: typeId},
+                    dataType: "json",
+                }).done(function (data) {
+                    console.log(data.result);
+                    $.unblockUI();
+
+                    if (data.fileName != "") {
+                        window.location.href = "@Url.RouteUrl(new
+                        { Controller = "Home", Action = "Download" })/?file=" + data.fileName;
+                    }
+                });
+                $.unblockUI();
+            });
+        })
+
+
+    function DownloadExcel() {
+        $.blockUI({ message: '<h3>Por favor, espere un momento...</h3>' });
+        var typeId = $('#typeId').val();
+        $.ajax({
+            type: "POST",
+            url: "/Home/ExportexelConductor",
+            data: { id: typeId },
+            cache: false,
+            success: function (data) {
+                window.location = '/Home/Download';
+            },
+            error: function (data) {
+                Materialize.toast("Something went wrong. ", 3000, 'rounded');
+            }
+        });
+    }
+    </script>
+}
+

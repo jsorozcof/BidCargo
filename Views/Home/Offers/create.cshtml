@@ -1,0 +1,719 @@
+﻿@model BidCargo_.Models.storeoffer
+@{
+    Session["urlHttp"] = HttpContext.Current.Request.Url.AbsoluteUri.Split('/')[0] + "//" + HttpContext.Current.Request.Url.AbsoluteUri.Split('/')[2];
+    ViewBag.Title = "Offers";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section css{
+    <style type="text/css">
+        /*.select2-container--default .select2-selection--single, .select2-container--default .select2-selection--single .select2-selection__arrow {
+            height: 43px !important;
+        }
+            .select2-container--default .select2-selection--single .select2-selection__rendered {
+                line-height: 43px !important;
+            }*/
+    </style>
+}
+<div class="site-blocks-vs inner-page-cover" style="background-image: url(/Content/images/hero_bg_3.jpg)" data-aos="fade" data-stellar-background-ratio="0.5">
+    <div class="container">
+        <div class="row align-items-center justify-content-center text-center">
+            <div class="col-sm-8" data-aos="fade-up" data-aos-delay="400">
+                <br/><br/>
+                <h1 class="text-white font-weigh text-uppercase">Cu&eacute;ntanos De tu Carga</h1>
+                <br /><br />
+            </div>
+        </div>
+    </div>Se
+</div>
+<div class="site-section pt-4 pb-4" id="listimages">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-2 mb-3">
+                <a class="unit-1 text-center clickbuttons curpointer btnconcont" data-id="1" data-class="1">
+                    <img src="~/Content/images/cargo_container.jpg" alt="Image" class="img-fluid" style="width: 150px;height: 125px;">
+                    <div class="unit-1-text">
+                        <h3 class="unit-1-heading text-uppercase">En Contenedor</h3>
+                    </div>
+                </a>
+            </div>
+            <div class="col-sm-2 mb-3">
+                <a class="unit-1 text-center clickbuttons curpointer btncargafree" data-id="2" data-class="2">
+                    <img src="~/Content/images/boxes_company_driver.jpg" alt="Image" class="img-fluid" style="width: 150px;height: 125px;">
+                    <div class="unit-1-text">
+                        <h3 class="unit-1-heading text-uppercase">Carga Suelta</h3>
+                    </div>
+                </a>
+            </div>
+            <div class="col-sm-2 mb-3">
+                <a class="unit-1 text-center clickbuttons curpointer btnloadmore" data-id="3" data-class="3">
+                    <img src="~/Content/images/aluminum_barrel.jpg" alt="Image" class="img-fluid" style="width: 150px;height: 125px;">
+                    <div class="unit-1-text">
+                        <h3 class="unit-1-heading text-uppercase">Seca a Granel</h3>
+                    </div>
+                </a>
+            </div>
+            <div class="col-sm-2 mb-3">
+                <a class="unit-1 text-center clickbuttons curpointer btnloadmore" data-id="4" data-class="4">
+                    <img src="~/Content/images/truckTransportation.png" alt="Image" class="img-fluid img-circle" style="width: 150px;height: 125px;">
+                    <div class="unit-1-text">
+                        <h3 class="unit-1-heading text-uppercase">Maquinaria</h3>
+                    </div>
+                </a>
+            </div>
+            <div class="col-sm-2 mb-3">
+                <a class="unit-1 text-center clickbuttons curpointer btnloadmore" data-id="5" data-class="5">
+                    <img src="~/Content/images/asian_asphalt.jpg" alt="Image" class="img-fluid" style="width: 150px;height: 125px;">
+                    <div class="unit-1-text">
+                        <h3 class="unit-1-heading text-uppercase">Cargas a Granel L&iacute;quidas</h3>
+                    </div>
+                </a>
+            </div>
+            <div class="col-sm-2 mb-3">
+                <a class="unit-1 text-center clickbuttons curpointer btnloadmore" data-id="6" data-class="6">
+                    <img src="~/Content/images/autoShipping.png" alt="Image" class="img-fluid" style="width: 150px;height: 125px;">
+                    <div class="unit-1-text">
+                        <h3 class="unit-1-heading text-uppercase">Veh&iacute;culos</h3>
+                    </div>
+                </a>
+            </div>
+            <div class="col-sm-2 mb-3">
+                <a class="unit-1 text-center clickbuttons curpointer btnloadmore" data-id="7" data-class="7">
+                    <img src="~/Content/images/carga-refrigerada-bidcargo.jpg" alt="Image" class="img-fluid" style="width: 150px;height: 125px;">
+                    <div class="unit-1-text">
+                        <h3 class="unit-1-heading text-uppercase">Carga refrigerada</h3>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="site-section pt-4 pb-4" id="fastocargo" style="display:none">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <form method="post" id="formularioactions" action="StoreOffer" enctype="multipart/form-data">
+                    <input type="hidden" name="typeCargo" />
+                    <input type="hidden" name="morecontainer" id="morecontainer" value="0" />
+                    @if (Session["moreContainer"].ToString() == "1")
+                    {
+                        <input type="hidden" name="codeOffer" value="@ViewBag.models["codeOffer"].ToString()" />
+                        <input type="hidden" name="from" value="@ViewBag.models["fromDestiny"].ToString()" />
+                        <input type="hidden" name="from2" value="@ViewBag.models["fromDestiny2"].ToString()" />
+                        <input type="hidden" name="to" value="@ViewBag.models["toDestiny"].ToString()" />
+                        <input type="hidden" name="to2" value="@ViewBag.models["toDestiny2"].ToString()" />
+                        <input type="hidden" name="dayTraveler" value="@ViewBag.models["departure"].ToString()" />
+                        <input type="hidden" name="dayTraveler2" value="@ViewBag.models["arrival"].ToString()" required/>
+                        <input type="hidden" name="directionFrom" value="@ViewBag.models["directionFrom"].ToString()" required/>
+                        <input type="hidden" name="directionTo" value="@ViewBag.models["directionTo"].ToString()" required />
+                    }
+
+                    @if (Session["moreContainer"].ToString() != "1")
+                    {
+                        <div class="row 1 2 3 4 5 6 7" style="display:none">
+                            <div class="col-sm-4">
+                                <div class="row">
+                                    <div class="col-sm-12 mb-2 text-center"><h6>Origen <span class="text-danger">*</span></h6></div>
+                                    <div class="col-sm-6 pr-0  compro naty">
+                                        <select name="from" class="form-control selectfrom titi redir" style="width:100%" required>
+                                            <option></option>
+                                            @if (ViewBag.departament.Count > 0)
+                                            {
+                                                foreach (var depat in ViewBag.departament)
+                                                {
+                                                    <option value='@depat["idDepartamentos"]'>@depat["departamentos"]</option>
+                                                }
+                                            }
+                                        </select>
+                                    </div>
+                                    <div class="col-sm-6 pl-0 compro naty">
+                                        <select name="to" class="from-control selectto toto redir" style="width:100%" required>
+                                            <option></option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="row">
+                                    <div class="col-sm-12 mb-2 text-center"><h6>Destino <span class="text-danger">*</span></h6></div>
+                                    <div class="col-sm-6 pr-0  compro naty">
+                                        <select name="from2" class="form-control selectfrom2 titi redir" data-name="to2"  style="width:100%" required>
+                                            <option></option>
+                                            @if (ViewBag.departament.Count > 0)
+                                            {
+                                                foreach (var depat in ViewBag.departament)
+                                                {
+                                                    <option value='@depat["idDepartamentos"]'>@depat["departamentos"]</option>
+                                                }
+                                            }
+                                        </select>
+                                    </div>
+                                    <div class="col-sm-6 pl-0  compro naty">
+                                        <select name="to2" class="from-control selectto2 toto redir" style="width:100%" required>
+                                            <option></option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="col-sm-12 mb-2 text-center"><h6>Fechas <span class="text-danger">*</span></h6></div>
+                                <div class="row">
+                                    <div class="col-sm-4 pr-0 compro naty">
+                                        <input type="text" name="dayTraveler" placeholder="Salida" class="form-control form-control-sm datepicker redir" readonly required />
+                                        <br />
+                                    </div>
+                                    <div class="col-sm-4 pr-0  compro naty">
+                                        @Html.DropDownListFor(model => model.dateOfServiceId, ViewBag.dateOfServiceId as SelectList, ""
+                                            , new { @class = "form-control form-control-sm select2select", @required = "", @style = "width:100%;height:100%;" })
+
+                                    </div>
+                                    <div class="col-sm-4 pl-0 compro naty">
+                                        <input type="text" name="dayTraveler2" placeholder="Llegada Estimada" class="form-control form-control-sm datepicker redir" readonly required />
+                                        <br />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row 1 2 3 4 5 6 7 compro naty" style="display:none">
+                            <div class="col-sm-6">
+                                <input type="text" id="directionesfrom" name="directionFrom" placeholder="Dirección Remitente *" class="form-control form-control-sm redir" required/>
+                            </div>
+                            <div class="col-sm-6">
+                                <input type="text" id="directionesto" name="directionTo" placeholder="Dirección Destinatario *" class="form-control form-control-sm redir" required/>
+                            </div>
+                        </div>
+                      }
+
+                    <div class="row">
+                        <div class="col-sm-12 text-center text-danger">
+                            <h6>Las opciones marcadas con * son obligatorias</h6>
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col-sm-12 text-center">
+                            <hr />
+                            <h4>Información de Carga <strong id="CargoSelected"></strong></h4>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-3 form-group 1 2 3 4 5 6 7 compro naty" style="display:none">
+                            <label class="text-black">Clase de Mercancía <span class="text-danger">*</span></label>
+                            <input type="text" name="typeMerchandise" placeholder="" class="form-control form-control-sm" />
+                        </div>
+                        <div class="col-sm-3  form-group  1 2 3 4 5 6 7 compro naty" style="display:none">
+                            <label class="text-black concont 1" style="display:none">Tipo de contenedor <span class="text-danger">*</span></label>
+                            <label class="text-black cargafree 2 3 4 5 7" style="display:none">Tipo de Vehículo <span class="text-danger">*</span></label>
+                            <label class="text-black loadmore 6" style="display:none">Tipo de Niñera <span class="text-danger">*</span></label>
+                            @Html.DropDownListFor(model => model.idTipoContenedor, ViewBag.listaTipoContenedor as SelectList, ""
+                                , new { @id = "sadsa", @class = "form-control form-control-sm koas select2select", @required = "", @style = "width:100%;height:100%;" })
+                        </div>
+                        <div class="col-sm-3 form-group 1 2  4 5  compro naty" style="display:none">
+                            <div class="row">
+                                <div class="col-sm-6 pr-0">
+                                    <label class="text-black 1" style="display:none">Peso Contenedor <span class="text-danger">*</span></label>
+                                    <label class="text-black 2" style="display:none">Peso Unidad <span class="text-danger">*</span></label>
+                                    <label class="text-black 4" style="display:none">Peso Maquinaria <span class="text-danger">*</span></label>
+                                    <label class="text-black 5" style="display:none">Capacidad <span class="text-danger">*</span></label>
+                                    <input type="number" min="0" max="999" name="containerWeight" placeholder="" class="form-control form-control-sm" />
+                                </div>
+                                <div class="col-sm-6 pl-0 naty 1 2 4 5  compro" style="display:none"> <!--Se elimina medida de contenedor tipo 5-->
+
+                                    <label class="text-black">Medida <span class="text-danger">*</span></label>
+                                    <select id="weightcontrol" name="idWeightMeasured" class="form-control form-control-sm select2select" required style="width:100%"></select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-3  form-group  1 2  4" style="display:none">
+                            <div class="row 1 compro naty" style="display:none">
+                                <div class="col-sm-12 naty">
+                                    <label class="text-black">NAC / DTA / OTM <span class="text-danger">*</span></label>
+                                    @Html.DropDownListFor(model => model.idNACDTAOMT, ViewBag.listaNACDTAOMT as SelectList
+                                        , new { @class = "form-control form-control-sm select2select", @multiple = "multiple", @required = "", @style = "width:100%;height:100%;" })
+                                </div>
+                            </div>
+                            <div class="row 2 3 4 compro naty" style="display:none">
+                                <div class="col-sm-3 pr-0">
+                                    <label class="text-black">Largo <span class="text-danger">*</span></label>
+                                    <input type="number" min="0" max="999" name="longM" placeholder="" class="form-control form-control-sm" required />
+                                </div>
+                                <div class="col-sm-3 pr-0 pl-0">
+                                    <label class="text-black">Ancho <span class="text-danger">*</span></label>
+                                    <input type="number" min="0" max="999" name="widthM" placeholder="" class="form-control form-control-sm" required />
+                                </div>
+                                <div class="col-sm-3 pr-0 pl-0">
+                                    <label class="text-black">Alto <span class="text-danger">*</span></label>
+                                    <input type="number" min="0" max="999" name="highM" placeholder="" class="form-control form-control-sm" required />
+                                </div>
+                                <div class="col-sm-3 pl-0 naty">
+                                    <label class="text-black">Medida <span class="text-danger">*</span></label>
+                                    <select id="weightcontrol2" name="idDimensions" class="form-control form-control-sm select2select" required style="width:100%"></select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-3  form-group  1 2 3 4  6 7  compro naty" style="display:none">
+                            <label class="text-black 1 2 4  6" style="display:none">Número de Unidades <span class="text-danger">*</span></label>
+                            <label class="text-black 3 7 " style="display:none">Número de Toneladas <span class="text-danger">*</span></label>
+                            <input type="number" min="0" max="99999999" name="numberUnits" class="form-control  form-control-sm" required />
+                        </div>
+                        <div class="col-sm-3  form-group 1 2 3 4 5 6 7  compro naty" style="display:none">
+                            <label class="text-black">Factoring / No Factoring <span class="text-danger">*</span></label>
+                            @Html.DropDownListFor(model => model.idFactoring, ViewBag.listaFactoring as SelectList, ""
+                                , new { @class = "form-control form-control-sm select2select", @required = "", @style = "width:100%;height:100%;" })
+                        </div>
+                        <div class="col-sm-3 form-group  1 2 3 4 5 6 7 compro naty" style="display:none">
+                            <label class="text-black">Días de Pago <span class="text-danger">*</span></label>
+                            <input type="number" min="0" max="999" name="payDays" placeholder="" class="form-control form-control-sm" required />
+                        </div>
+                        <div class="col-sm-3 form-group  1 2 3 4 5 6 7  compro naty" style="display:none">
+                            <label class="text-black">Valor declarado de la mercancía <span class="text-danger">*</span></label>
+                            <input type="number" min="0" max="99999999" name="valueMerchandise" placeholder="" class="form-control form-control-sm numero" required />
+                        </div>
+
+                        <div class="col-sm-4 form-group  1 2 3 4 5 6 7 compro naty" style="display:none">
+                            <div class="col-sm-4 pl-0 naty">
+
+                                <label class="text-black">Tipo Moneda <span class="text-danger">*</span></label>
+                                @Html.DropDownListFor(model => model.coinTypesId, ViewBag.getCoinTypes as SelectList, ""
+                                       , new { @class = "form-control form-control-sm select2select",  @required = "", @style = "width:100%;height:100%;" })
+                            </div>
+                        </div>
+
+
+                        <div class="col-sm-3 form-group 1 2  compro naty" style="display:none">
+                            <label class="text-black">Cotizar <span class="text-danger">*</span></label>
+                            @Html.DropDownListFor(model => model.idTipoDeCotizacion, ViewBag.listaTipoDeCotizacion as SelectList, ""
+                                , new { @id = "loste", @class = "form-control form-control-sm select2select", @required = "", @style = "width:100%;height:100%;" })
+                        </div>
+                        <div class="col-sm-3 form-group  1 2 3 4 5 6 7  @*compro naty*@" style="display:none">
+                            <label class="text-black">Servicios adicionales <span class="text-danger">*</span></label>
+                            <br>
+                            <select name="prueba[]" class="form-control form-control-sm select2select" multiple style="width:100%;height:100%;">
+                                @foreach (var row in ViewBag.ListTypeCompanyByCustom)
+                                {
+                                    int entre = 0;
+                                    if (ViewBag.ListTypeCompanyByCustom != null)
+                                    {
+                                        for (var i = 0; i < ViewBag.profileTypeCompany.Count; i++)
+                                        {
+                                            if (1 == row["idTypeCompany"])
+                                            {
+                                                entre = 1;
+                                            }
+                                        }
+                                    }
+                                    if (entre == 0)
+                                    {
+                                        <option value="@row["idTypeCompany"]">@row["name"]</option>
+                                    }
+                                }
+                            </select>
+                        @*<label class="text-black">Servicios adicionales</label>
+            @Html.DropDownListFor(model => model.idTipoTransporte, ViewBag.ListTypeCompany as SelectList
+                , new { @class = "form-control form-control-sm select2select", @multiple = "multiple", @required = "", @style = "width:100%;height:100%;" })*@
+                        </div>
+                        <div class="col-sm-3  form-group 1 2 3 4 5 6 7  @*compro naty*@" style="display:none">
+                            <label class="text-black">Target (Presupuesto)</label>
+                            @Html.TextBoxFor(model => model.valorOferta, new { @Class = "form-control form-control-sm", @type = "number", @min = "0", @max = "999" })
+                        </div>
+                    </div>
+                    <div class="row  form-group 1 2 3 4 5 6 7 " style="display:none">
+                        <div class="col-sm-12">
+                            <label class="text-black">Requerimientos Especiales</label>
+                            <textarea name="observation" class="form-control form-control-sm" rows="3" placeholder="" ></textarea>
+                        </div>
+                    </div>
+                    <div class="row text-center mt-4 3 4" style="display:none">
+                        <div class="row form-group" id="containerfile">
+                            <div class="col-md-2 align-self-center">
+                                <div class="wow fadeIn">
+                                    <label id="addimagebutton" class="curpointer"><strong><i class="icon-plus"></i> Agregar Archivo</strong></label>
+                                </div><!-- end media -->
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row text-center mt-4  1 2 3 4 5 6 7" style="display:none">
+                        <div class="col-sm-4">
+                            <input type="button" value="Cancelar" class="btn btn-secondary text-uppercase returnls btn-sm" />
+                        </div>
+                        <div class="col-sm-4">
+                            <input type="button" value="Nuevo Contenedor" data-moree="1" data-cole="De agregar Varias Cargas a una Oferta..." class="btn btn-secondary btn-sm btnclicker text-uppercase " />
+                        </div>
+                        @if (ViewBag.allModels == null)
+                        {
+                            <div class="col-sm-4">
+                                <input type="button" value="Publicar Oferta" data-moree="0"
+                                       data-cole="De Publicar esta Oferta de Carga(s)" class="btn btn-secondary btn-sm btnclicker text-uppercase" />
+                            </div>
+                        }
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+@if (Session["moreContainer"].ToString() == "1")
+{
+    <div class="site-section pt-0 pb-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="border col-sm-12 rounded text-center">
+                        <h4 class="mt-3">Cargas Agregadas a la Oferta Código: <strong>@ViewBag.models["codeOffer"]</strong></h4>
+                        <hr />
+                        @foreach (var models in ViewBag.allModels)
+                        {
+                            <div class="col-sm-12 border-bottom mb-3 pb-3">
+                                <div class="row">
+                                    <div class="col-sm-11">
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <h6><strong>Transportar:</strong></h6> <label>@models["typeContainer"], @models["typeMerchandise"] en @models["typeCargoString"]</label>
+                                                <h6><strong>Peso:</strong></h6> <label>@models["weightContainer"]</label>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <h6><strong>Valor por Contenedor:</strong></h6><label> @models["valueMerchandise"]</label>
+                                                <h6><strong>Observacion:</strong></h6><label> @models["observation"]</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-1 align-self-center">
+                                        <a class="btn btn-light btntrash" data-id="@models["idClientOffer"]"><i class="icon-trash-o"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                        @if (ViewBag.allModels.Count > 1)
+                        {
+                            <div class="col-sm-12">
+                                <input type="button" value="Publicar Oferta" data-moree="1"
+                                       data-cole="De Publicar esta Oferta de Carga(s)" class="btn btn-secondary btn-sm btnclickerext text-uppercase" />
+                            </div>
+                            <br>
+                        }
+                    </div>
+                    <div class="table-responsive">
+                        <table></table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+@section  scripts{
+    @if (Session["message"] != null)
+    {
+        if (Session["message"].ToString() != "")
+        {
+            <script type="text/javascript">
+                Swal.fire({
+                    type: 'success',
+                    title: '@Session["message"].ToString()',
+                    showConfirmButton: true,
+                    timer: 2500
+                });
+            </script>
+        }
+        Session.Remove("message");
+    }
+    <script type="text/javascript">
+         $('.numero').keyup(function () {
+            this.value = (this.value + '').replace(/[^0-9]/g, '');
+        });
+        //$('.numero').on('input', function () {
+        //    this.value = this.value.replace(/[^0-9]/g, '');
+        //});
+        $(".btnclickerext").click(function () {
+            var moee = $(this).data("moree")
+            $("#morecontainer").val(moee);
+            $("#formularioactions").submit();
+        })
+        $(".btnclicker").click(function () {
+            var jas = $(this).data("cole")
+            var moee = $(this).data("moree")
+            Swal.fire({
+                title: "¿Esta Seguro?",
+                html: jas,
+                type: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                backdrop: false,
+            }).then((result) => {
+                if (result.value) {
+                    entre = false;
+                    $("input.form-control").each(function () {
+                        if ($(this).offsetParent(".compro").css("display") == "block") {
+                            if ($(this).offsetParent(".compro").hasClass("naty")) {
+                                if ($(this).val() == "") {
+                                    entre = true
+                                }
+
+                            }
+                        }
+                    })
+                    $("select.form-control").each(function () {
+                        if ($(this).offsetParent(".compro").css("display") == "block") {
+                            if ($(this).offsetParent(".compro").hasClass("naty")) {
+                                if ($(this).val() == "") {
+                                    entre = true
+                                }
+
+                            }
+                        }
+                    })
+
+
+                    if (entre) {
+                        Swal.fire({
+                            type: 'warning',
+                            title: 'Faltan campos por llenar',
+                            showConfirmButton: true,
+                            timer: 2500
+                        });
+                    }
+                    else
+                    {
+                        $("#morecontainer").val(moee);
+                        $("#formularioactions").submit();
+                    }
+                }
+            });
+        });
+
+        $(document).on("click", ".menusbut", function () {
+            $(this).parent().parent().remove();
+            
+        })
+        $('#addimagebutton').click(function () {
+            var ranos = "nada" + Math.floor(Math.random() * 1000)
+            var htmls = "<div class=\"col-md-8\" id=\"" + ranos + "\">";
+            htmls += "<div class=\"wow fadeIn\">";
+            htmls += "<label><strong>Archivo</strong>&nbsp;&nbsp;&nbsp;<i class=\" icon-minus-circle menusbut curpointer\"></i></label>";
+            htmls += "<input type=\"file\" name=\"fileClient[]\" class=\"form-control\"> "
+            htmls += "</div>";
+            htmls += "</div>";
+            $("#containerfile").append(htmls);
+        });
+
+        $(".titi").select2({
+            placeholder: "Departamento",
+            allowClear: true
+        });
+        $(".fds").select2({
+            placeholder: "Fecha de Servicio",
+            allowClear: true
+        });
+        $(".toto").select2({
+            placeholder: "Ciudad",
+            allowClear: true
+        });
+        $(".select2select").select2({
+            placeholder: "Seleccione",
+            allowClear: true
+        });
+
+        var dateToday = new Date();
+        $(".datepicker").datepicker({
+            format: 'mm-dd-yyyy',
+            autoclose: true,
+            startDate: dateToday
+        });
+        $(".clickbuttons").click(function () {
+            var ass = $(this);
+            $("#CargoSelected").html("").html(ass.find("h3").html())
+            $("input[name='typeCargo']").val($(this).data("id"));
+            $(".form-control").val("");
+            $(".1,.2,.3,.4,.5,.6,.7").slideUp();
+            $("." + $(this).data("class")).slideDown();
+            $("#fastocargo").slideDown();
+            $("#listimages").slideUp();
+
+        });
+        $(".returnls").click(function () {
+            $("input[name='typeCargo']").val("");
+            $(".form-control").val("");
+            $("#fastocargo").slideUp();
+            $("#listimages").slideDown();
+            $(".1,.2,.3,.4,.5,.6,.7").slideUp();
+            $("html, body").animate({ scrollTop: 0 });
+        })
+        $("#weightcontrol2").select2({
+            placeholder: "Seleccione",
+            allowClear: true,
+            ajax: {
+                url: "searchTypeMeaused",
+                dataType: 'json',
+                data: function (params) {
+                    var query = {
+                        parameter: params.term,
+                        id: $("input[name='typeCargo']").val(),
+                        ptype: 2
+                    }
+                    // Query parameters will be ?search=[term]&type=public
+                    return query;
+                },
+                processResults: function (data) {
+                    data = $.parseJSON(data)
+                    var arr = []
+                    $.each(data, function (index, item) {
+                        arr.push({
+                            id: item.idTypeMesaureDimen,
+                            text: item.abrv
+                        })
+                    });
+                    return {
+                        results: arr
+                    };
+                },
+            }
+        })
+        $("#weightcontrol").select2({
+            placeholder: "Seleccione",
+            allowClear: true,
+            ajax: {
+                url: "searchTypeMeaused",
+                dataType: 'json',
+                data: function (params) {
+                    var query = {
+                        parameter: params.term,
+                        id: $("input[name='typeCargo']").val(),
+                        ptype: 1
+                    }
+                    // Query parameters will be ?search=[term]&type=public
+                    return query;
+                },
+                processResults: function (data) {
+                    data = $.parseJSON(data)
+                    var arr = []
+                    $.each(data, function (index, item) {
+                        arr.push({
+                            id: item.idTypeMesaureDimen,
+                            text: item.abrv
+                        })
+                    });
+                    return {
+                        results: arr
+                    };
+                },
+            }
+        })
+
+
+
+        $("#sadsa").select2({
+            placeholder: "Seleccione",
+            allowClear: true,
+            ajax: {
+                url: "searchtypecontaiener",
+                dataType: 'json',
+                data: function (params) {
+                    var query = {
+                        parameter: params.term,
+                        id: $("input[name='typeCargo']").val()
+                    }
+                    // Query parameters will be ?search=[term]&type=public
+                    return query;
+                },
+                processResults: function (data) {
+                    data = $.parseJSON(data)
+                    var arr = []
+                    $.each(data, function (index, item) {
+                        arr.push({
+                            id: item.idTipoContenedor,
+                            text: item.tipoContenedor
+                        })
+                    });
+                    return {
+                        results: arr
+                    };
+                },
+            }
+        })
+        $("#loste").select2({
+            placeholder: "Seleccione",
+            allowClear: true,
+            ajax: {
+                url: "searchcotizar",
+                dataType: 'json',
+                data: function (params) {
+                    var query = {
+                        parameter: params.term,
+                        id: $("input[name='typeCargo']").val()
+                    }
+                    // Query parameters will be ?search=[term]&type=public
+                    return query;
+                },
+                processResults: function (data) {
+                    data = $.parseJSON(data)
+                    var arr = []
+                    $.each(data, function (index, item) {
+                        arr.push({
+                            id: item.idTipoDeCotizacion,
+                            text: item.TipoDeCotizacion
+                        })
+                    });
+                    return {
+                        results: arr
+                    };
+                },
+            }
+        })
+        $(".selectfrom").change(function () {
+            var koa = $(this).val();
+            $.get("/Home/ObtenerCiudadLista", { idDepartamentos: koa }, function (data) {
+                $(".selectto").empty();
+                $.each(data, function (index, row) {
+                    $(".selectto").append("<option value='" + row.Value + "'>" + row.Text + "</option>")
+                });
+            });
+            $(".selectto").select2()
+        });
+        $(".selectfrom2").change(function () {
+            var koa = $(this).val();
+            $.get("/Home/ObtenerCiudadLista", { idDepartamentos: koa }, function (data) {
+                $(".selectto2").empty();
+                $.each(data, function (index, row) {
+                    $(".selectto2").append("<option value='" + row.Value + "'>" + row.Text + "</option>")
+                });
+            });
+            $(".selectto2").select2()
+        });
+    </script>
+    @if (Session["moreContainer"] != null)
+    {
+        if (Session["moreContainer"].ToString() == "1")
+        {
+            <script type="text/javascript">
+                $(".selectfrom").val("@ViewBag.models["fromDestiny"].ToString()").trigger("change");
+                $(".selectfrom2").val("@ViewBag.models["fromDestiny2"].ToString()").trigger("change");
+                $(".selectto").val("@ViewBag.models["toDestiny"].ToString()").trigger("change");
+                $(".selectto2").val("@ViewBag.models["toDestiny"].ToString()").trigger("change");
+                $(".btntrash").click(function () {
+                    var jas = $(this).data("id")
+                    Swal.fire({
+                        title: "¿Esta Seguro?",
+                        html: "De Eliminar esta Carga...",
+                        type: 'question',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        backdrop: false,
+                    }).then((result) => {
+                        if (result.value) {
+                            $.get("/Home/deleteOffer", { idClientOffer: jas }, function (data) {
+                                if (data.result == 1) {
+                                    Swal.fire({
+                                        type: 'success',
+                                        title: "Carga Eliminada con Exito...",
+                                        showConfirmButton: true,
+                                        timer: 2500
+                                    });
+                                }
+                                    location.reload();
+                            });
+                        }
+                    });
+                });
+            </script>
+        }
+    }
+}

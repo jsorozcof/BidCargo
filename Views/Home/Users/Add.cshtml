@@ -1,0 +1,141 @@
+﻿@model BidCargo_.Models.UsuarioSistema
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="site-blocks-vs inner-page-cover" style="background-image: url(/Content/images/hero_bg_3.jpg)" data-aos="fade" data-stellar-background-ratio="0.5">
+    <div class="container">
+        <div class="row align-items-center justify-content-center text-center">
+            <div class="col-sm-8" data-aos="fade-up" data-aos-delay="400">
+                <br /><br />
+                <h1 class="text-white font-weigh text-uppercase">Crear Usuarios</h1>
+                <br /><br />
+            </div>
+        </div>
+    </div>
+</div>
+
+@using (Html.BeginForm("SaveUsuarioSistema", "Home", FormMethod.Post))
+{
+    <div class="site-section bg-light">
+        <div class="container">
+            <div class="p-5 bg-white">
+                <div class="row">
+                    <div class="col-md-12 mb-5">
+                        <div class="row form-group">
+                            <div class="col-md-4 form-group">
+                                <label class="text-black" for="fname">Nombre</label>
+                                @Html.TextBoxFor(model => model.Nombre, new { @Class = "form-control form-control-sm", @required = "required" })
+                            </div>
+                            <div class="col-md-4 form-group">
+                                <label class="text-black" for="lname">Apellido</label>
+                                @Html.TextBoxFor(model => model.Apellido, new { @Class = "form-control form-control-sm", @required = "required" })
+                            </div>
+                            <div class="col-md-4 form-group">
+                                <label class="text-black" for="email">Celular</label>
+                                @Html.TextBoxFor(model => model.Celular, new { @Class = "form-control form-control-sm", @required = "required" })
+                            </div>
+                            <div class="col-md-4 form-group">
+                                <label class="text-black" for="message">Correo Electronico</label>
+                                @Html.TextBoxFor(model => model.Correo, new { @Class = "form-control form-control-sm", @required = "required" })
+                            </div>
+                            <div class="col-md-4 form-group">
+                                <label class="text-black" for="message">Tipo de Empresa</label>
+                                <select name="
+                                        TypeCompany" class="form-control selectcount" required style="width:100%">
+                                    <option></option>
+                                    @foreach (var row in ViewBag.ListTypeCompany)
+                                    {
+                                        if (Convert.ToInt32(Session["idTypeCompany"]) == row["idTypeCompany"])
+                                        {
+                                            <option selected value="@row["idTypeCompany"]">@row["name"]</option>
+                                        }
+                                        else
+                                        {
+                                            <option value="@row["idTypeCompany"]">@row["name"]</option>
+                                        }
+                                    }
+                                </select>
+                            </div>
+                            <div class="col-md-4 form-group">
+                                <label class="text-black" for="message">Contraseña</label>
+                                @Html.PasswordFor(model => model.Contrasena, new { @Class = "form-control form-control-sm", @required = "required" })
+                            </div>
+                            <div class="col-md-4 form-group">
+                                <label class="text-black" for="message">Confirmar Contraseña</label>
+                                @Html.PasswordFor(model => model.Contrasena, new { @Class = "form-control form-control-sm", @required = "required" })
+                            </div>
+
+                            <div class="col-md-12 text-center">
+                                <br />
+                            </div>
+                        </div>
+                        <div class="row form-group">
+                            <div class="col-md-12">
+                                <input type="submit" id="guardar" value="Crear usuario" class="btn btn-primary py-2 px-4 text-white js-addcart-detail js-show-modal1">
+                            </div>
+                        </div>
+                        <div class="col-sm-12">
+                            <div class="col-md-12 text-center">
+                                <a href="@Url.Action("AdminUsers")" class="btn btn-secondary btn-sm"><i class="icon icon-backward"></i> Volver</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+@section  scripts{
+    @if (Session["mensaje"] != null)
+    {
+        if (Session["error"] != null)
+        {
+            if (Session["mensaje"].ToString() != "")
+            {
+                <script type="text/javascript">
+                    Swal.fire({
+                            title: "Error!",
+                            html: "@Session["mensaje"].ToString()",
+                            type: 'error'
+                    })
+                </script>
+            }
+        }
+    }
+
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.areamask').mask('#', { reverse: true });
+            $("#contrasoff").attr("required", true);
+            $.extend(jQuery.validator.messages, {
+                required: "Este campo es obligatorio.",
+                remote: "Por favor, rellena este campo.",
+                email: "Por favor, escribe una dirección de correo válida",
+                url: "Por favor, escribe una URL válida.",
+                date: "Por favor, escribe una fecha válida.",
+                dateISO: "Por favor, escribe una fecha (ISO) válida.",
+                number: "Por favor, escribe un número entero válido.",
+                digits: "Por favor, escribe sólo dígitos.",
+                creditcard: "Por favor, escribe un número de tarjeta válido.",
+                equalTo: "Por favor, escribe el mismo valor de nuevo.",
+                accept: "Por favor, escribe un valor con una extensión aceptada.",
+                maxlength: jQuery.validator.format("Por favor, no escribas más de {0} caracteres."),
+                minlength: jQuery.validator.format("Por favor, no escribas menos de {0} caracteres."),
+                rangelength: jQuery.validator.format("Por favor, escribe un valor entre {0} y {1} caracteres."),
+                range: jQuery.validator.format("Por favor, escribe un valor entre {0} y {1}."),
+                max: jQuery.validator.format("Por favor, escribe un valor menor o igual a {0}."),
+                min: jQuery.validator.format("Por favor, escribe un valor mayor o igual a {0}.")
+            });
+
+            $("#formushowsibmit").validate({
+                rules: {
+                    contraOffer: {
+                        required: true
+                    }
+                }
+            });
+        });
+
+    </script>
+}

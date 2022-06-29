@@ -1,0 +1,71 @@
+﻿@model BidCargo_.Models.actualizarPassword
+@{
+    Session["urlHttp"] = HttpContext.Current.Request.Url.AbsoluteUri.Split('/')[0] + "//" + HttpContext.Current.Request.Url.AbsoluteUri.Split('/')[2];
+    ViewBag.Title = "actualizarContrasena";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+@using (Html.BeginForm("actualizarContrasenaActual", "Home", FormMethod.Post))
+{
+
+    <div class="sufee-login d-flex align-content-center flex-wrap" style="background-image: url(/Content/images/hero_bg_1.jpg);">
+        <div class="container d-flex justify-content-center">
+            <div class="card card-login-bc shadow my-5">
+                <div class="login-content mb-4 w-100" style="background-color:white; margin:auto; text-align:center">
+                    <div class="login-logo">
+                        <a href="#">
+                            <br>
+                            <img class="align-content img-fluid" src="../Content/images/LogoBidCargo.png" alt="" />
+                        </a>
+                        <br>
+                        <br>
+                    </div>
+                    <label>Contraseña Actual</label>
+                    @Html.PasswordFor(model => model.actual, new { @class = "form-control", @placeholder = "", @required = "", @Style = "width:80%; margin:auto" })
+                    <br />
+                    <label>Nueva Contraseña</label>
+                    @Html.PasswordFor(model => model.newpassword, new { @class = "form-control", @placeholder = "", @required = "", @Style = "width:80%; margin:auto" })
+                    <br />
+                    <label> Confirmar Contraseña</label>
+                    @Html.PasswordFor(model => model.confirmnewpassword, new { @class = "form-control", @placeholder = "", @required = "", @Style = "width:80%; margin:auto" })
+                    <br />
+                    <button class="btn btn-secondary btn-lg btn-block" style="width:70%; margin:auto;">CAMBIAR</button>
+                    <br />
+                </div>
+            </div>
+        </div>
+    </div>
+
+}
+@section  scripts{
+    @if (Session["message"] != null)
+    {
+        if (Session["message"].ToString() != "")
+        {
+            <script type="text/javascript">
+                Swal.fire({
+                    title: "@Session["message"].ToString()",
+                    html: 'Este Mensaje se cerrar en <strong></strong> segundos.',
+                    type: 'success',
+                    showConfirmButton: true,
+                    width: 700,
+                    padding: '3em',
+                    timer: 6000,
+                    /*onBeforeOpen: () => {
+                        Swal.showLoading()
+                        timerInterval = setInterval(() => {
+                            Swal.getContent().querySelector('strong')
+                                .textContent = Swal.getTimerLeft()
+                        }, 100)
+                    },
+                    backdrop: false,
+                    onClose: () => {
+                    }*/
+                });
+            </script>
+            Session.Remove("message");
+        }
+
+    }
+}

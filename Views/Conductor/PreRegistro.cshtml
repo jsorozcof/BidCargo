@@ -1,0 +1,239 @@
+﻿@model BidCargo_.Models.ConductorInputModel
+@{
+    Session["urlHttp"] = HttpContext.Current.Request.Url.AbsoluteUri.Split('/')[0] + "//" + HttpContext.Current.Request.Url.AbsoluteUri.Split('/')[2];
+    ViewBag.Title = "PreRegistro";
+}
+
+<div class="site-blocks-vs inner-page-cover" style="background-image: url(/Content/images/hero_bg_3.jpg)" data-aos="fade" data-stellar-background-ratio="0.5">
+    <div class="container">
+        <div class="row align-items-center justify-content-center text-center">
+            <div class="col-md-8" data-aos="fade-up" data-aos-delay="400">
+                <br /><br />
+                <h1 class="text-white font-weight-light">Con estos datos te contactamos</h1>
+                <br /><br />
+            </div>
+        </div>
+    </div>
+</div>
+
+@using (Html.BeginForm("GuardarPreRegistroConductor", "Conductor", FormMethod.Post,
+    new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken();
+
+    <div class="container">
+        <div class="card shadow-lg mb-5 mt-5 bg-white rounded p-3">
+            <div class="card-title row mt-3 mb-3">
+                <div class="col-sm">
+                    <h1 class="ms-3">Conductor</h1>
+                </div>
+                <div class="col-sm d-flex justify-content-end">
+                    <a href="" class="disabled-cursor"><img src="/Content/images/logoLetras.png" alt="Alternate Text" class="img-fluid" style="height: 50px" /></a>
+                </div>
+            </div>
+            <div class="card-body w-100 h-100">
+                <form class="form-floating">
+                    <div class="row">
+                        <div class="col-sm">
+                            <div class="form-floating mb-3">
+                                @Html.DropDownListFor(model => model.tipoDocumento, ViewBag.ListTipoDocumento as SelectList, "Seleccione", new { @required = "", @class = "form-select", @id = "floatingTDSelect" })
+                                <label for="floatingTDSelect">Tipo de documento</label>
+                            </div>
+                        </div>
+                        <div class="col-sm">
+                            <div class="form-floating mb-3">
+                                @Html.TextBoxFor(model => model.numeroDocumento, new { @Class = "form-control", @required = "", @id = "floatingNDInput", @placeholder = "Número de identificación" })
+                                <label for="floatingNDInput">Número de identificación</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm">
+                            <div class="form-floating mb-3">
+                                @Html.TextBoxFor(model => model.nombre, new { @Class = "form-control", @required = "", @id = "floatingNameInput", @placeholder = "Nombre" })
+                                <label for="floatingNameInput">Nombre</label>
+                            </div>
+                        </div>
+                        <div class="col-sm">
+                            <div class="form-floating mb-3">
+                                @Html.TextBoxFor(model => model.apellido, new { @Class = "form-control", @required = "", @id = "floatingLastNInput", @placeholder = "Apellidos" })
+                                <label for="floatingLastNInput">Apellidos</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm">
+                            <div class="form-floating mb-3">
+                                @Html.DropDownList("idDepartamento", ViewBag.ListaDepartamentos as SelectList, "Seleccione", new { @required = "", @class = "form-select", @id = "idDepartamento" })
+                                <label for="idDepartamento">Departamento</label>
+                            </div>
+                        </div>
+                        <div class="col-sm">
+                            <div class="form-floating mb-3">
+                                @Html.DropDownListFor(model => model.codigoCiudad, new SelectList(string.Empty, "idCiudad", "ciudad"), "Seleccione", new { @required = "", @class = "form-select", @id = "floatingCitySelect" })
+                                <label for="floatingCitySelect">Ciudad</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm">
+                            <div class="form-floating mb-3">
+                                @Html.TextBoxFor(model => model.direccion, new { @Class = "form-control", @required = "", @id = "floatingDirInput", @placeholder = "Dirrección" })
+                                <label for="floatingDirInput">Dirrección</label>
+                            </div>
+                        </div>
+                        <div class="col-sm">
+                            <div class="form-floating mb-3">
+                                @Html.TextBoxFor(model => model.numeroLicencia, new { @Class = "form-control", @required = "", @id = "floatingLicInput", @placeholder = "Nro. Licencia" })
+                                <label for="floatingLicInput">Nro. Licencia</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm">
+                            <div class="form-floating mb-3">
+                                @Html.TextBoxFor(model => model.telefonoFijo, new { @Class = "form-control", @required = "", @id = "floatingTelInput", @placeholder = "Teléfono fijo" })
+                                <label for="floatingTelInput">Teléfono fijo</label>
+                            </div>
+                        </div>
+                        <div class="col-sm">
+                            <div class="form-floating mb-3">
+                                @Html.TextBoxFor(model => model.telefonoMovil, new { @Class = "form-control", @required = "", @id = "floatingCelInput", @placeholder = "Celular" })
+                                <label for="floatingCelInput">Celular</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-floating mb-3">
+                        @Html.TextBoxFor(model => model.correoContacto, new { @type = "email", @Class = "form-control", @required = "", @id = "floatingEmailInput", @placeholder = "Correo" })
+                        <label for="floatingEmailInput">Correo</label>
+                    </div>
+
+                    <div class="text-center mt-5">
+                        <h1>Soportes</h1>
+                    </div>
+                    <hr />
+                    <!--aquiiii-->
+                    <div class="row">
+                        <div class="col-sm mb-3">
+                            <label for="formFileCC" class="form-label">Cédula de ciudadanía</label>
+                            @Html.TextBoxFor(model => model.cedula, new { @class = "form-control", @required = "", type = "file", id = "formFileCC", accept = ".pdf" })
+                            @Html.ValidationMessageFor(model => model.cedula, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="col-sm mb3">
+                            <label for="formFileLC" class="form-label">Licencia de conducción</label>
+                            @Html.TextBoxFor(model => model.licencia, new { @class = "form-control", @required = "", type = "file", id = "formFileLC", accept = ".pdf" })
+                            @Html.ValidationMessageFor(model => model.licencia, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm mb-5">
+                            <label for="formFileSC" class="form-label">Planilla de pago de seguridad social</label>
+                            @Html.TextBoxFor(model => model.seguridadSocial, new { @class = "form-control", @required = "", type = "file", id = "formFileSC", accept = ".pdf" })
+                            @Html.ValidationMessageFor(model => model.seguridadSocial, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="col-sm mb-5">
+                            <label for="formFileCS" class="form-label">Cursos</label>
+                            @Html.TextBoxFor(model => model.cursos, new { @class = "form-control", @required = "", type = "file", id = "formFileCS", accept = ".pdf" })
+                            @Html.ValidationMessageFor(model => model.cursos, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="col-md-12 text-center">
+                        <br />
+                        <h6 for="termsand">@Html.CheckBoxFor(model => model.terminosYCondiciones, new { @Class = "", @Id = "termsand", @required = "", @value = "Create Table", @text = "Create Table" })&nbsp;&nbsp;&nbsp;&nbsp;Acepto <a id="terminos" style="cursor: pointer"><font color="#2135C2"><b><u> Términos y Condiciones de BidCargo, </u></b></font></a>.</h6>
+                    </div>
+
+                    <!--Agregados Faber orozco-->
+                    <div class="col-md-12 text-center">
+                        <br />
+                        <h6 for="termsand">@Html.CheckBoxFor(model => model.autorizacionDatosPersonales, new { @Class = "", @Id = "termsand", @required = "", @value = "Create Table", @text = "Create Table" })&nbsp;&nbsp;&nbsp;&nbsp;He leído <a id="pTratamientoDatos" style="cursor: pointer"><font color="#2135C2"><b><u>Política de Tratamiento de Datos Personales</u></b></font></a>.</h6>
+                    </div>
+                    <div class="col-md-12 text-center">
+                        <br />
+                        <h6 for="termsand">@Html.CheckBoxFor(model => model.politicaTratamientoDatos, new { @Class = "", @Id = "termsand", @required = "", @value = "Create Table", @text = "Create Table" })&nbsp;&nbsp;&nbsp;&nbsp;Autorizo <a id="dPersonales" style="cursor: pointer"><font color="#2135C2"><b><u>Bidcargo a utilizar mis datos personales</u></b></font></a>.</h6>
+                    </div>
+
+                    <div class="row form-group mt-5">
+                        <div class="col-md-12 d-flex justify-content-center">
+                            <input type="submit" id="guardar" value="Registrarme" class="btn btn-primary py-2 px-4 text-white js-addcart-detail js-show-modal1">
+                        </div>
+                    </div>
+
+                    @*<div class="d-flex justify-content-center mt-5">
+                            <button type="button" class="btn btn-primary text-white ">
+                                Enviar
+                            </button>
+                        </div>*@
+
+                    @*<a href=@Url.Action("RegistroConductor", "Conductor")>Vista Registro</a>*@
+
+                </form>
+            </div>
+        </div>
+    </div>
+
+}
+
+@section scripts{
+    @if (Session["message"] != null)
+    {
+        if (Session["message"].ToString() != "")
+        {
+            <script type="text/javascript">
+                Swal.fire({
+                    title: "Mensaje",
+                    html: "@Session["message"].ToString()",
+                    type : '@Session["type"].ToString()',
+                    showConfirmButton: true,
+
+                });
+            </script>
+        }
+        Session.Remove("message");
+        Session.Remove("type");
+    }
+}
+
+<script>
+    var cboDepartment = document.getElementById("idDepartamento");
+    cboDepartment.addEventListener("change", Refresh);
+    Refresh();
+
+    function Refresh() {
+        /*console.log(idDepartamento.value);*/
+        fetch("@Url.Content("~/Conductor/ConsultarCiudades")" + "?idDepartamento=" + idDepartamento.value)
+            .then(function (result) {
+                if (result.ok) {
+                    return result.json();
+                }
+            })
+            .then(function (data) {
+                /*console.log(data);*/
+                cbo = document.getElementById("floatingCitySelect");
+                cbo.innerHTML = "";
+                JSON.parse(data).forEach(function (element) {
+
+                    let opt = document.createElement("option");
+                    opt.appendChild(document.createTextNode(element.ciudad));
+                    opt.value = element.idCiudad;
+
+                    cbo.appendChild(opt);
+                })
+            })
+    }
+    //var cboCity = document.getElementById("floatingCitySelect");
+    //cboCity.addEventListener("change", Mostrar);
+    //Mostrar();
+
+    //function Mostrar() {
+    //    console.log(floatingCitySelect.value);
+    //}
+
+
+</script>

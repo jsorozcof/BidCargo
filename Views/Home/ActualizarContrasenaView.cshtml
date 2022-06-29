@@ -1,0 +1,49 @@
+﻿@model BidCargo_.Models.actualizarContrasena
+@{
+    Session["urlHttp"] = HttpContext.Current.Request.Url.AbsoluteUri.Split('/')[0] + "//" + HttpContext.Current.Request.Url.AbsoluteUri.Split('/')[2];
+    ViewBag.Title = "ActualizarContrasenaView";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using (Html.BeginForm("actualizarContrasena", "Home", FormMethod.Post))
+{
+    <div class="sufee-login d-flex align-content-center flex-wrap" style="background-image: url(/Content/images/hero_bg_1.jpg);">
+        <div class="container">
+            <br /><br />
+            <div class="row">
+                <div class="col-md-4 col-lg-4 mb-4 mb-lg-0">
+                </div>
+                <div class="col-md-4 col-lg-4 mb-4 mb-lg-0" style="background-color:white; width:90%; margin:auto;">
+                    <div class="login-content" style="background-color:white; margin:auto; text-align:center">
+                        <div class="login-logo">
+                            <a href="#">
+                                <img class="align-content" src="../Content/images/LogoBidCargo.png" alt="" />
+                            </a>
+                        </div>
+                        <label>Contrasena Actual</label>
+                        @Html.TextBoxFor(model => model.contrasenaActual, new { @class = "form-control", @required = "", @Style = "width:80%; margin:auto" })
+                        <br />
+                        <label>Nueva Contraseña</label>
+                        @Html.PasswordFor(model => model.contrasenaNueva, new { @class = "form-control", @required = "", @Style = "width:80%; margin:auto" })
+                        <br />
+                        <label>Confirmar Contraseña</label>
+                        @Html.PasswordFor(model => model.confirmarContrasena, new { @class = "form-control", @required = "", @Style = "width:80%; margin:auto" })
+                        <br />
+                        <label style="color:#007d71;text-align:center;">
+                            <a href="#" style="color:#007d71;text-align:center;">Recuperar Contraseña</a>
+                        </label>
+                        <br />
+                        <button class="btn btn-secondary btn-lg btn-block" style="width:70%; margin:auto;">INICIAR SESIÓN</button>
+                        <br />
+                    </div>
+                </div>
+                <div class="col-md-4 col-lg-4 mb-4 mb-lg-0">
+                </div>
+
+            </div>
+            <br />
+            <br />
+        </div>
+        <br /><br /><br /><br />
+    </div>
+}
