@@ -923,7 +923,7 @@ namespace BidCargo_.Controllers
                 contraOferta.Sk_ContraOferta = int.Parse(row[0].ToString());
                 contraOferta.CodeOffer = row[4].ToString();
                 contraOferta.FechaFinal = row[2].ToString();
-                contraOferta.Costo = String.Format("{0:C2}", double.Parse(row[3].ToString()));
+                contraOferta.Costo = double.Parse(row[3].ToString());
                 contraOferta.Nombre = row[5].ToString();
                 contraOferta.Apellido = row[6].ToString();
                 contraOferta.fk_usuario = int.Parse(row[9].ToString());

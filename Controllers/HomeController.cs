@@ -498,6 +498,7 @@ namespace BidCargo_.Controllers
             }
             ViewBag.documents = data.getDocuments(vals).Rows;
             ViewBag.myDocuments = data.getMyDocuments(id).Rows;
+            ViewBag.idClientePerfil = Convert.ToInt32(Session["idCliente"]);
 
             return View("/Views/Home/Users/show.cshtml");
         }
@@ -1105,7 +1106,24 @@ namespace BidCargo_.Controllers
             items.Add(new SelectListItem() { Text = "Fecha Confirmada", Value = "2" });
             ViewBag.dateOfServiceId = items;
 
+            if (!string.IsNullOrEmpty(Convert.ToString(Session["codeOffer"])))
+            {
+                var dtPersona = data.GetPersonaByRol(2);
+                if (dtPersona.Rows.Count > 0)
+                {
+                    string vhttp = Session["urlHttp"].ToString();
+                    for (int i = 0; i < dtPersona.Rows.Count; i++)
+                    {
+                        string correo = dtPersona.Rows[i]["correo"].ToString();
+                        ViewBag.models = data.getOffer(Session["codeOffer"].ToString(), 4).Rows;
+                        string textoCorreo = correoCreacion.sendOfferMail(ViewBag.models, ViewBag.data["usuarioFaceBook"], vhttp);
+                        correoCreacion.EnviarCorreo(correo, "Oferta de Carga - " + correo, "cma010360@gmail.com", textoCorreo, "bidCargo@hotmail.com", "bidCargo@hotmail.com", "bidC#123", "");
 
+                    }
+                }
+            }
+
+           
 
             return View("/Views/Home/Offers/create.cshtml");
         }
@@ -1115,7 +1133,7 @@ namespace BidCargo_.Controllers
             EnviarCorreos correoCreacion = new EnviarCorreos();
             string bodyCorreo = correoCreacion.ArmarCorreoElectronico(model.nombreContacto, 2, model.celularContacto, model.comentariosContacto);
             //correoCreacion.EnviarCorreo("bcpruebagen1@gmail.com", "Usuario BidCargo", "cma010360@gmail.com,jose.escobar@metnet.co", bodyCorreo, "contacto@bidcargo.com.co", "contacto@bidcargo.com.co", "Cid2306*","");
-            correoCreacion.EnviarCorreo(model.correoContacto, "Usuario BidCargo - " + model.correoContacto, "cma010360@gmail.com, jose.escobar@metnet.co", bodyCorreo, "bidCargo@hotmail.com", "bidCargo@hotmail.com", "bidC#123", "");
+            correoCreacion.EnviarCorreo(model.correoContacto, "Usuario BidCargo - " + model.correoContacto, "cma010360@gmail.com,jsorozcof@gmail.com", bodyCorreo, "bidCargo@hotmail.com", "bidCargo@hotmail.com", "bidC#123", "");
 
             ConnectionDataBase.StoreProcediur data = new ConnectionDataBase.StoreProcediur();
             data.guardarPrimerContacto(model.correoContacto, model.celularContacto, model.correoContacto, model.razonSocial, model.comentariosContacto);

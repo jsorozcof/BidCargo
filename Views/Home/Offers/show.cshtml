@@ -90,11 +90,11 @@
                                 }
 
                                 @*@if (Convert.ToInt32(modelo["typeCargo"]) >= 3)
-                                {
-                                    <div class="col-sm-4">
-                                        <h6><strong>Presentación:</strong> </h6><strong><strong>Atado: </strong>@modelo["longTied"], <strong>Planchas: </strong>@modelo["widthPlates"], <strong>Suelta: </strong>@modelo["highLoose"] en <strong>@modelo["typeDimensionString"]</strong></strong>
-                                    </div>
-                                }*@
+                        {
+                            <div class="col-sm-4">
+                                <h6><strong>Presentación:</strong> </h6><strong><strong>Atado: </strong>@modelo["longTied"], <strong>Planchas: </strong>@modelo["widthPlates"], <strong>Suelta: </strong>@modelo["highLoose"] en <strong>@modelo["typeDimensionString"]</strong></strong>
+                            </div>
+                        }*@
                                 <div class="col-sm-4">
                                     <h6><strong>Valor Declarado Mercancía:</strong></h6><label> @String.Format("{0:C0}", Convert.ToInt32(modelo["valueMerchandise"]))</label>
                                 </div>
@@ -143,8 +143,8 @@
                                         foreach (var rows in ViewBag.myDocumentsOfferServiceCarga)
                                         {
                                             String nameFile = @rows["srcFile"];
-                                            string correctString  = nameFile.Replace("/Content/uploads/", " ");
-                                             <a href="@rows["srcFile"]" class="btn btn-block btn-outline-dark" target="_blank"><i class="icon-download"></i>@correctString</a>
+                                            string correctString = nameFile.Replace("/Content/uploads/", " ");
+                                            <a href="@rows["srcFile"]" class="btn btn-block btn-outline-dark" target="_blank"><i class="icon-download"></i>@correctString</a>
                                         }
                                     }
                                 </div>
@@ -161,36 +161,40 @@
                     {
                         using (Html.BeginForm("storeContraOffers", "Home", FormMethod.Post, new { @id = "formushowsibmit", enctype = "multipart/form-data" }))
                         {
-                            <div class="row">
-                                <div class="col-sm-12">
-                                    <div class="row">
-                                        <div class="col-sm-6 form-group">
-                                            <input type="hidden" name="idClient" value="@ViewBag.idClient" />
-                                            <input type="hidden" name="codeOffer" value="@ViewBag.models[0]["codeOffer"]" />
-                                            <input type="hidden" name="idTypeCompany" value="@ViewBag.idTypeCompany" />
-                                            <label class="text-black">Tu Oferta</label>
-                                            <input type="hidden" name="show" value="1" />
-                                            <input type="text" name="contraOffer" id="contrasoff" placeholder="" class="areamask form-control form-control-sm" required />
-                                            <br>
-                                            <textarea class="form-control form-control-sm" name="descripcion" placeholder="Descripción">@ViewBag.descripcion</textarea>
-                                        </div>
-                                        <div class="col-sm-6 form-group">
-                                            <label class="d-block">&nbsp;</label>
-                                            <input type="submit" id="btn-submit" value="Aceptar" name="enviar" data-text="De crear esta oferta" class="btn btn-secondary text-uppercase returnls btn-sm actiusers" />
-                                        </div>
-                                        <div class="row text-center">
-                                            <div class="row form-group" id="containerfile">
-                                                <div class="col-md-12 align-self-center">
-                                                    <div class="wow fadeIn">
-                                                        <label id="addimagebutton" class="curpointer"><strong><i class="icon-plus"></i> Cargar documento de condiciones de contratación</strong></label>
+                            if (Convert.ToInt32(@ViewBag.idClient) != Convert.ToInt32(@ViewBag.models[0]["idClient"]))
+                            {
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <div class="row">
+                                            <div class="col-sm-6 form-group">
+                                                <input type="hidden" name="idClient" value="@ViewBag.idClient" />
+                                                <input type="hidden" name="codeOffer" value="@ViewBag.models[0]["codeOffer"]" />
+                                                <input type="hidden" name="idTypeCompany" value="@ViewBag.idTypeCompany" />
+                                                <label class="text-black">Tu Oferta</label>
+                                                <input type="hidden" name="show" value="1" />
+                                                <input type="text" name="contraOffer" id="contrasoff" placeholder="" class="areamask form-control form-control-sm" required />
+                                                <br>
+                                                <textarea class="form-control form-control-sm" name="descripcion" placeholder="Descripción">@ViewBag.descripcion</textarea>
+                                            </div>
+                                            <div class="col-sm-6 form-group">
+                                                <label class="d-block">&nbsp;</label>
+                                                <input type="submit" id="btn-submit" value="Aceptar" name="enviar" data-text="De crear esta oferta" class="btn btn-secondary text-uppercase returnls btn-sm actiusers" />
+                                            </div>
+                                            <div class="row text-center">
+                                                <div class="row form-group" id="containerfile">
+                                                    <div class="col-md-12 align-self-center">
+                                                        <div class="wow fadeIn">
+                                                            <label id="addimagebutton" class="curpointer"><strong><i class="icon-plus"></i> Cargar documento de condiciones de contratación</strong></label>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
 
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
+
+                            }
                         }
                     }
                     else
@@ -217,20 +221,20 @@
                                                     <td style=" width:30%; text-align: center;">
                                                         @if (ViewBag.myDocumentsContraOffer.Count > 0)
                                                         {
-                                                        foreach (var rows in ViewBag.myDocumentsContraOffer)
-                                                        {
-                                                            if (Convert.ToInt32(rows["idDocuments"]) == Convert.ToInt32(rows["idDocuments"]))
+                                                            foreach (var rows in ViewBag.myDocumentsContraOffer)
                                                             {
-                                                                <a href="@rows["srcFile"]" class="btn btn-block btn-outline-dark" title="Documento de Condiciones de Contratación" target="_blank"><i class="icon-download"></i>@rows["nameFile"] </a>
-                                                                @*<div class="col-md-4" id="">
-                                                                    <div class="wow fadeIn">
-                                                                        <label>Archivo subido @rows["nameFile"]</label>
+                                                                if (Convert.ToInt32(rows["idDocuments"]) == Convert.ToInt32(rows["idDocuments"]))
+                                                                {
+                                                                    <a href="@rows["srcFile"]" class="btn btn-block btn-outline-dark" title="Documento de Condiciones de Contratación" target="_blank"><i class="icon-download"></i>@rows["nameFile"] </a>
+                                                                    @*<div class="col-md-4" id="">
+                                                                <div class="wow fadeIn">
+                                                                    <label>Archivo subido @rows["nameFile"]</label>
 
-                                                                    </div>
-                                                                </div>*@
-                                                                    
+                                                                </div>
+                                                            </div>*@
+
+                                                                }
                                                             }
-                                                        }
                                                         }
                                                     </td>
                                                     <td>
@@ -292,45 +296,45 @@
                                                     <td>@String.Format("{0:C0}", row["ContraOffer"])</td>
                                                     <td>@row["descripcion"]</td>
                                                     <td style=" width:20%; text-align: center;">
-                                                    @if (!string.IsNullOrEmpty(Convert.ToString(@row["srcFile"])))
-                                                    {
-                                                        <a href="@row["srcFile"]" class="btn btn-block btn-outline-dark" title="Documento de Condiciones de Contratación" target="_blank"><i class="icon-download"></i> @row["nameFile"]</a>
-                                                    }
+                                                        @if (!string.IsNullOrEmpty(Convert.ToString(@row["srcFile"])))
+                                                        {
+                                                            <a href="@row["srcFile"]" class="btn btn-block btn-outline-dark" title="Documento de Condiciones de Contratación" target="_blank"><i class="icon-download"></i> @row["nameFile"]</a>
+                                                        }
 
 
-                                            <td>@row["selectedString"]</td>
+                                                    <td>@row["selectedString"]</td>
 
-                                            <td>
-                                                @if (Convert.ToInt32(row["selected"]) == 0)
-                                                {
-                                                    <a class="btn btn-success btn-sm text-white rounded mt-1 mb-1 aaa"
-                                                       data-text="De Aceptar la contra oferta seleccionada"
-                                                       data-selected="0"
-                                                       data-idcontra="@row["idContraOffers"]">
-                                                        <i class="icon icon-thumbs-o-up"></i>
-                                                    </a>
-                                                    <a class="btn btn-warning btn-sm text-white rounded mt-1 mb-1 aaa"
-                                                       data-text="De Rechazar la contra oferta seleccionada"
-                                                       data-selected="1"
-                                                       data-idcontra="@row["idContraOffers"]">
-                                                        <i class="icon icon-thumbs-o-down"></i>
-                                                    </a>
-                                                }
-                                                @if (Convert.ToInt32(row["hasQualification"]) == 0)
-                                                {
-                                                    <a class="btn btn-info btn-sm text-white rounded mt-1 mb-1 calification"
-                                                       data-selected="1"
-                                                       data-idcontra="@row["idContraOffers"]">
-                                                        <i class="icon icon-star"></i>
-                                                    </a>
-                                                }
-                                                <a class="btn btn-primary btn-sm text-white rounded mt-1 mb-1 showCali"
-                                                   data-selected="1"
-                                                   data-idcontra="@row["idContraOffers"]">
-                                                    <i class="icon icon-comment-o"></i>
-                                                </a>
-                                            </td>
-                                        </tr>
+                                                    <td>
+                                                        @if (Convert.ToInt32(row["selected"]) == 0)
+                                                        {
+                                                            <a class="btn btn-success btn-sm text-white rounded mt-1 mb-1 aaa"
+                                                               data-text="De Aceptar la contra oferta seleccionada"
+                                                               data-selected="0"
+                                                               data-idcontra="@row["idContraOffers"]">
+                                                                <i class="icon icon-thumbs-o-up"></i>
+                                                            </a>
+                                                            <a class="btn btn-warning btn-sm text-white rounded mt-1 mb-1 aaa"
+                                                               data-text="De Rechazar la contra oferta seleccionada"
+                                                               data-selected="1"
+                                                               data-idcontra="@row["idContraOffers"]">
+                                                                <i class="icon icon-thumbs-o-down"></i>
+                                                            </a>
+                                                        }
+                                                        @if (Convert.ToInt32(row["hasQualification"]) == 0)
+                                                        {
+                                                            <a class="btn btn-info btn-sm text-white rounded mt-1 mb-1 calification"
+                                                               data-selected="1"
+                                                               data-idcontra="@row["idContraOffers"]">
+                                                                <i class="icon icon-star"></i>
+                                                            </a>
+                                                        }
+                                                        <a class="btn btn-primary btn-sm text-white rounded mt-1 mb-1 showCali"
+                                                           data-selected="1"
+                                                           data-idcontra="@row["idContraOffers"]">
+                                                            <i class="icon icon-comment-o"></i>
+                                                        </a>
+                                                    </td>
+                                                </tr>
                                             }
                                         }
                                     </tbody>

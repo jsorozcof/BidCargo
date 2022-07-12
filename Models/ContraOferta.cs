@@ -12,7 +12,7 @@ namespace BidCargo_.Models
         public string FechaFinal { get; set; }
         public string Nombre { get; set; }
         public string Apellido { get; set; }
-        public string Costo { get; set; }
+        public double Costo { get; set; }
         public string TipoPropietario { get; set; }
         public int fk_usuario { get; set; }
 

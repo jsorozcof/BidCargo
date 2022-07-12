@@ -486,8 +486,8 @@ public class EnviarCorreos
             strBody += "<label><strong> Dias de pago: </strong>" + models["payDays"] + "</label><br>";
             if (Convert.ToInt32(models["typeCargo"]) == 2 || Convert.ToInt32(models["typeCargo"]) == 3 || Convert.ToInt32(models["typeCargo"]) == 4)
             {
-                strBody += "<label><strong>Medidas: </strong> <strong>Largo: </strong>"+ models["longTied"] +", <strong>Ancho: </strong> "+ models["widthPlates"]+", <strong>Alto: </strong>"+ models["highLoose"]+ " en <strong>" + models["typeDimensionString"] +"</strong></label><br>";
-                strBody += "<label><strong>Número: </strong>" + models["numberUnitsTons"]+"</label><br>";
+                strBody += "<label><strong>Medidas: </strong> <strong>Largo: </strong>" + models["longTied"] + ", <strong>Ancho: </strong> " + models["widthPlates"] + ", <strong>Alto: </strong>" + models["highLoose"] + " en <strong>" + models["typeDimensionString"] + "</strong></label><br>";
+                strBody += "<label><strong>Número: </strong>" + models["numberUnitsTons"] + "</label><br>";
             }//numberUnitsTons
 
             //if(Convert.ToInt32(models["typeCargo"]) >= 3)
@@ -496,7 +496,7 @@ public class EnviarCorreos
             //}
             strBody += "<label><strong> Valor por Contenedor:</strong> " + String.Format("{0:C0}", Convert.ToInt32(models["valueMerchandise"])) + " </label><br>";
             strBody += "<label><strong> Fecha de Viaje:</strong> " + models["departure"] + "</label><br>";
-            strBody += "<label><strong>Fecha Estimada de Arribo</strong>: " + models["arrival"] + "<strong>" +  models["DateOfServiceIText"] + "</strong>" + " </label>  <br>";
+            strBody += "<label><strong>Fecha Estimada de Arribo</strong>: " + models["arrival"] + " " + "<strong>" +  models["DateOfServiceIText"] + "</strong>" + " </label>  <br>";
             strBody += "<label><strong> Observacion:</strong> " + models["observation"] + " </label><br>";
             strBody += "----------------------------------------------------<br/>";
 

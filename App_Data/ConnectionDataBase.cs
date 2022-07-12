@@ -127,6 +127,26 @@ public class ConnectionDataBase
             }
         }
 
+        public DataTable GetPersonaByRol(int rol)
+        {
+            try
+            {
+                SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["BidcargoConnectionString"].ConnectionString);
+                SqlDataAdapter da = new SqlDataAdapter("SP_ConsultarPersona", con);
+                da.SelectCommand.Parameters.Add("@rol", SqlDbType.Int).Value = rol;
+                da.SelectCommand.CommandType = CommandType.StoredProcedure;
+                DataTable dt = new DataTable();
+                da.Fill(dt);
+                return dt;
+
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
 
         public DataTable ObtenerData(string SP)
         {
