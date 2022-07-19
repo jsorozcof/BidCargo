@@ -108,7 +108,7 @@
                                             ViewBag.cosas = "active";
                                         }
 
-                                        <li class="@ViewBag.cosas"><a href="@Url.Action("AdminOffers", "Home")"> <i class="fab fa-shopware"></i> Ofertas</a></li>
+                                        <li class="@ViewBag.cosas"><a href="@Url.Action("AdminOffers", "Home")"> <i class="fab fa-shopware"></i> Solicitudes</a></li>
 
                                         ViewBag.cosas = "";
                                         if (ViewBag.valos == "Users")
@@ -285,7 +285,7 @@
                                                 ViewBag.cosas = "active";
                                             }
                                             <li class="has-children @ViewBag.cosas">
-                                                <a href="#"> <i class="icon-user-circle"></i></a>
+                                                <a href="#"> <i class="icon-user-circle"></i>@Session["usuarioFacebook"]</a>
                                                 <ul class="dropdown">
                                                     <li><a href="@Url.Action("verPerfil")"><i class="icon-user-plus"></i>  Ver Perfil</a></li>
                                                     @*<li><a href="@Url.Action("AdminUsers")"><i class="icon-user-cog"></i>  Usuarios</a></li>*@

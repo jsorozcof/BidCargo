@@ -1859,9 +1859,8 @@ public class ConnectionDataBase
                 da.Fill(dt);
                 return dt;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
                 throw;
             }
         }

@@ -55,7 +55,6 @@ namespace BidCargo_.Controllers
 
         public ActionResult GuardarPreRegistroConductor(ConductorInputModel conductor)
         {
-            
             EnviarCorreos correoCreacion = new EnviarCorreos();
             ConnectionDataBase.StoreProcediur data = new ConnectionDataBase.StoreProcediur();
             CredencialesDeAcceso acceso = new CredencialesDeAcceso();
@@ -76,7 +75,7 @@ namespace BidCargo_.Controllers
                 return GuardarArchivos(conductor);
 
 
-                
+
             }
             else
             {
@@ -134,7 +133,7 @@ namespace BidCargo_.Controllers
             conductorPath.pathLicencia = Path.Combine(ruta + Path.GetFileName(conductorFileInput.licencia.FileName));
             conductorPath.pathSeguridadSoc = Path.Combine(ruta + Path.GetFileName(conductorFileInput.seguridadSocial.FileName));
             conductorPath.pathCursos = Path.Combine(ruta + Path.GetFileName(conductorFileInput.cursos.FileName));
-            conductorPath.idConductor = int.Parse(conductorFileInput.numeroLicencia); //int.Parse(Session["idConductor"].ToString());
+            conductorPath.idConductor =  int.Parse(Session["idConductor"].ToString()); //long.Parse(conductorFileInput.numeroLicencia);
 
             //if (!ModelState.IsValid)
             //{
