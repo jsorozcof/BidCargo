@@ -220,7 +220,7 @@
             });
 
             $("#btnExcelViewUsers").click(function () {
-                $.blockUI({ message: '<h3>Por favor, espere un momento...</h3>' });
+                //$.blockUI({ message: '<h3>Por favor, espere un momento...</h3>' });
                 var typeId = $('#typeId').val();
                 $.ajax({
                     type: "GET",
@@ -230,14 +230,12 @@
                     dataType: "json",
                 }).done(function (data) {
                     console.log(data.result);
-                    $.unblockUI();
 
                     if (data.fileName != "") {
                         window.location.href = "@Url.RouteUrl(new
                             { Controller = "Home", Action = "Download"})/?file=" + data.fileName;
                     }
                 });
-                $.unblockUI();
             });
         })
 

@@ -2295,12 +2295,13 @@ public class ConnectionDataBase
             }
         }
 
-        public DataTable ConsultarEmpresaTransporte()
+        public DataTable ConsultarEmpresaTransporte(int idClient)
         {
             try
             {
                 SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["BidcargoConnectionString"].ConnectionString);
                 SqlDataAdapter da = new SqlDataAdapter("SP_ConsultarEmpresaTransporte", con);
+                da.SelectCommand.Parameters.Add("@idClient", SqlDbType.Int).Value = idClient;
                 da.SelectCommand.CommandType = CommandType.StoredProcedure;
                 DataTable dt = new DataTable();
                 da.Fill(dt);
@@ -2335,7 +2336,7 @@ public class ConnectionDataBase
         }
 
         public DataTable CreacionContraOfertaPropietario(ContraOfertaPropietario contraOferta)
-        {
+         {
             try
             {
                 DateTime DateObject = DateTime.ParseExact(contraOferta.FechaHora, "MM/dd/yyyy", null);

@@ -91,7 +91,7 @@
                                                    class="btn btn-secondary btn-sm text-white rounded">
                                                     <i class="icon-search"></i>
                                                 </a>
-                                                <a href="@Url.Action("ContraOferta", "Propietario", new { @id=row["codeOffer"]})" title="Realizar contra-oferta"
+                                                <a href="@Url.Action("ContraOferta", "Propietario", new { @id=row["codeOffer"], @idClient=row["idClient"]})" title="Realizar contra-oferta"
                                                    class="btn btn-secondary btn-sm text-white rounded">
                                                     <i class="fas fa-balance-scale-left"></i>
                                                 </a>

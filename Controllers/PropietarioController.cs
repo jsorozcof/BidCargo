@@ -240,7 +240,7 @@ namespace BidCargo_.Controllers
                 list.Add(new SelectListItem()
                 {
                     Text = row[textField].ToString(),
-                    Value = row[valueField].ToString()
+                    Value = row[textField].ToString()
                 });
             }
 
@@ -457,7 +457,7 @@ namespace BidCargo_.Controllers
         {
             return View();
         }
-        public ActionResult ContraOferta(string id)
+        public ActionResult ContraOferta(string id, int idClient)
         {
             
             ViewBag.codigo = id;
@@ -466,12 +466,12 @@ namespace BidCargo_.Controllers
             ConnectionDataBase.StoreProcediur data = new ConnectionDataBase.StoreProcediur();
             DataTable dt = data.ConsultarVehiculosPropietario(int.Parse(@TempData["IdUsuario"].ToString()));
             DataTable dtConductor = data.ConsultarConductores(int.Parse(@TempData["IdUsuario"].ToString()));
-            DataTable dtEmpresa = data.ConsultarEmpresaTransporte();
+            DataTable dtEmpresa = data.ConsultarEmpresaTransporte(idClient);
             ViewBag.models = data.getOffer(id, 4).Rows;
 
             ViewBag.ListaVehiculos = ToSelectList(dt, "idVehiculo", "placa");
             ViewBag.ListaConductores = ToSelectList(dtConductor, "idConductor", "nombre");
-            ViewBag.ListaEmpresas = ToSelectList(dtEmpresa, "idCliente", "nombreEmpresa");
+            ViewBag.ListaEmpresas = ToSelectList(dtEmpresa, Convert.ToString(idClient), "nombreEmpresa");
             
             return View();
         }
@@ -982,7 +982,7 @@ namespace BidCargo_.Controllers
             }
             else
             {
-                Session["message"] = "Costo de la contraoferta a sido modificado";
+                Session["message"] = "No se pudo actualizar el costo de la contraoferta";
                 Session["type"] = "warning";
             }
 
