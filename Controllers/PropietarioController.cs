@@ -240,7 +240,7 @@ namespace BidCargo_.Controllers
                 list.Add(new SelectListItem()
                 {
                     Text = row[textField].ToString(),
-                    Value = row[textField].ToString()
+                    Value = row[valueField].ToString()
                 });
             }
 
@@ -471,7 +471,7 @@ namespace BidCargo_.Controllers
 
             ViewBag.ListaVehiculos = ToSelectList(dt, "idVehiculo", "placa");
             ViewBag.ListaConductores = ToSelectList(dtConductor, "idConductor", "nombre");
-            ViewBag.ListaEmpresas = ToSelectList(dtEmpresa, Convert.ToString(idClient), "nombreEmpresa");
+            ViewBag.ListaEmpresas = ToSelectList(dtEmpresa, "idCliente", "nombreEmpresa");
             
             return View();
         }

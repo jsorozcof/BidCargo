@@ -148,13 +148,6 @@
 
 
 
-
-
-
-
-
-
-
                         }
                     </div>
 
@@ -167,7 +160,6 @@
               
             </div>
             <div class="card-body w-100 h-100">
-                <form class="form-floating">
 
                     <div class="row bg-ligth-bidcargo mx-1">
                         <div class="col-sm mt-4">
@@ -241,6 +233,7 @@
 
                     <div class="form-floating my-5">
                         @Html.DropDownListFor(model => model.IdConductor, ViewBag.ListaConductores as SelectList, "Seleccione", new { @required = "", @class = "form-select", @id = "idConductor" })
+
                         <label for="idConductor">Conductor</label>
                     </div>
 
@@ -310,7 +303,6 @@
 
                     @*<a href=@Url.Action("RegistroConductor", "Conductor")>Vista Registro</a>*@
 
-               </form>
             </div>
         </div>
     </div>
@@ -335,8 +327,15 @@
     });
 
     var cboVehiculo = document.getElementById("idVehiculo");
+    var cboidConductor = document.getElementById("idConductor");
+  
     cboVehiculo.addEventListener("change", Refresh);
     Refresh();
+
+    $("#idConductor").change(function () {
+        console.log("idConductor -> ", cboidConductor.value);
+    });
+
 
     function Refresh() {
         fetch("@Url.Content("~/Propietario/ConsultarInfoVehiculo")" + "?idVehiculo=" + idVehiculo.value)
