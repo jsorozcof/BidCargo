@@ -786,6 +786,30 @@ public class ConnectionDataBase
             }
         }
 
+        public DataTable getOfferByTypeCompany(string pcodeOffer = "", int ptype = 0, int pidClient = 0)
+        {
+            try
+            {
+
+                SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["BidcargoConnectionString"].ConnectionString);
+                SqlDataAdapter da = new SqlDataAdapter("SP_getOffer", con);
+                da.SelectCommand.Parameters.Add("@pcodeOffer", SqlDbType.VarChar).Value = pcodeOffer;
+                da.SelectCommand.Parameters.Add("@ptype", SqlDbType.Int).Value = ptype;
+                da.SelectCommand.Parameters.Add("@pidClient", SqlDbType.Int).Value = pidClient;
+                da.SelectCommand.CommandType = CommandType.StoredProcedure;
+                DataTable dt = new DataTable();
+                da.Fill(dt);
+                return dt;
+            }
+            catch (Exception e)
+            {
+                string vaas = e.Message;
+                throw;
+            }
+        }
+
+
+
         public DataTable GetViewExportToExcel(int id)
         {
             try
@@ -1075,6 +1099,9 @@ public class ConnectionDataBase
                 throw;
             }
         }
+
+
+
         public DataTable getUsersTypeCompanyByOffers(int pidOffers = 0)
         {
             try

@@ -1556,7 +1556,48 @@ namespace BidCargo_.Controllers
             else
                 return RedirectToAction("Index");
 
-            ViewBag.offers = data.getOffer("", 2, Convert.ToInt32(Session["idCliente"])).Rows;
+            var fullOffer = data.getOffer("", 2, Convert.ToInt32(Session["idCliente"]));
+            
+            //Consultar si Session["idCliente"] es una empresa de transporte.
+            if (Convert.ToInt32(Session["idTypeCompany"]) == 8)
+            {
+                DataTable dtTypeCompany = data.getTypeCompanyByClient(0);
+                DataView dv = new DataView(dtTypeCompany);
+                dv.RowFilter = "idTypeCompany = 8";
+
+                if (fullOffer.Rows.Count > 0)
+                {
+                    for (var i = 0; i < dv.Count; i++)
+                    {
+                        int idClientCompany = (int)dv[i]["idClient"];
+                        List<DataRow> rowsToDelete = new List<DataRow>();
+
+                        foreach (DataRow row in fullOffer.Rows)
+                        {
+                            if (row["idClient"].ToString().Contains(Convert.ToString(idClientCompany)))
+                            {
+                                rowsToDelete.Add(row);
+                            }
+                        }
+
+                        foreach (DataRow row in rowsToDelete)
+                        {
+                            fullOffer.Rows.Remove(row);
+                        }
+
+                    }
+
+                    fullOffer.AcceptChanges();
+                    ViewBag.offers = fullOffer.Rows;
+                }
+             }
+            else
+            {
+                ViewBag.offers = data.getOffer("", 2, Convert.ToInt32(Session["idCliente"])).Rows;
+            }
+
+
+
             if (Convert.ToInt32(Session["idTypeCompany"]) == 7)
             {
                 ViewBag.companies = data.getCompaniesAcceptedByCodeOffers().Rows;
@@ -1565,6 +1606,23 @@ namespace BidCargo_.Controllers
             return View("/Views/Home/Offers/table.cshtml");
         }
 
+        public List<T> ConvertToList<T>(DataTable dt)
+        {
+            var columnNames = dt.Columns.Cast<DataColumn>()
+                .Select(c => c.ColumnName)
+                .ToList();
+            var properties = typeof(T).GetProperties();
+            return dt.AsEnumerable().Select(row =>
+            {
+                var objT = Activator.CreateInstance<T>();
+                foreach (var pro in properties)
+                {
+                    if (columnNames.Contains(pro.Name))
+                        pro.SetValue(objT, row[pro.Name]);
+                }
+                return objT;
+            }).ToList();
+        }
         public ActionResult factoringShow()
         {
             ConnectionDataBase.StoreProcediur data = new ConnectionDataBase.StoreProcediur();
