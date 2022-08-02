@@ -1109,14 +1109,28 @@ namespace BidCargo_.Controllers
             if (!string.IsNullOrEmpty(Convert.ToString(Session["codeOffer"])))
             {
                 var dtPersona = data.GetPersonaByRol(2);
+                var dtEmpresasTransporte = data.GetPersonaByRol(0);
+
+                string vhttp = Session["urlHttp"].ToString();
+                ViewBag.models = data.getOffer(Session["codeOffer"].ToString(), 4).Rows;
+                string textoCorreo = correoCreacion.sendOfferMail(ViewBag.models, ViewBag.data["usuarioFaceBook"], vhttp);
+
                 if (dtPersona.Rows.Count > 0)
                 {
-                    string vhttp = Session["urlHttp"].ToString();
                     for (int i = 0; i < dtPersona.Rows.Count; i++)
                     {
                         string correo = dtPersona.Rows[i]["correo"].ToString();
-                        ViewBag.models = data.getOffer(Session["codeOffer"].ToString(), 4).Rows;
-                        string textoCorreo = correoCreacion.sendOfferMail(ViewBag.models, ViewBag.data["usuarioFaceBook"], vhttp);
+                        correoCreacion.EnviarCorreo(correo, "Oferta de Carga - " + correo, "cma010360@gmail.com", textoCorreo, "bidCargo@hotmail.com", "bidCargo@hotmail.com", "bidC#123", "");
+
+                    }
+                }
+
+
+                if (dtEmpresasTransporte.Rows.Count > 0)
+                {
+                    for (int i = 0; i < dtEmpresasTransporte.Rows.Count; i++)
+                    {
+                        string correo = dtEmpresasTransporte.Rows[i]["email"].ToString();
                         correoCreacion.EnviarCorreo(correo, "Oferta de Carga - " + correo, "cma010360@gmail.com", textoCorreo, "bidCargo@hotmail.com", "bidCargo@hotmail.com", "bidC#123", "");
 
                     }
@@ -2642,7 +2656,7 @@ namespace BidCargo_.Controllers
             
             DataTable dda = data.AceptarRechazarContraofertas( 1 , 1, oferta, usuario );
             DataTable ddd = data.AceptarRechazarContraofertas(2, 2, oferta, usuario);
-            //enviarnotificaciones(oferta ,usuario);
+            enviarnotificaciones(oferta ,usuario);
             Session["message"] = "Modificacion Realizada con éxito.";
             return RedirectToAction("ContraOfertaPropietarioPempresas");
         }
@@ -2679,10 +2693,11 @@ namespace BidCargo_.Controllers
         {
             ConnectionDataBase.StoreProcediur data = new ConnectionDataBase.StoreProcediur();
             EnviarCorreos correoCreacion = new EnviarCorreos();
-            DataTable dda = data.PersonasParaNotificar(1, usuario);
-            DataTable daa = data.EmpresaAnotificar(oferta);
-            string bodyCorreo = correoCreacion.sendMailAccepOffer3(dda , daa, "");
-            correoCreacion.EnviarCorreo( dda.Rows[0]["Correo"].ToString(), "Oferta Aceptada", "Bidcargo@hotmail.com", bodyCorreo, "Bidcargo@hotmail.com", "Bidcargo@hotmail.com", "bidC#123", "");
+            DataTable person = data.PersonasParaNotificar(1, usuario);
+            DataTable companies = data.EmpresaAnotificar(oferta);
+
+            string bodyCorreo = correoCreacion.sendMailAccepOffer3(person, companies, "");
+            correoCreacion.EnviarCorreo(companies.Rows[0]["email"].ToString(), "Oferta Aceptada", "Bidcargo@hotmail.com", bodyCorreo, "Bidcargo@hotmail.com", "Bidcargo@hotmail.com", "bidC#123", "");
            
             
             DataTable ddoa = data.PersonasParaNotificar(2, usuario);

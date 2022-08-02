@@ -2049,7 +2049,7 @@ public class ConnectionDataBase
                 string Query = "";
                 SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["BidcargoConnectionString"].ConnectionString);
                
-                    Query = $"select * from TB_cliente c inner join  TB_ContraOfertaPropCliente cpc on c.IdCliente = cpc.IdCliente inner join  TB_ContraOfertaPropietario cop on cpc.IdContraOferta = cop.Sk_ContraOferta where cop.Sk_ContraOferta = {fkusuario} ";
+                    Query = $"select * from TB_cliente c inner join  TB_ContraOfertaPropCliente cpc on c.IdCliente = cpc.IdCliente inner join  TB_ClientOffers co on co.idClient = c.IdCliente inner join  TB_ContraOfertaPropietario cop on cpc.IdContraOferta = cop.Sk_ContraOferta where cop.Sk_ContraOferta = {fkusuario} ";
                
                 SqlCommand command = new SqlCommand(Query, con);
                 SqlDataAdapter data = new SqlDataAdapter(command);

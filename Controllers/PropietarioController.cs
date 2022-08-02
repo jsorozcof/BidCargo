@@ -466,11 +466,19 @@ namespace BidCargo_.Controllers
             ConnectionDataBase.StoreProcediur data = new ConnectionDataBase.StoreProcediur();
             DataTable dt = data.ConsultarVehiculosPropietario(int.Parse(@TempData["IdUsuario"].ToString()));
             DataTable dtConductor = data.ConsultarConductores(int.Parse(@TempData["IdUsuario"].ToString()));
-            DataTable dtEmpresa = data.ConsultarEmpresaTransporte(idClient);
+            DataTable dtEmpresa = new DataTable();
             ViewBag.models = data.getOffer(id, 4).Rows;
 
             ViewBag.ListaVehiculos = ToSelectList(dt, "idVehiculo", "placa");
             ViewBag.ListaConductores = ToSelectList(dtConductor, "idConductor", "nombre");
+
+            DataTable dtTypeCompany = data.getTypeCompanyByClient(idClient);
+            int typeCompany = Convert.ToInt32(dtTypeCompany.Rows[0]["IdTypeCompany"]);
+            if (typeCompany == 1)
+                 dtEmpresa = data.ConsultarEmpresaTransporte(0);
+            else
+                dtEmpresa = data.ConsultarEmpresaTransporte(idClient);
+
             ViewBag.ListaEmpresas = ToSelectList(dtEmpresa, "idCliente", "nombreEmpresa");
             
             return View();

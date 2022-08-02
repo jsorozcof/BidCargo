@@ -995,32 +995,58 @@ public class EnviarCorreos
 
 
 
-    public string sendMailAccepOffer3(dynamic row = null, dynamic row2 = null, string urlpath = "")
+    public string sendMailAccepOffer3(DataTable data = null, DataTable data2 = null, string urlpath = "")
     {
-        string strBody = "<HTML>";
-        strBody += "<Body> ";
-        strBody += "<label style='font-family: Arial, icomoon, sans-serif; font-size: 12px; color: #1F1F1F'>";
-        strBody += "<br> Equipo de BidCargo <br>";
-        strBody += "<br>Un placer saludarl@ " + row["nombreUsuario"] + ", de parte del Equipo de BidCargo...";
+        string strBody = string.Empty;
+        try
+        {
+         
+            foreach (dynamic row in data.Rows)
+            {
+                strBody += "<HTML>";
+                strBody += "<Body> ";
+                strBody += "<label style='font-family: Arial, icomoon, sans-serif; font-size: 12px; color: #1F1F1F'>";
+                strBody += "<br> Equipo de BidCargo <br>";
+                strBody += "<br>Un placer saludarl@ " + row["nombreUsuario"].ToString() + ", de parte del Equipo de BidCargo...";
 
-        strBody += "<br>Nos complace informarle, que la oferta que realizo a la Cotizacion " + row["codeOffer"] + ", ha sido aceptada.";
-        strBody += "<br>Le invitamos a ingresar a nuestra plataforma para conocer mas detalles, los datos de contacto de la empresa contratante son los siguientes:";
-        strBody += "<br>Empresa Contratante: " + row2["usuarioFaceBook"] + "";
-        strBody += "<br>Dirección: " + row2["direccion"] + "";
-        strBody += "<br>Persona de Contacto: " + row2["nombre"] + "  " + row2["apellidoPaterno"] + "";
-        strBody += "<br>Telefono de Contacto: " + row2["numeroCelular"] + "";
-        strBody += "<br>Email de Contacto: " + row2["email"] + "";
-        strBody += "<br><br><a href='" + urlpath + "'><button class=\"curpointer\" style=\"cursor:pointer;background:#42a098;border-radius:5px;padding:15px 23px;color:#ffffff;" +
-            "           display:inline-block;font:normal bold 30px/1 \"Calibri\", sans-serif;text-align:center;text-shadow:1px 1px #000000;cursor:pointer;\"> BidCargo </button></a> ";
-        strBody += "<br><br><strong><span style=\"color:#000000\">Coordialmente</span></br></strong>";
-        strBody += "<span style =\"color:#000000\">Servicio Al Cliente</span> </br></br>";
-        strBody += "<br><br>";
-        strBody += "<img src=\"http://www.bidcargo.com.co/Content/images/logoLetras.png\" width= \"428\" height=\"78\" alt=\"logo\">";
-        strBody += "<br><br>";
-        strBody += "<span style=\"color:#00ccff\">Antes de imprimir este correo electrónico, piense bien si es necesario hacerlo: El medio ambiente es cuestión de todos. Si decide imprimirlo, piense si es necesario hacerlo en color: el consumo de tinta o tóner será&nbsp;mucho mayor. Si decide imprimirlo en color, piense si necesita imprimir todo el documento o sólo una parte.</span > ";
-        strBody += "</label>";
-        strBody += "</Body>";
-        strBody += "</HTML>";
+
+                foreach (dynamic row2 in data2.Rows)
+                {
+                    strBody += "<br>Nos complace informarle, que la oferta que realizo a la Cotizacion " + row2["codeOffer"] + ", ha sido aceptada.";
+                    strBody += "<br>Le invitamos a ingresar a nuestra plataforma para conocer mas detalles, los datos de contacto de la empresa contratante son los siguientes:";
+
+                    strBody += "<br>Empresa Contratante: " + row2["usuarioFaceBook"] + "";
+                    strBody += "<br>Dirección: " + row2["direccion"] + "";
+                    strBody += "<br>Persona de Contacto: " + row2["nombre"] + "  " + row2["apellidoPaterno"] + "";
+                    strBody += "<br>Telefono de Contacto: " + row2["numeroCelular"] + "";
+                    strBody += "<br>Email de Contacto: " + row2["email"] + "";
+                }
+
+                strBody += "<br><br><a href='" + urlpath + "'><button class=\"curpointer\" style=\"cursor:pointer;background:#42a098;border-radius:5px;padding:15px 23px;color:#ffffff;" +
+                    "           display:inline-block;font:normal bold 30px/1 \"Calibri\", sans-serif;text-align:center;text-shadow:1px 1px #000000;cursor:pointer;\"> BidCargo </button></a> ";
+                strBody += "<br><br><strong><span style=\"color:#000000\">Coordialmente</span></br></strong>";
+                strBody += "<span style =\"color:#000000\">Servicio Al Cliente</span> </br></br>";
+                strBody += "<br><br>";
+                strBody += "<img src=\"http://www.bidcargo.com.co/Content/images/logoLetras.png\" width= \"428\" height=\"78\" alt=\"logo\">";
+                strBody += "<br><br>";
+                strBody += "<span style=\"color:#00ccff\">Antes de imprimir este correo electrónico, piense bien si es necesario hacerlo: El medio ambiente es cuestión de todos. Si decide imprimirlo, piense si es necesario hacerlo en color: el consumo de tinta o tóner será&nbsp;mucho mayor. Si decide imprimirlo en color, piense si necesita imprimir todo el documento o sólo una parte.</span > ";
+                strBody += "</label>";
+                strBody += "</Body>";
+                strBody += "</HTML>";
+
+            }
+        }
+
+        catch (Exception ex)
+        {
+            throw new Exception("Throwing Exception" + ex.Message.ToString());
+        }
+
+        finally
+        {
+            Console.WriteLine("A's finally");
+        }
+
         return strBody;
     }
 
