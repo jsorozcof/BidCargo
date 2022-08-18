@@ -75,23 +75,27 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @if (ViewBag.offers.Count > 0)
+
+                            @if (ViewBag.offers != null)
                             {
-                                foreach (var row in ViewBag.offers)
+                                if (ViewBag.offers.Count > 0)
                                 {
-                            <tr>
-                                <td>@row["codeOffer"]</td>
-                                @if (Convert.ToInt32(Session["idTypeCompany"]) != 1)
-                                {
-                                    <td>@row["companyClient"]</td>
-                                }
-                                <td>@row["created_at"].ToString().Split(' ')[0].Split('-')[2]-@row["created_at"].ToString().Split(' ')[0].Split('-')[1]-@row["created_at"].ToString().Split(' ')[0].Split('-')[0]</td>
-                                <td>Desde @row["fromDepartament"] - @row["fromDepartament"] hacia @row["toDepartament"] - @row["toCity"]</td>
-                                <td>@String.Format("{0:C0}", row["valorOferta"])</td>
-                                <td>@row["FactoringString"]</td>
-                                <td>@row["statusString"]</td>
-                                <td><a href="@Url.Action("ShowOffer", new { @id = row["codeOffer"]})" class="btn btn-secondary btn-sm text-white rounded"><i class="icon icon-address-book"></i></a></td>
-                            </tr>
+                                    foreach (var row in ViewBag.offers)
+                                    {
+                                        <tr>
+                                            <td>@row["codeOffer"]</td>
+                                            @if (Convert.ToInt32(Session["idTypeCompany"]) != 1)
+                                            {
+                                                <td>@row["companyClient"]</td>
+                                            }
+                                            <td>@row["created_at"].ToString().Split(' ')[0].Split('-')[2]-@row["created_at"].ToString().Split(' ')[0].Split('-')[1]-@row["created_at"].ToString().Split(' ')[0].Split('-')[0]</td>
+                                            <td>Desde @row["fromDepartament"] - @row["fromDepartament"] hacia @row["toDepartament"] - @row["toCity"]</td>
+                                            <td>@String.Format("{0:C0}", row["valorOferta"])</td>
+                                            <td>@row["FactoringString"]</td>
+                                            <td>@row["statusString"]</td>
+                                            <td><a href="@Url.Action("ShowOffer", new { @id = row["codeOffer"]})" class="btn btn-secondary btn-sm text-white rounded"><i class="icon icon-address-book"></i></a></td>
+                                        </tr>
+                                    }
                                 }
                             }
                         </tbody>

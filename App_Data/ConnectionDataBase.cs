@@ -1707,7 +1707,7 @@ public class ConnectionDataBase
                 da.SelectCommand.Parameters.Add("@nit", SqlDbType.VarChar).Value = propJuridicoInput.nit;
                 da.SelectCommand.Parameters.Add("@razonsocial", SqlDbType.VarChar).Value = propJuridicoInput.razonSocial;
                 da.SelectCommand.Parameters.Add("@direccion", SqlDbType.VarChar).Value = propJuridicoInput.direccion;
-                da.SelectCommand.Parameters.Add("@telefonoFijo", SqlDbType.VarChar).Value = propJuridicoInput.telefonoFijo;
+                da.SelectCommand.Parameters.Add("@telefonoFijo", SqlDbType.VarChar).Value = string.IsNullOrEmpty(propJuridicoInput.telefonoFijo) ? "0000" : propJuridicoInput.telefonoFijo;
                 da.SelectCommand.Parameters.Add("@fk_idciudad", SqlDbType.VarChar).Value = propJuridicoInput.fk_idciudad;
                 da.SelectCommand.Parameters.Add("@fk_usuario", SqlDbType.VarChar).Value = propJuridicoInput.fk_usuario;
                 da.SelectCommand.CommandType = CommandType.StoredProcedure;

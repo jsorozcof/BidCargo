@@ -156,7 +156,10 @@
         <div class="row">
             <div class="col-md w-100 h-100">
                 <div class="card-title row mt-3 text-center">
-                    <h1>Información Contra-Oferta Propietario</h1>
+                    <h1>
+                    Información Contra-Oferta Propietario
+                    
+                    </h1> 
                 </div>
                 <hr />
                 <div class="card-body bg-ligth-bidcargo">
@@ -216,8 +219,11 @@
                                     <b> Apellido: </b> <small> @ViewBag.OfferPropietario["apellido"] </small>
                                 </h5>
                                 <h5 class="mb-4">
-                                    <b> Tipo de propietario: </b> <small>
-                                        @ViewBag.tipoUsuario["tipoUsuario"]
+                                       <b> Tipo de propietario: </b> <small>
+                                        @if (ViewBag.tipoUsuario != null)
+                                        {
+                                            @ViewBag.tipoUsuario["tipoUsuario"]
+                                        }
                                     </small>
                                 </h5>
                             </div>

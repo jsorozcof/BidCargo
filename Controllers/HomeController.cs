@@ -525,6 +525,16 @@ namespace BidCargo_.Controllers
             DataTable dt = data.getOffer(id, 4);
 
 
+            DataTable detalleSolicitud = data.ListaContraOfertaPropietario();
+            if (dd.Rows.Count > 0)
+                ViewBag.data = dd.Rows[0];
+            else
+                dd = data.ListaContraOfertaPropietario();
+            ViewBag.rows = dd.Rows;
+
+
+
+
             DataTable ClientDs = data.getContracOffers(Convert.ToInt32(Session["idCliente"]), id);
             if (ClientDs.Rows.Count > 0)
                 ViewBag.dt = dd.Rows;
@@ -1398,26 +1408,33 @@ namespace BidCargo_.Controllers
                 EnviarCorreos correoCreacion = new EnviarCorreos();
 
 
-                string bodyCorreo = correoCreacion.ArmarCorreoNuevaOferta(model);
+                string bodyCorreo = correoCreacion.ArmarCorreoNuevaOferta(model, Session["codeOffer"].ToString());
+                DataTable dtCorreoClienteSesion = data.consultarCliente(VidCliente);
+
                 DataTable dta = data.ConsultarCorreoPropietarios();
                 if (dta.Rows.Count > 0)
                 {
-                    correoCreacion.EnviarCorreoPropietarios(dta, "Nueva oferta BidCargo", "Bidcargo@hotmail.com", bodyCorreo, "Bidcargo@hotmail.com", "Bidcargo@hotmail.com", "bidC#123", "");
+                    correoCreacion.EnviarCorreoPropietarios(dta, "Nueva oferta BidCargo", $"Bidcargo@hotmail.com, {dtCorreoClienteSesion.Rows[0]["email"]} ", bodyCorreo, "Bidcargo@hotmail.com", "Bidcargo@hotmail.com", "bidC#123", "");
+                    //correoCreacion.EnviarCorreoPropietarios(dtCorreoClienteSesion, "Nueva oferta BidCargo", "Bidcargo@hotmail.com", bodyCorreo, "Bidcargo@hotmail.com", "Bidcargo@hotmail.com", "bidC#123", "");
+
                 }
-               
+
                 if (Request["morecontainer"] == "1")
                 {
                     Session["moreContainer"] = 1;
 
                     return RedirectToAction("createOffer");
                 }
-                return RedirectToAction("VerifyInfo");
+
+                //return RedirectToAction("VerifyInfo");
             }
             catch (Exception e)
             {
                 string messanje = e.Message;
                 return RedirectToAction("createOffer");
             }
+
+            return View("/Views/Home/Offers/table.cshtml");
 
         }
         public ActionResult VerifyInfo()
@@ -1571,7 +1588,7 @@ namespace BidCargo_.Controllers
                 return RedirectToAction("Index");
 
             var fullOffer = data.getOffer("", 2, Convert.ToInt32(Session["idCliente"]));
-            
+            ViewBag.offers = null;
             //Consultar si Session["idCliente"] es una empresa de transporte.
             if (Convert.ToInt32(Session["idTypeCompany"]) == 8)
             {
@@ -2377,7 +2394,11 @@ namespace BidCargo_.Controllers
                 int fk_usuario = int.Parse(dataRow["fk_usuario"].ToString());
 
                 DataTable dataUsuario = data.ConsultarUsuarioPropietarioPerfil(fk_usuario);
-                ViewBag.tipoUsuario = dataUsuario.Rows[0];
+                if (dataUsuario.Rows.Count > 0)
+                {
+                    ViewBag.tipoUsuario = dataUsuario.Rows[0];
+                }
+
                 ViewBag.OfferPropietario = dataTable.Rows[0];
                 string id = ViewBag.OfferPropietario["codeOffer"].ToString();
                 ViewBag.models = data.getOffer(id, 4).Rows;
@@ -2400,7 +2421,11 @@ namespace BidCargo_.Controllers
                 int fk_usuario = int.Parse(dataRow["fk_usuario"].ToString());
 
                 DataTable dataUsuario = data.ConsultarUsuarioPropietarioPerfil(fk_usuario);
-                ViewBag.tipoUsuario = dataUsuario.Rows[0];
+                if (dataUsuario.Rows.Count > 0)
+                {
+                    ViewBag.tipoUsuario = dataUsuario.Rows[0];
+                }
+
                 ViewBag.OfferPropietario = dataTable.Rows[0];
                 string id = ViewBag.OfferPropietario["codeOffer"].ToString();
                 ViewBag.models = data.getOffer(id, 4).Rows;
@@ -2650,13 +2675,13 @@ namespace BidCargo_.Controllers
 
             return View();
         }
-        public ActionResult AceptarContraofertas(int oferta, int usuario) {
+        public ActionResult AceptarContraofertas(string codeOffer,int oferta, int usuario) {
 
             ConnectionDataBase.StoreProcediur data = new ConnectionDataBase.StoreProcediur();
             
             DataTable dda = data.AceptarRechazarContraofertas( 1 , 1, oferta, usuario );
             DataTable ddd = data.AceptarRechazarContraofertas(2, 2, oferta, usuario);
-            enviarnotificaciones(oferta ,usuario);
+            enviarnotificaciones(codeOffer,oferta, usuario);
             Session["message"] = "Modificacion Realizada con éxito.";
             return RedirectToAction("ContraOfertaPropietarioPempresas");
         }
@@ -2689,34 +2714,35 @@ namespace BidCargo_.Controllers
         }
 
 
-        public void enviarnotificaciones(int oferta, int usuario) 
+        public void enviarnotificaciones(string codeOffer,int oferta, int usuario) 
         {
             ConnectionDataBase.StoreProcediur data = new ConnectionDataBase.StoreProcediur();
             EnviarCorreos correoCreacion = new EnviarCorreos();
             DataTable person = data.PersonasParaNotificar(1, usuario);
             DataTable companies = data.EmpresaAnotificar(oferta);
 
-            string bodyCorreo = correoCreacion.sendMailAccepOffer3(person, companies, "");
-            correoCreacion.EnviarCorreo(companies.Rows[0]["email"].ToString(), "Oferta Aceptada", "Bidcargo@hotmail.com", bodyCorreo, "Bidcargo@hotmail.com", "Bidcargo@hotmail.com", "bidC#123", "");
+            string queryFilter = $"codeOffer = '{codeOffer}' and fk_usuario1 <> {usuario}";//
+            DataTable contraOfertaPropietarioEmpresa = data.ListaContraOfertaPropietario3(Convert.ToInt32(Session["idCliente"]));
+            DataTable  filterContraOferProp = contraOfertaPropietarioEmpresa.Select(queryFilter).CopyToDataTable();
+
+            string query = $"idCliente = {Session["idCliente"]}";
+            DataTable datosContactoEmpresa = companies.Select(query).CopyToDataTable();
            
-            
-            DataTable ddoa = data.PersonasParaNotificar(2, usuario);
-            foreach (dynamic row in ddoa.Rows)
+            string bodyCorreo = correoCreacion.sendMailAccepOffer3(person, datosContactoEmpresa, "");
+            correoCreacion.EnviarCorreo(companies.Rows[0]["email"].ToString(), "Oferta Aceptada", "Bidcargo@hotmail.com", bodyCorreo, "Bidcargo@hotmail.com", "Bidcargo@hotmail.com", "bidC#123", "");
+
+
+            //DataTable ddoa = data.PersonasParaNotifi
+            //car(2, usuario);
+            if (filterContraOferProp.Rows.Count > 0)
             {
-                string bodyCorreo2 = correoCreacion.sendMailNOAccepOffer3(row, "");
-                correoCreacion.EnviarCorreo(row["Correo"].ToString(), "Oferta Rechazada", "Bidcargo@hotmail.com", bodyCorreo, "Bidcargo@hotmail.com", "Bidcargo@hotmail.com", "bidC#123", "");
-
-
+                foreach (dynamic row in filterContraOferProp.Rows)
+                {
+                    string bodyCorreo2 = correoCreacion.sendMailNOAccepOffer3(row, "");
+                    correoCreacion.EnviarCorreo(row["correo"].ToString(), "Oferta Rechazada", "Bidcargo@hotmail.com", bodyCorreo2, "Bidcargo@hotmail.com", "Bidcargo@hotmail.com", "bidC#123", "");
+                }
             }
-
-
-
         }
-
-
-
-
-
 
 
 

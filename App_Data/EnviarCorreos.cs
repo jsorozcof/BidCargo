@@ -494,7 +494,8 @@ public class EnviarCorreos
             //{
             //    strBody += "<label><strong>Presentación: </strong> <strong>Atado: </strong>" + models["longTied"] + ", <strong>Planchas: </strong>" + models["widthPlates"] + ", <strong>Suelta: </strong>" + models["highLoose"] + "</label><br>";
             //}
-            strBody += "<label><strong> Valor por Contenedor:</strong> " + String.Format("{0:C0}", Convert.ToInt32(models["valueMerchandise"])) + " </label><br>";
+            var valueMerchandise = string.IsNullOrEmpty(models["valueMerchandise"].ToString()) ? 0 : Convert.ToInt32(models["valueMerchandise"]);
+            strBody += "<label><strong> Valor por Contenedor:</strong> " + String.Format("{0:C0}", Convert.ToInt32(valueMerchandise)) + " </label><br>";
             strBody += "<label><strong> Fecha de Viaje:</strong> " + models["departure"] + "</label><br>";
             strBody += "<label><strong>Fecha Estimada de Arribo</strong>: " + models["arrival"] + " " + "<strong>" +  models["DateOfServiceIText"] + "</strong>" + " </label>  <br>";
             strBody += "<label><strong> Observacion:</strong> " + models["observation"] + " </label><br>";
@@ -638,7 +639,7 @@ public class EnviarCorreos
         }
     }
 
-    public string ArmarCorreoNuevaOferta(BidCargo_.Models.storeoffer model)
+    public string ArmarCorreoNuevaOferta(BidCargo_.Models.storeoffer model, string codeOffer)
     {
         string stringBody = @"
                 <html>
@@ -647,10 +648,10 @@ public class EnviarCorreos
                         <div style='font-family: Arial, icomoon, sans-serif; font-size: 12px; color: #1F1F1F'>
                             <p>Un placer saludarl@, hay una nueva oferta disponible en nuestra plataforma.</p>
                             <p>Le invitamos a ingresar a la plataforma para que pueda revisarla.</p>
-                            <p>Codido Oferta:"+model.codeOffer + @"</p>
-                            <p>Fecha salida:" + model.dayTraveler + @"</p>
-                            <p>Fecha llegada:" + model.dayTraveler2 + @"</p>
-                            <p>Costo Oferta:" + model.valorOferta + @"</p>
+                            <p>Codido Oferta: "+ codeOffer + @"</p>
+                            <p>Fecha salida: " + model.dayTraveler + @"</p>
+                            <p>Fecha llegada: " + model.dayTraveler2 + @"</p>
+                            <p>Costo Oferta: " + model.valorOferta + @"</p>
                             <p>Tipo de mercancia:" + model.typeMerchandise + @"</p>
                             
                             <p>Saludos...</p>
@@ -1009,18 +1010,20 @@ public class EnviarCorreos
                 strBody += "<br> Equipo de BidCargo <br>";
                 strBody += "<br>Un placer saludarl@ " + row["nombreUsuario"].ToString() + ", de parte del Equipo de BidCargo...";
 
-
-                foreach (dynamic row2 in data2.Rows)
+                if (data2.Rows.Count > 0)
                 {
-                    strBody += "<br>Nos complace informarle, que la oferta que realizo a la Cotizacion " + row2["codeOffer"] + ", ha sido aceptada.";
+
+                    strBody += "<br>Nos complace informarle, que la oferta que realizo a la Cotizacion " + data2.Rows[0]["codeOffer"] + ", ha sido aceptada.";
                     strBody += "<br>Le invitamos a ingresar a nuestra plataforma para conocer mas detalles, los datos de contacto de la empresa contratante son los siguientes:";
 
-                    strBody += "<br>Empresa Contratante: " + row2["usuarioFaceBook"] + "";
-                    strBody += "<br>Dirección: " + row2["direccion"] + "";
-                    strBody += "<br>Persona de Contacto: " + row2["nombre"] + "  " + row2["apellidoPaterno"] + "";
-                    strBody += "<br>Telefono de Contacto: " + row2["numeroCelular"] + "";
-                    strBody += "<br>Email de Contacto: " + row2["email"] + "";
+                    strBody += "<br>Empresa Contratante: " + data2.Rows[0]["usuarioFaceBook"] + "";
+                    strBody += "<br>Dirección: " + data2.Rows[0]["direccion"] + "";
+                    strBody += "<br>Persona de Contacto: " + data2.Rows[0]["nombre"] + "  " + data2.Rows[0]["apellidoPaterno"] + "";
+                    strBody += "<br>Telefono de Contacto: " + data2.Rows[0]["numeroCelular"] + "";
+                    strBody += "<br>Email de Contacto: " + data2.Rows[0]["email"] + "";
+
                 }
+
 
                 strBody += "<br><br><a href='" + urlpath + "'><button class=\"curpointer\" style=\"cursor:pointer;background:#42a098;border-radius:5px;padding:15px 23px;color:#ffffff;" +
                     "           display:inline-block;font:normal bold 30px/1 \"Calibri\", sans-serif;text-align:center;text-shadow:1px 1px #000000;cursor:pointer;\"> BidCargo </button></a> ";
@@ -1053,15 +1056,16 @@ public class EnviarCorreos
 
     public string sendMailNOAccepOffer3(dynamic row = null, string urlpath = "")
     {
+        string nombreUsuario = $"{row["nombre"]} " + " " + row["apellido"];
         string strBody = "<HTML>";
         strBody += "<Body> ";
         strBody += "<label style='font-family: Arial, icomoon, sans-serif; font-size: 12px; color: #1F1F1F'>";
         strBody += "<br> Equipo de BidCargo <br>";
 
         strBody += "<label style='font-family: Arial, icomoon, sans-serif; font-size: 12px; color: #1F1F1F'>";
-        strBody += "<br>Un placer saludarlo " + row["nombreUsuario"] + ", de parte del equipo de Bidcargo,";
+        strBody += "<br>Un placer saludarlo " + nombreUsuario + ", de parte del equipo de Bidcargo,";
 
-        strBody += "<br>Estimados señores " + row["nombreUsuario"] + ": Le notificamos que la solicitud de carga, ha sido asignada a otra empresa;";
+        strBody += "<br>Estimados señores " + nombreUsuario + ": Le notificamos que la solicitud de carga, ha sido asignada a otra empresa;";
         strBody += "<br>le invitamos a seguir ofertando sus servicios para una nueva solicitud.";
 
         strBody += "<br><br><a href='" + urlpath + "'><button class=\"curpointer\" style=\"cursor:pointer;background:#42a098;border-radius:5px;padding:15px 23px;color:#ffffff;" +

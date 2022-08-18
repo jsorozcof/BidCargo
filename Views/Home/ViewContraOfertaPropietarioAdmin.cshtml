@@ -71,23 +71,23 @@
                         }
 
                         @*@if (Convert.ToInt32(modelo["typeCargo"]) >= 3)
-                            {
-                                <div class="col-sm-4">
-                                    <h6><strong>Presentación:</strong> </h6><strong><strong>Atado: </strong>@modelo["longTied"], <strong>Planchas: </strong>@modelo["widthPlates"], <strong>Suelta: </strong>@modelo["highLoose"] en <strong>@modelo["typeDimensionString"]</strong></strong>
-                                </div>
-                            }*@
+                        {
+                            <div class="col-sm-4">
+                                <h6><strong>Presentación:</strong> </h6><strong><strong>Atado: </strong>@modelo["longTied"], <strong>Planchas: </strong>@modelo["widthPlates"], <strong>Suelta: </strong>@modelo["highLoose"] en <strong>@modelo["typeDimensionString"]</strong></strong>
+                            </div>
+                        }*@
                         @*<div class="col-sm-4">
-                                <h6><strong>Valor Declarado Mercancía:</strong></h6><label> @String.Format("{0:C0}", Convert.ToInt32(modelo["valueMerchandise"]))</label>
-                            </div>*@
+                            <h6><strong>Valor Declarado Mercancía:</strong></h6><label> @String.Format("{0:C0}", Convert.ToInt32(modelo["valueMerchandise"]))</label>
+                        </div>*@
                         <div class="col-sm-4">
                             <h6><strong>Tipo Moneda:</strong></h6><label> @modelo["CoinTypeText"]</label>
                         </div>
                         @*@if (modelo["valorOferta"] != null)
-                            {
-                                <div class="col-sm-4">
-                                    <h6><strong>Valor Oferta:</strong></h6><label> @String.Format("{0:C0}", modelo["valorOferta"])</label>
-                                </div>
-                            }*@
+                        {
+                            <div class="col-sm-4">
+                                <h6><strong>Valor Oferta:</strong></h6><label> @String.Format("{0:C0}", modelo["valorOferta"])</label>
+                            </div>
+                        }*@
                         <div class="col-sm-4">
                             <h6><strong>Fecha de Viaje:</strong></h6><label> @modelo["departure"]  - <strong> @modelo["DateOfServiceIText"] </strong></label>
                         </div>
@@ -95,8 +95,8 @@
                             <h6><strong>Fecha estimada de arribo:</strong></h6><label> @modelo["arrival"]</label>
                         </div>
                         @*<div class="col-sm-4">
-                                <h6><strong>Empresa Cliente:</strong></h6><label> @modelo["companyClient"]</label>
-                            </div>*@
+                            <h6><strong>Empresa Cliente:</strong></h6><label> @modelo["companyClient"]</label>
+                        </div>*@
                         <div class="col-sm-4">
                             <h6><strong>Factoring:</strong></h6><label> @modelo["FactoringString"]</label>
                         </div>
@@ -125,39 +125,41 @@
                                 }
                             }
                             @*@if (ViewBag.myDocuments.Count > 0)
+                            {
+                                foreach (var rows in ViewBag.myDocuments)
                                 {
-                                    foreach (var rows in ViewBag.myDocuments)
+                                    if (Convert.ToInt32(rows["idDocuments"]) == Convert.ToInt32(rows["idDocuments"]))
                                     {
-                                        if (Convert.ToInt32(rows["idDocuments"]) == Convert.ToInt32(rows["idDocuments"]))
-                                        {
-                                            <a href="@rows["srcFile"]" class="btn btn-block btn-outline-dark" title="@rows["nameFile"]" target="_blank"><i class="icon-download"></i> @rows["nameFile"]</a>
-                                        }
+                                        <a href="@rows["srcFile"]" class="btn btn-block btn-outline-dark" title="@rows["nameFile"]" target="_blank"><i class="icon-download"></i> @rows["nameFile"]</a>
                                     }
-                                }*@
+                                }
+                            }*@
                         </div>
                     </div>
                 </div>
 
-
-
-
-
-
-
-
-
-
             }
         </div>
-
-
-
 
         <div class="row">
             <div class="col-md w-100 h-100">
                 <div class="card-title row mt-3 text-center">
-                    <h1>Información Contra-Oferta Propietario</h1>
-                </div>
+                    <h1>
+                        @{
+                            string nombreProp = string.Empty;
+                            if (@ViewBag.tipoUsuario != null)
+                            {
+                                nombreProp = string.Concat(@ViewBag.tipoUsuario["nombres"], " ", @ViewBag.tipoUsuario["apellidos"]);
+                            }
+                        }
+
+                        Información Contra-Oferta 
+                    </h1>
+                    <h2>
+                        <br />
+                        Propietario: @nombreProp
+                    </h2>
+                    </div>
                 <hr />
                 <div class="card-body bg-ligth-bidcargo">
                     <h3>Codigo de oferta: @ViewBag.OfferPropietario["codeOffer"]</h3>
@@ -173,8 +175,7 @@
                                 </h5>
                                 <h5 class="mb-4">
                                     <b> Costo de oferta: </b> <small>
-                                        @String.Format("{0:C2}",
-       @ViewBag.OfferPropietario["Costo"])
+                                        @String.Format("{0:C2}",ViewBag.OfferPropietario["Costo"])
                                     </small>
                                 </h5>
                                 <h5 class="mb-4">
@@ -217,8 +218,11 @@
                                     </h5>
                                     <h5 class="mb-4">
                                         <b> Tipo de propietario: </b> <small>
+                                        @if (ViewBag.tipoUsuario != null)
+                                        {
                                             @ViewBag.tipoUsuario["tipoUsuario"]
-                                        </small>
+                                        }
+                                    </small>
                                     </h5>
                                 </div>
                             </div>
@@ -228,7 +232,7 @@
                             <div class="mt-2 mb-5">
                                 <b>Descargar:</b>
                                 <a data-href="@Url.Action("DescargarArchivos", new { @ruta = @ViewBag.OfferPropietario["PathDocumento"] } )"
-                                   data-text="De Activar este usuario"
+                                   data-text="Desea Descargar Este Docuemento"
                                    class="btn btn-success btn-sm text-white rounded actiusers">
                                     <i class="fas fa-download"></i>
                                 </a>
@@ -245,7 +249,7 @@
 </div>
 
 @section scripts{
-    @if (Session["message"] != null)
+                                @if (Session["message"] != null)
     {
         if (Session["message"].ToString() != "")
         {
@@ -259,15 +263,15 @@
             </script>
 }
 
-        Session.Remove("message");
+                    Session.Remove("message");
     }
     <script type="text/javascript">
     $(document).ready(function () {
         $(".actiusers").click(function () {
-            var texss = $(this).data("text")
+                            var texss = $(this).data("text")
             var href = $(this).data("href")
             Swal.fire({
-                title: "¿Esta Seguro?",
+                            title: "¿Esta Seguro?",
                 html: texss,
                 type: 'question',
                 showCancelButton: true,
@@ -276,12 +280,12 @@
                     location.replace(href)
                 }
             });
-        });
+                        });
 
         $(".tablesi").DataTable({
-            "ordering": false,
+                            "ordering": false,
             language: {
-                "sProcessing": "Procesando...",
+                                "sProcessing": "Procesando...",
                 "sLengthMenu": "Mostrar MENU registros",
                 "sZeroRecords": "No se encontraron resultados",
                 "sEmptyTable": "No hay Actualmente una oferta disponible",
@@ -294,41 +298,41 @@
                 "sInfoThousands": ",",
                 "sLoadingRecords": "Cargando...",
                 "oPaginate": {
-                    "sFirst": "Primero",
+                                    "sFirst": "Primero",
                     "sLast": "Último",
                     "sNext": "Siguiente",
                     "sPrevious": "Anterior"
                 },
                 "oAria": {
-                    "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+                                    "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
                     "sSortDescending": ": Activar para ordenar la columna de manera descendente"
                 },
                 "buttons": {
-                    "copy": "Copiar",
+                                    "copy": "Copiar",
                     "colvis": "Visibilidad"
                 },
             }
-        });
+                        });
 
         $("#btnExcelView").click(function () {
-            //$.blockUI({ message: '<h3>Por favor, espere un momento...</h3>' });
-            var typeId = $('#typeId').val();
+                            //$.blockUI({ message: '<h3>Por favor, espere un momento...</h3>' });
+                            var typeId = $('#typeId').val();
             $.ajax({
-                type: "GET",
+                            type: "GET",
                 url: '@Url.Action("ExportExelVehiculo", "Home")',
                 contentType: "application/json; charset=utf-8",
                 data: { id: typeId },
                 dataType: "json",
             }).done(function (data) {
-                console.log(data.result);
+                                console.log(data.result);
 
-                if (data.fileName != "") {
-                    window.location.href = "@Url.RouteUrl(new
-                    { Controller = "Home", Action = "Download" })/?file=" + data.fileName;
-                }
-            });
-        });
-    })
+                                if (data.fileName != "") {
+                                    window.location.href = "@Url.RouteUrl(new
+                                    { Controller = "Home", Action = "Download" })/?file=" + data.fileName;
+                                }
+                            });
+                        });
+                    })
 
 
     function DownloadExcel() {
