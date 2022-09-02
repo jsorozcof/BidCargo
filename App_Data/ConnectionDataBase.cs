@@ -2487,6 +2487,30 @@ public class ConnectionDataBase
             }
         }
 
+        public DataTable GetGeneradoresDeCarga()
+        {
+            try
+            {
+
+                SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["BidcargoConnectionString"].ConnectionString);
+                string Query = "SELECT * FROM TB_cliente clie INNER JOIN TB_ClientTypeCompany tc ON tc.idClient = clie.idCliente WHERE idEstadoCliente > 0 AND tc.IdTypeCompany = 1";
+                SqlCommand command = new SqlCommand(Query, con);
+                SqlDataAdapter data = new SqlDataAdapter(command);
+                DataTable tableConductor = new DataTable();
+                data.Fill(tableConductor);
+                return tableConductor;
+
+
+
+
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+        }
 
         public DataTable ConductorPropietario(int id)
         {

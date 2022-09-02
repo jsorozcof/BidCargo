@@ -580,21 +580,17 @@ public class EnviarCorreos
         return strBody;
     }
 
-    public void EnviarCorreoPropietarios(DataTable dd, string asuntoDelCorreo, string copiaCorreoEnvio, string textoDelCorreo, string correoDesdeElQueEnvio, string usuarioCorreEnvio, string contrasenaCorreoEnvio, string archivo)
-    {             /*-------------------------MENSAJE DE CORREO----------------------*/
+    public void EnviarCorreoPropietarios(string correoAlQueEnvio, string asuntoDelCorreo, string copiaCorreoEnvio, string textoDelCorreo, string correoDesdeElQueEnvio, string usuarioCorreEnvio, string contrasenaCorreoEnvio, string archivo)
+    {   
         /*-------------------------MENSAJE DE CORREO----------------------*/
         System.Net.Mail.MailMessage mmsg = new System.Net.Mail.MailMessage();
         //Direccion de correo electronico a la que queremos enviar el mensaje
-        DataRow dataRow;
-
-        for (int i = 0; i < dd.Rows.Count; i++)
-        {
-            dataRow = dd.Rows[i];
-            mmsg.Bcc.Add(new MailAddress(dataRow["correo"].ToString()));
-        }
+        mmsg.To.Add(correoAlQueEnvio);
         //Asunto
         mmsg.Subject = asuntoDelCorreo;
         mmsg.SubjectEncoding = System.Text.Encoding.UTF8;
+        //Direccion de correo electronico que queremos que reciba una copia del mensaje
+        mmsg.Bcc.Add(copiaCorreoEnvio);
         //Cuerpo del Mensaje
         mmsg.Body = textoDelCorreo;
 
