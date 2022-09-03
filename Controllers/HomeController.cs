@@ -2783,20 +2783,30 @@ namespace BidCargo_.Controllers
             string query = $"fk_usuario = {usuario}";
             DataTable datosContactoEmpresa = companies.Select(query).CopyToDataTable();
            
-            string bodyCorreo = correoCreacion.sendMailAccepOffer3(person, datosContactoEmpresa, "");
-            correoCreacion.EnviarCorreo(companies.Rows[0]["email"].ToString(), "Oferta Aceptada", "Bidcargo@hotmail.com", bodyCorreo, "Bidcargo@hotmail.com", "Bidcargo@hotmail.com", "bidC#123", "");
+            string bodyCorreo = correoCreacion.sendMailAccepOffer3(codeOffer, person, datosContactoEmpresa, "");
+            correoCreacion.EnviarCorreo(person.Rows[0]["correo"].ToString(), "Oferta Aceptada", "Bidcargo@hotmail.com", bodyCorreo, "Bidcargo@hotmail.com", "Bidcargo@hotmail.com", "bidC#123", "");
 
 
+            //Filtrar propietario a no tificar no aceptada
+            string queryNoAcep = $"estado = 0";
+            DataTable filterNoAcep = filterContraOferProp.Select(queryNoAcep).CopyToDataTable();
+
+            //Consultar usuario con id de este filtro filterNoAcep para notificar
 
             //DataTable ddoa = data.PersonasParaNotifi
             //car(2, usuario);
-            if (filterContraOferProp.Rows.Count > 0)
+            if (filterNoAcep.Rows.Count > 0)
             {
-                foreach (dynamic row in filterContraOferProp.Rows)
+                foreach (dynamic row in filterNoAcep.Rows)
                 {
-                    string bodyCorreo2 = correoCreacion.sendMailNOAccepOffer3(row, "");
-                    correoCreacion.EnviarCorreo(row["correo"].ToString(), "Oferta Rechazada", "Bidcargo@hotmail.com", bodyCorreo2, "Bidcargo@hotmail.com", "Bidcargo@hotmail.com", "bidC#123", "");
+                    int fk_usuario = Convert.ToInt32(row["fk_usuario"]);
+                    DataTable dataCorreoUsuario = data.PropietarioNotificacionNoAcep(fk_usuario);
+
+                    string bodyCorreo2 = correoCreacion.sendMailNOAccepOffer3(dataCorreoUsuario.Rows[0]["nombreUsuario"].ToString(), codeOffer, row, "");
+                    correoCreacion.EnviarCorreo(dataCorreoUsuario.Rows[0]["correo"].ToString(), "Oferta Rechazada", "Bidcargo@hotmail.com", bodyCorreo2, "Bidcargo@hotmail.com", "Bidcargo@hotmail.com", "bidC#123", "");
+
                 }
+
             }
         }
 

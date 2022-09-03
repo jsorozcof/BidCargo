@@ -992,7 +992,7 @@ public class EnviarCorreos
 
 
 
-    public string sendMailAccepOffer3(DataTable data = null, DataTable data2 = null, string urlpath = "")
+    public string sendMailAccepOffer3(string codeOffer, DataTable data = null, DataTable data2 = null, string urlpath = "")
     {
         string strBody = string.Empty;
         try
@@ -1009,7 +1009,7 @@ public class EnviarCorreos
                 if (data2.Rows.Count > 0)
                 {
 
-                    strBody += "<br>Nos complace informarle, que la oferta que realizo a la Cotizacion " + data2.Rows[0]["codeOffer"] + ", ha sido aceptada.";
+                    strBody += "<br>Nos complace informarle, que la oferta que realizo a la Cotizacion " + codeOffer + ", ha sido aceptada.";
                     strBody += "<br>Le invitamos a ingresar a nuestra plataforma para conocer mas detalles, los datos de contacto de la empresa contratante son los siguientes:";
 
                     strBody += "<br>Empresa Contratante: " + data2.Rows[0]["usuarioFaceBook"] + "";
@@ -1050,9 +1050,8 @@ public class EnviarCorreos
     }
 
 
-    public string sendMailNOAccepOffer3(dynamic row = null, string urlpath = "")
+    public string sendMailNOAccepOffer3(string nombreUsuario, string codeOffer, dynamic row = null, string urlpath = "")
     {
-        string nombreUsuario = $"{row["nombre"]} " + " " + row["apellido"];
         string strBody = "<HTML>";
         strBody += "<Body> ";
         strBody += "<label style='font-family: Arial, icomoon, sans-serif; font-size: 12px; color: #1F1F1F'>";
@@ -1061,7 +1060,7 @@ public class EnviarCorreos
         strBody += "<label style='font-family: Arial, icomoon, sans-serif; font-size: 12px; color: #1F1F1F'>";
         strBody += "<br>Un placer saludarlo " + nombreUsuario + ", de parte del equipo de Bidcargo,";
 
-        strBody += "<br>Estimados señores " + nombreUsuario + ": Le notificamos que la solicitud de carga, ha sido asignada a otra empresa;";
+        strBody += "<br>Estimado señor " + nombreUsuario + ": Le notificamos que la solicitud de carga " + codeOffer + ", ha sido asignada a otra empresa;";
         strBody += "<br>le invitamos a seguir ofertando sus servicios para una nueva solicitud.";
 
         strBody += "<br><br><a href='" + urlpath + "'><button class=\"curpointer\" style=\"cursor:pointer;background:#42a098;border-radius:5px;padding:15px 23px;color:#ffffff;" +

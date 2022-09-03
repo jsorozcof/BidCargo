@@ -2097,6 +2097,18 @@ public class ConnectionDataBase
 
         }
 
+        public DataTable PropietarioNotificacionNoAcep(int id)
+        {
+            SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["BidcargoConnectionString"].ConnectionString);
+            //FORMAT([MyDateTime],'yyyyMMdd')
+            string Query = $" select sk_usuario, nombreUsuario, correo from TB_Usuario where sk_usuario = {id};";
+            SqlCommand command = new SqlCommand(Query, con);
+            SqlDataAdapter data = new SqlDataAdapter(command);
+            DataTable dt = new DataTable();
+            data.Fill(dt);
+            return dt;
+
+        }
         public DataTable ListaContraOfertaPropietarioPorUsuario(int pk_usuario)
         {
             SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["BidcargoConnectionString"].ConnectionString);
